@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{BBB256B4-65BF-4487-A0BC-F2C3EE55B9DF}|Default">
+  <MonoDevelop.Ide.ItemProperties.VolunteeringSystem PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="VolunteeringSystem/Models/Kid.cs">
+    <Files>
+      <File FileName="VolunteeringSystem/Models/Kid.cs" Line="3" Column="1" />
+      <File FileName="VolunteeringSystem/DAO/KidDAO.cs" Line="1" Column="1" />
+      <File FileName="VolunteeringSystem/Domain/Sex.cs" Line="1" Column="1" />
+      <File FileName="VolunteeringSystem/Domain/PartOfDay.cs" Line="1" Column="1" />
+      <File FileName="VolunteeringSystem/Domain/Activities.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
