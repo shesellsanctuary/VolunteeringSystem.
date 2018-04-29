@@ -22,16 +22,17 @@ namespace VolunteeringSystem.Models
             set;
         }
 
-        public HashSet<Activities> preferences
+        public HashSet<Activities> likes
         {
             get;
             set;
         }
 
-        public Kid()
+        public HashSet<Activities> dislikes
         {
+            get;
+            set;
         }
-
 
     }
 }
