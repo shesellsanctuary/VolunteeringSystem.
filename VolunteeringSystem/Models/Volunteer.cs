@@ -6,43 +6,25 @@ using VolunteeringSystem.Domain;
 
 namespace VolunteeringSystem.Models
 {
-    public class Volunteer
+    public class Volunteer : Person
     {
-        public String name
-        {
-            get;
-            set;
-        }
-        public String profession
-        {
-            get;
-            set;
-        }
-        public DateTime birthday
-        {
-            get;
-            set;
-        }
-        public String cpf
-        {
-            get;
-            set;
-        }
-        public String address
-        {
-            get;
-            set;
-        }
-        public String phone
-        {
-            get;
-            set;
-        }
-        // TODO: antecedentes criminais.
-        public List<Evaluation> evaluations
-        {
-            get;
-            set;
+        public String profession { get; set; }
+
+        public String address { get; set; }
+
+        public String phone { get; set; }
+
+        public Uri photo { get; set; }
+
+        public Uri criminalRecord { get; set; }
+
+        public List<Evaluation> evaluations { get; set; }
+
+        public Credentials credentials { get; set; }
+
+
+        public int GetScore() {
+            return 0;
         }
     }
 }

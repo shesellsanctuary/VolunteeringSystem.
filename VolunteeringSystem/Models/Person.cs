@@ -2,7 +2,7 @@
 
 namespace VolunteeringSystem.Models
 {
-    public class PersonData
+    public class Person
     {
         public string name { get; set; }
 
