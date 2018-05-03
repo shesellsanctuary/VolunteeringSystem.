@@ -12533,28 +12533,33 @@
     ]
   },
   "packageFolders": {
-    "/Users/felipebertoldo/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\Guilh\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
     "restore": {
-      "projectUniqueName": "/Users/felipebertoldo/Documents/UFRGS/20181/EngenhariaDeSoftware/VolunteeringSystem/VolunteeringSystem/VolunteeringSystem.csproj",
+      "projectUniqueName": "C:\\UFRGS\\7º Semestre\\Engenharia de Software\\VolunteeringSystem\\VolunteeringSystem\\VolunteeringSystem.csproj",
       "projectName": "VolunteeringSystem",
-      "projectPath": "/Users/felipebertoldo/Documents/UFRGS/20181/EngenhariaDeSoftware/VolunteeringSystem/VolunteeringSystem/VolunteeringSystem.csproj",
-      "packagesPath": "/Users/felipebertoldo/.nuget/packages/",
-      "outputPath": "/Users/felipebertoldo/Documents/UFRGS/20181/EngenhariaDeSoftware/VolunteeringSystem/VolunteeringSystem/obj",
+      "projectPath": "C:\\UFRGS\\7º Semestre\\Engenharia de Software\\VolunteeringSystem\\VolunteeringSystem\\VolunteeringSystem.csproj",
+      "packagesPath": "C:\\Users\\Guilh\\.nuget\\packages\\",
+      "outputPath": "C:\\UFRGS\\7º Semestre\\Engenharia de Software\\VolunteeringSystem\\VolunteeringSystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/felipebertoldo/.config/NuGet/NuGet.Config"
+        "C:\\Users\\Guilh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12572,9 +12577,8 @@
       "netcoreapp2.0": {
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
-            "version": "2.0",
+            "version": "2.0.0",
             "autoReferenced": true
           },
           "Microsoft.AspNetCore.All": {

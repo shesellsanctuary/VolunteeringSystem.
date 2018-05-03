@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace VolunteeringSystem.Models
 {
     public class Kid
     {
-        public DateTime birthDate
-        {
-            get;
-            set;
-        }
-
-        public Sex sex
-        {
-            get;
-        }
+        public PersonData personData { get; set; }
 
         public PartOfDay availability
         {
@@ -31,7 +21,5 @@ namespace VolunteeringSystem.Models
         public Kid()
         {
         }
-
-
     }
 }
