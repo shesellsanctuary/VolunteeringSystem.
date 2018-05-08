@@ -3,6 +3,8 @@ namespace VolunteeringSystem.Models
 {
     public class AgeGroup
     {
+        public int id { get; set; }
+
         public int min { get; set; }
 
         public int max { get; set; }

@@ -1,0 +1,39 @@
+﻿@model VolunteeringSystem.Models.Event
+@{
+	ViewData["Title"] = "Submeter Evento";
+}
+
+<h2>Crie um evento preenchendo os dados abaixo</h2>
+<h4>Seu evento será analisado por nossos administradores e você receberá um e-mail quando for aprovado</h4>
+<br />
+
+<div class="row">
+	<div class="col-md-6 col-sm-12">
+		<img class="img-responsive" src="http://keyassets-p2.timeincuk.net/wp/prod/wp-content/uploads/sites/53/2014/01/Happy-kids-with-thumbs-up.jpg" />
+	</div>
+	<div class="col-md-6 col-sm-12">
+		<form method="post" role="form">
+			<div class="form-group">
+				<label>Instituto</label>
+				@Html.DropDownListFor(m => m.institute, new List<SelectListItem>(ViewBag.instituteList), "Selecione uma Instituição", new { @class = "form-control", required="" })
+			</div>
+			<div class="form-group">
+				<label>Grupo de Crianças</label>
+				@Html.DropDownListFor(m => m.ageGroup.label, new List<SelectListItem>(ViewBag.ageGroups), "Selecione um Grupo de Crianças", new { @class = "form-control", required="" })
+			</div>
+			<div class="form-group">
+				<label>Número máximo de Crianças</label>
+				@Html.TextBoxFor(m => m.kidLimit, new { @class = "form-control", required="", type = "number", min = "2", max = "5" })
+			</div>
+			<div class="form-group">
+				<label>Data</label>
+				@Html.TextBoxFor(m => m.date, new { @class = "form-control", required="", type = "date" })
+			</div>
+			<div class="form-group">
+				<label>Descrição do Evento</label>
+				@Html.TextAreaFor(m => m.description, new { @class = "form-control", required="", rows = 5 })
+			</div>
+			<button type="submit" class="btn btn-success pull-right">Submeter Evento</button>
+		</form>
+	</div>
+</div>

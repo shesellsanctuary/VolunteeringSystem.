@@ -4,6 +4,8 @@ namespace VolunteeringSystem.Models
 {
     public class Event
     {
+        public int id { get; set; }
+
         public string institute { get; set; }
 
         public AgeGroup ageGroup { get; set; }
