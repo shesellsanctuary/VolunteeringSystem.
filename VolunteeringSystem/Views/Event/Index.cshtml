@@ -14,10 +14,6 @@
 	<div class="col-md-6 col-sm-12">
 		<form method="post" role="form">
 			<div class="form-group">
-				<label>Instituto</label>
-				@Html.DropDownListFor(m => m.institute, new List<SelectListItem>(ViewBag.instituteList), "Selecione uma Instituição", new { @class = "form-control", required="" })
-			</div>
-			<div class="form-group">
 				<label>Grupo de Crianças</label>
 				@Html.DropDownListFor(m => m.ageGroup.label, new List<SelectListItem>(ViewBag.ageGroups), "Selecione um Grupo de Crianças", new { @class = "form-control", required="" })
 			</div>

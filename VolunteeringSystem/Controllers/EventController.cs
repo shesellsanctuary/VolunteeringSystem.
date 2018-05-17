@@ -15,13 +15,7 @@ namespace VolunteeringSystem.Controllers
             EventDAO eventDAO = new EventDAO();
             AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
 
-            // Cria uma lista de opções que serão usadas no <select> de instituição
-            var institutes = new List<SelectListItem>();
-            institutes.Add(new SelectListItem { Text = "Instituição #1", Value = "1" });
-            institutes.Add(new SelectListItem { Text = "Instituição #2", Value = "2" });
-
             // ViewBag é um dicionário de dados, no qual podemos mandar dados para dentro da View
-            ViewBag.instituteList = institutes;
             ViewBag.ageGroups = ageGroupDAO.ToSelectList(ageGroupDAO.GetAll());
 
             return View(Model);
@@ -34,9 +28,20 @@ namespace VolunteeringSystem.Controllers
             var added = eventDAO.Add(Model);
 
             if (!added)
-                return View(Model);
+            {
+                AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
 
-            return Redirect("Home");
+                ViewBag.ageGroups = ageGroupDAO.ToSelectList(ageGroupDAO.GetAll());
+                return View(Model);
+            }
+
+            return RedirectToAction("Created");
+        }
+
+        [HttpGet]
+        public IActionResult Created()
+        {
+            return View();
         }
     }
 }
