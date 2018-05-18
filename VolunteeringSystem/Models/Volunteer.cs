@@ -8,20 +8,19 @@ namespace VolunteeringSystem.Models
 {
     public class Volunteer : Person
     {
-        public String profession { get; set; }
+        public string profession { get; set; }
 
-        public String address { get; set; }
+        public string address { get; set; }
 
-        public String phone { get; set; }
+        public string phone { get; set; }
 
-        public Uri photo { get; set; }
+        public string photo { get; set; }
 
-        public Uri criminalRecord { get; set; }
+        public string criminalRecord { get; set; }
 
         public List<Evaluation> evaluations { get; set; }
 
         public Credentials credentials { get; set; }
-
 
         public int GetScore() {
             return 0;

@@ -26,12 +26,20 @@ namespace VolunteeringSystem.DAO
             }
         }
 
+        public AgeGroup Get(int ageGroupId)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                return sql.QueryFirst<AgeGroup>("SELECT * FROM ageGroup WHERE id = @id", new { id = ageGroupId });
+            }
+        }
+
         public List<SelectListItem> ToSelectList(IEnumerable<AgeGroup> ageGroups)
         {
             var selectList = new List<SelectListItem>();
             foreach (var item in ageGroups)
             {
-                selectList.Add(new SelectListItem { Text = item.label, Value = item.label });
+                selectList.Add(new SelectListItem { Text = item.label, Value = item.id.ToString() });
             }
             return selectList;
         }

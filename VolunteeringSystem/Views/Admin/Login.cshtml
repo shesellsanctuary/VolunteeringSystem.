@@ -1,0 +1,24 @@
+﻿@{
+	ViewData["Title"] = "Login Administrador";
+}
+
+<div class="container">
+	<div class="bgAdminLogin"></div>
+	<div class="col-md-4 col-md-offset-4 col-sm-12">
+		<form method="post" class="form-signin">
+			<br />
+			<br />
+			<h3 class="form-signin-heading text-center" style="color: white">Faça seu login</h3>
+			@if (!string.IsNullOrEmpty(ViewBag.Error))
+			{
+				<p class="text-center" style="color: white"><b>@ViewBag.Error</b></p>
+			}
+			<label for="inputEmail" class="sr-only">Usuário</label>
+			<input name="user" type="text" id="inputEmail" class="form-control" placeholder="Usuário" required="" autofocus="">
+			<label for="inputPassword" class="sr-only">Senha</label>
+			<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Senha" required="">
+			<br />
+			<button class="btn btn-sm pull-right btn-success btn-block" type="submit">Acessar</button>
+		</form>
+	</div>
+</div>

@@ -29,9 +29,17 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(connString))
             {
-
-                var list = sql.Query<Event>("SELECT id, institute, kidLimit, date, description FROM event").AsList();
+                var list = sql.Query<Event>("SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId FROM event").AsList();
                 return list;
+            }
+        }
+
+        public Event Get(int eventId)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                return sql.QueryFirst<Event>("SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, volunteerId FROM event WHERE id = @id",
+                    new { id = eventId });
             }
         }
 

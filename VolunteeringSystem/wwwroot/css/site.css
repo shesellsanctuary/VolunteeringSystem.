@@ -33,3 +33,15 @@
         display: none
     }
 }
+
+
+/* CUSTOM */
+.bgAdminLogin {
+	background-image: url('../images/adminLoginPage.jpg');
+	background-size: cover;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+}
