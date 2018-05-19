@@ -20,16 +20,17 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(connString))
             {
-                try
-                {
-                    var list = sql.Query<Volunteer>("SELECT id, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer").AsList();
-                    return list;
-                }
-                catch (Exception e)
-                {
-                    var ee = e;
-                }
-                return new List<Volunteer>();
+                var list = sql.Query<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer").AsList();
+                return list;
+            }
+        }
+
+        public IEnumerable<Volunteer> GetByStatus(int status)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                var list = sql.Query<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE status = @status ORDER BY createdAt", new { status = status }).AsList();
+                return list;
             }
         }
 
@@ -37,15 +38,7 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(connString))
             {
-                try
-                {
-                    return sql.QueryFirstOrDefault<Volunteer>("SELECT id, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer WHERE id = @id", new { id = volunteerId });
-                }
-                catch (Exception e)
-                {
-                    var ee = e;
-                }
-                return new Volunteer();
+                return sql.QueryFirstOrDefault<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE id = @id", new { id = volunteerId });
             }
         }
 
@@ -69,10 +62,17 @@ namespace VolunteeringSystem.DAO
                         criminalRecord = newVolunteer.criminalRecord,
                         credentials = newVolunteer.credentials
                     });
-
                 return Convert.ToBoolean(response);
             }
         }
 
+        public bool ChangeStatus(int volunteerId, int newStatus)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                int response = sql.Execute(@"UPDATE volunteer SET status = @status WHERE id = @id", new { id = volunteerId, status = newStatus });
+                return Convert.ToBoolean(response);
+            }
+        }
     }
 }

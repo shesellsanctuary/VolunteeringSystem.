@@ -1,0 +1,33 @@
+﻿@model IEnumerable<VolunteeringSystem.Models.Volunteer>
+@{
+	Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Voluntários " + ViewBag.Status;
+}
+
+<h2>Voluntários @ViewBag.Status</h2>
+
+<div class="panel panel-default">
+	<table class="table">
+		<tr>
+			<th width="10%">CPF</th>
+			<th>Voluntário</th>
+			<th width="10%">Sexo</th>
+			<th width="15%">Telefone</th>
+			<th width="10%">Solicitado Em</th>
+			<th width="10%"></th>
+		</tr>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.CPF</td>
+				<td>@item.name</td>
+				<td>@item.sex</td>
+				<td>@item.phone</td>
+				<td>@item.createdAt.ToShortDateString()</td>
+				<td>
+					<a href="@Url.Action("Homolog", "Volunteer", new { volunteerId = item.id })" class="btn btn-success">Detalhes</a>
+				</td>
+			</tr>
+		}
+	</table>
+</div>

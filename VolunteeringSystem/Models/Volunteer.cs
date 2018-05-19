@@ -8,6 +8,8 @@ namespace VolunteeringSystem.Models
 {
     public class Volunteer : Person
     {
+        public VolunteerStatus status { get; set; }
+
         public string profession { get; set; }
 
         public string address { get; set; }
