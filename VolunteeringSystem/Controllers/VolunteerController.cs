@@ -41,6 +41,25 @@ namespace VolunteeringSystem.Controllers
             return View(Model);
         }
 
+        [HttpPost]
+        public IActionResult Register(Volunteer Model)
+        {
+            var added = volunteerDAO.Add(Model);
 
+            if(!added)
+            {
+                Model.credentials.email = "";
+                ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado !";
+                return View(Model);
+            }
+
+            return RedirectToAction("Created");
+        }
+
+        [HttpGet]
+        public IActionResult Created()
+        {
+            return View();
+        }
     }
 }
