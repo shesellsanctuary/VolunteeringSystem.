@@ -8,7 +8,7 @@ CREATE TABLE event (
   description TEXT NOT NULL
 );
 
-INSERT INTO event (institute, ageGroup, kidLimit, date, description)
+INSERT INTO event (institute, ageGroup, kidLimit, date, description) 
 VALUES('Dummy institute', 'Dummy group', 42, TIMESTAMP '2011-05-16 15:36:38', 'Dummy description');
 
 
@@ -34,6 +34,7 @@ CREATE TABLE person (
 
 -- Volunteer
 CREATE TABLE volunteer (
+  status INT NOT NULL,
   profession TEXT NOT NULL,
   address TEXT NOT NULL,
   phone TEXT NOT NULL,
@@ -42,8 +43,8 @@ CREATE TABLE volunteer (
   credentials TEXT REFERENCES credentials (email) NOT NULL
 ) INHERITS (person);
 
-INSERT INTO volunteer (name, birthDate, CPF, sex, profession, address, phone, photo, criminalRecord, credentials)
-VALUES('Dummy Volunteer', TIMESTAMP '1993-05-16 15:36:38', '030.030.030-2', 'm', 'Dummy profession', 'Dummy address', 'Dummy phone', 'www.dummy_url_photo.com/dummy.jpg', 'dummy', 'dummy@user.com');
+INSERT INTO volunteer (name, birthDate, CPF, sex, status, profession, address, phone, photo, criminalRecord, credentials) 
+VALUES('Dummy Volunteer', TIMESTAMP '1993-05-16 15:36:38', '030.030.030-2', 'm', 0, 'Dummy profession', 'Dummy address', 'Dummy phone', 'www.dummy_url_photo.com/dummy.jpg', 'dummy', 'dummy@user.com');
 
 
 -- Admin
@@ -51,13 +52,13 @@ CREATE TABLE administrator (
   credentials TEXT REFERENCES credentials (email) NOT NULL
 ) INHERITS (person);
 
-INSERT INTO administrator (name, birthDate, CPF, sex, credentials)
+INSERT INTO administrator (name, birthDate, CPF, sex, credentials) 
 VALUES('Dummy Admin', TIMESTAMP '1993-05-16 15:36:38', '030.030.030-2', 'm', 'dummy@admin.com');
 
 
 -- Utils
 -- Connection String: "jdbc:postgresql://volunteeringsystem-postgres-sp.cr0sahgirswg.sa-east-1.rds.amazonaws.com/orphanage?user=vol_sys_postgres_db_admin&password=valpwd4242"
-SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.tables 
 WHERE table_schema = 'public';
 
 SELECT * FROM event;
@@ -76,6 +77,6 @@ SELECT * FROM person;
 
 
 -- TODOS
--- Model volunteer  evaluations
+-- Model volunteer  evaluations 
 -- Model Kid entity
 -- should person cpf be UNIQUE ?
