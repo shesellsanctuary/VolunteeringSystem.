@@ -33,5 +33,14 @@ namespace VolunteeringSystem.Controllers
 
             return RedirectToAction("List", new { status = VolunteerStatus.Waiting });
         }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            var Model = new Volunteer();
+            return View(Model);
+        }
+
+
     }
 }

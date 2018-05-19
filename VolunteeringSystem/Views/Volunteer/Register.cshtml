@@ -1,0 +1,79 @@
+﻿@model VolunteeringSystem.Models.Volunteer
+@{
+    ViewData["Title"] = "Register";
+}
+
+<script type="text/javascript">
+    var password = document.getElementById("inputPassword")
+    confirm_password = document.getElementById("inputPasswordCheck");
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords must match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
+<div class="container">
+    <div class="bgVolunteerRegister"></div>
+    <div class="col-md-4 col-md-offset-4 col-sm-12">
+        <form method="post" class="form-signin">
+            <br />
+            <br />
+            <h3 class="form-signin-heading text-center" style="color: white">Bem-vindo !</h3>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <p class="text-center" style="color: white"><b>@ViewBag.Error</b></p>
+            }
+            <label for="inputName" class="sr-only">Nome Completo</label>
+            @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "Nome Completo", required = "", autofocus = "", type = "text", id = "inputName" });
+
+            <label for="inputEmail" class="sr-only">e-mail</label>
+            @Html.TextBoxFor(m => m.credentials.email, new { @class = "form-control", placeholder = "meuemail@provider.com", required = "", autofocus = "", type = "email", id = "inputEmail" });
+            <br />
+
+            <label for="inputBirthdate" class="sr-only">Data de Nascimento</label>
+            @Html.TextBoxFor(m => m.birthDate, new { @class = "form-control", placeholder = "Data de Nascimento", required = "", autofocus = "", type = "date", id = "inputBirthdate" });
+
+            <label for="inputCPF" class="sr-only">Data de Nascimento</label>
+            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*" });
+
+            <div class="form-group">
+                <label for="inputSex" class="sr-only">Sexo</label>
+                @Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), "Selecione seu sexo", new { @class = "form-control", required = "", id = "inputSex" })
+            </div>
+
+            <br />
+
+            <label for="inputAdress" class="sr-only">Endereço</label>
+            <input name="address" type="text" id="inputAdress" class="form-control" placeholder="Rua Exemplo, 123 Bairro Cidade" required="" autofocus="">
+
+            <label for="inputProfession" class="sr-only">Endereço</label>
+            <input name="profession" type="text" id="inputProfession" class="form-control" placeholder="Profissão" required="" autofocus="">
+
+            <label for="inputPhone" class="sr-only">Data de Nascimento</label>
+            <input name="cpf" type="text" id="inputPhone" class="form-control" placeholder="Telefone (somente números)" required="" autofocus="" pattern="[0-9]*">
+
+            <br />
+            <label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
+            <input name="photo" type="file" id="inputPhoto" class="form-control" required="" autofocus="" accept="image/*" style="display: none">
+
+            <label for="inputCriminalRecord" class="sr-only">Histórico Criminal</label>
+            <input name="criminalRecord" type="text" id="inputCriminalRecord" class="form-control" placeholder="Histórico Criminal" required="" autofocus="">
+            <!--TODO: display when pic was properly uploaded-->
+
+            <br />
+            <label for="inputPassword" class="sr-only">Senha</label>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Senha" required="" autofocus="">
+            <label for="inputPasswordCheck" class="sr-only">Repita a Senha</label>
+            <input name="passwordCheck" type="password" id="inputPasswordCheck" class="form-control" placeholder="Repita a Senha" required="" autofocus="">
+
+            <br />
+            <button class="btn btn-sm pull-right btn-success btn-block" type="submit">Registrar</button>
+        </form>
+    </div>
+</div>
