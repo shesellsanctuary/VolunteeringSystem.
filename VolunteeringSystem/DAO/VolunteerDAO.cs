@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VolunteeringSystem.Models;
+using VolunteeringSystem.Domain;
 
 namespace VolunteeringSystem.DAO
 {
@@ -44,23 +45,41 @@ namespace VolunteeringSystem.DAO
 
         public bool Add(Volunteer newVolunteer)
         {
+
             using (var sql = new NpgsqlConnection(connString))
             {
+                try
+                {
+                    int setCredentialsResponse = sql.Execute(@"
+                        INSERT INTO credentials (email, password)
+                        VALUES  (@email, @password)",
+                        new
+                        {
+                            email = newVolunteer.credentials.email,
+                            password = newVolunteer.credentials.password
+                        });
+                } catch (Npgsql.PostgresException e)
+                {
+                    return false;
+                }
+
+
                 int response = sql.Execute(@"
-                    INSERT INTO volunteer (name, birthdate, cpf, sex, profession, address, phone, photo, criminalRecord, credentials)
-                    VALUES (@name, @birthdate, @cpf, @sex, @profession, @address, @phone, @photo, @criminalRecord, @credentials)",
+                    INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminalRecord, credentials)
+                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminalRecord, @credentials)",
                     new
                     {
                         name = newVolunteer.name,
                         birthdate = newVolunteer.birthDate,
                         cpf = newVolunteer.CPF,
-                        sex = newVolunteer.sex,
+                        sex = char.ToLower(newVolunteer.sex.ToString().ElementAt(0)).ToString(),
+                        status = VolunteerStatus.Waiting,
                         profession = newVolunteer.profession,
                         address = newVolunteer.address,
                         phone = newVolunteer.phone,
                         photo = newVolunteer.photo,
                         criminalRecord = newVolunteer.criminalRecord,
-                        credentials = newVolunteer.credentials
+                        credentials = newVolunteer.credentials.email
                     });
                 return Convert.ToBoolean(response);
             }

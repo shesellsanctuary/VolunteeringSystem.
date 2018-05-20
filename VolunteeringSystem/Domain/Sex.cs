@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace VolunteeringSystem.Models
-{
+{   
     public enum Sex
     {
-        Female,
-        Male
+        [Display(Name = "Feminino")] Female,
+        [Display(Name = "Masculino")] Male
     }
 }
