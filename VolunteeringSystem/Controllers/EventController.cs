@@ -18,6 +18,18 @@ namespace VolunteeringSystem.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
+
+            Volunteer volunteer = volunteerDAO.Get(volunteerId);
+
+
+            if(volunteer.status == VolunteerStatus.Waiting || volunteer.status == VolunteerStatus.Blocked) {
+
+                // error
+                return RedirectToAction("Denied"); //change this later
+            }
+
+            
             var Model = new Event();
         
             ViewBag.ageGroups = ageGroupDAO.ToSelectList(ageGroupDAO.GetAll());
@@ -28,6 +40,7 @@ namespace VolunteeringSystem.Controllers
         [HttpPost]
         public IActionResult Index(Event Model)
         {
+            
             Model.institute = "";
             Model.volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
 
@@ -40,6 +53,11 @@ namespace VolunteeringSystem.Controllers
             }
 
             return RedirectToAction("Created");
+        }
+
+        [HttpGet]
+        public IActionResult Denied() {
+            return View();
         }
 
         [HttpGet]
