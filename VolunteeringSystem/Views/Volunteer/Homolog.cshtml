@@ -3,14 +3,16 @@
 	Layout = "_LayoutAdmin";
 	ViewData["Title"] = "Aprovar Voluntário";
 }
+
 <h2>Aprovar Voluntário</h2>
 
 <div class="panel panel-default">
-	<div class="panel-heading">@Model.name</div>
 	<div class="panel-body">
+		<a class="pull-right" href="@Url.Action("List", "Volunteer", new { status = (int) Model.status })">Voltar</a>
 		<div class="row">
 			<div class="col-md-6">
 				<h4>Dados do Voluntário</h4>
+				<p><b>Nome:</b> @Model.name</p>
 				<p><b>CPF:</b> @Model.CPF</p>
 				<p><b>Telefone:</b> @Model.phone</p>
 				<p><b>Sexo:</b> @Model.sex</p>
@@ -21,7 +23,7 @@
 				<br />
 			</div>
 			<div class="col-md-6 text-center">
-				<img class="img-responsive img-circle" src="https://avatars2.githubusercontent.com/u/20523258?s=460&v=4" style="max-height: 250px; margin: 0 auto;" />
+				<img class="img-responsive img-circle" src="https://openclipart.org/image/2400px/svg_to_png/211821/matt-icons_preferences-desktop-personal.png" style="max-height: 250px; margin: 0 auto;" />
 			</div>
 		</div>
 		@if (Model.status == VolunteerStatus.Waiting)
@@ -30,18 +32,34 @@
 				<div class="col-md-6">
 					<form method="post">
 						<div class="form-group">
-							<label>Aprovar:</label>
+							<label>Aprovar voluntário:</label>
 							<input type="hidden" name="volunteerId" value="@Model.id" />
 							<select class="form-control" name="newStatus">
+								<option selected value="0"> Por enquanto não.</option>
 								<option value="1"> Sim, desejo aprovar este voluntário.</option>
 								<option value="2"> Não, desejo bloquear este voluntário.</option>
 							</select>
 						</div>
 						<div class="text-right">
-							<a class="btn btn-danger" href="@Url.Action("List", "Volunteer", new { status = Model.status })">Voltar</a>
 							<button type="submit" class="btn btn-success">Salvar</button>
 						</div>
 					</form>
+				</div>
+			</div>
+		}
+		else if (Model.status == VolunteerStatus.Active)
+		{
+			<div class="row">
+				<div class="col-md-6">
+					<label>Este voluntário já foi aprovado</label>
+				</div>
+			</div>
+		}
+		else if (Model.status == VolunteerStatus.Blocked)
+		{
+			<div class="row">
+				<div class="col-md-6">
+					<label>Este voluntário está bloqueado</label>
 				</div>
 			</div>
 		}
