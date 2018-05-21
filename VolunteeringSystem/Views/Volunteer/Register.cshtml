@@ -46,7 +46,7 @@
 
             <br />
             <label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
-            @Html.TextBoxFor(m => m.photo, new { @class = "form-control", accept = "image/*", required = "", autofocus = "", type = "file", id = "inputPhoto", style = "display: none" });
+            @Html.TextBoxFor(m => m.photo, new { @class = "form-control", accept = "image/*", required = "", autofocus = "", type = "file", id = "inputPhoto" });
             <!--TODO: display when pic was properly uploaded-->
 
             <label for="inputCriminalRecord" class="sr-only">Histórico Criminal</label>

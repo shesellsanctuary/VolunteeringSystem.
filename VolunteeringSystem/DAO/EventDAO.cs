@@ -59,8 +59,8 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(connString))
             {
                 int response = sql.Execute(@"
-                    INSERT INTO event (institute, ageGroup, kidLimit, date, description)
-                    VALUES (@institute, @ageGroup, @kidLimit, @date, @description)",
+                    INSERT INTO event (institute, ageGroup, kidLimit, date, description, volunteerid)
+                    VALUES (@institute, @ageGroup, @kidLimit, @date, @description, @volunteerid)",
                     new
                     {
                         institute = newEvent.institute,
@@ -68,6 +68,7 @@ namespace VolunteeringSystem.DAO
                         kidLimit = newEvent.kidLimit,
                         date = newEvent.date,
                         description = newEvent.description,
+                        volunteerid = newEvent.volunteerId,
                     });
 
                 return Convert.ToBoolean(response);
