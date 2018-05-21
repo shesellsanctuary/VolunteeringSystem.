@@ -1,63 +1,65 @@
-﻿@model VolunteeringSystem.Models.Event
+@model VolunteeringSystem.Models.Event
 @{
-	Layout = "_LayoutAdmin";
-	ViewData["Title"] = "Homologar Evento";
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Homologar Evento";
 }
 <h2>Homologar Evento</h2>
-
 <div class="panel panel-default">
-	<div class="panel-heading">Evento criado por @Model.volunteer.name</div>
-	<div class="panel-body">
-		<div class="col-md-6">
-			<h4>Dados do Evento</h4>
-			<p><b>Grupo:</b> @Model.ageGroup.label</p>
-			<p><b>Limite de Crianças:</b> @Model.kidLimit</p>
-			<p><b>Data:</b> @Model.date</p>
-			<p><b>Criado em:</b> @Model.createdOn</p>
-		</div>
-		<div class="col-md-6">
-			<h4>Dados do Voluntário</h4>
-			<p><b>CPF:</b> @Model.volunteer.CPF</p>
-			<p><b>Nome:</b> @Model.volunteer.name</p>
-			<p><b>Sexo:</b> @Model.volunteer.sex</p>
-			<p><b>Data de Nascimento:</b> @Model.volunteer.birthDate</p>
-			<p><b>Profissão:</b> @Model.volunteer.profession</p>
-			<p><b>Endereço:</b> @Model.volunteer.address</p>
-			<p><b>Telefone:</b> @Model.volunteer.phone</p>
-		</div>
-		@if (Model.status == EventStatus.Waiting)
-  	      	{
-		    <div class="row">
-			<div class="col-md-6">
-			    <form method="post">
-				<div class="form-group">
-				    <label>Aprovar:</label>
-				    <input type="hidden" name="eventId" value="@Model.id" />
-				    <select class="form-control" name="newStatus" onchange="selectChange(this.value)">
-					<option value="1"> Sim, desejo aprovar este evento.</option>
-					<option value="2"> Não, desejo bloquear este evento.</option>
-				    </select>
-				</div>
-				<script>
-				    function selectChange(value) {
-					if (value == 2) {
-					    document.getElementById("justificationDiv").style.display = "block";
-					} else {
-					    document.getElementById("justificationDiv").style.display = "none";
-					}
-				    }
-				</script>
-				<div id="justificationDiv" class="form-group" style="display:none">
-				    <label>Justificativa:</label>
-				    <textarea class="form-control" name="justification" ></textarea>
-				</div>
-				<div class="text-right">
-				    <a class="btn btn-danger" href="@Url.Action("List", "Event", new { status = Model.status })">Voltar</a>
-				    <button type="submit" class="btn btn-success">Salvar</button>
-				</div>
-			    </form>
-			</div>
-		    </div>
-	     }
-	</div>
+    <div class="panel-heading">Evento criado por @Model.volunteer.name</div>
+    <div class="panel-body">
+        <div class="col-md-6">
+            <h4>Dados do Evento</h4>
+            <p><b>Grupo:</b> @Model.ageGroup.label</p>
+            <p><b>Limite de Crianças:</b> @Model.kidLimit</p>
+            <p><b>Data:</b> @Model.date</p>
+            <p><b>Criado em:</b> @Model.createdOn</p>
+        </div>
+        <div class="col-md-6">
+            <h4>Dados do Voluntário</h4>
+            <p><b>CPF:</b> @Model.volunteer.CPF</p>
+            <p><b>Nome:</b> @Model.volunteer.name</p>
+            <p><b>Sexo:</b> @Model.volunteer.sex</p>
+            <p><b>Data de Nascimento:</b> @Model.volunteer.birthDate</p>
+            <p><b>Profissão:</b> @Model.volunteer.profession</p>
+            <p><b>Endereço:</b> @Model.volunteer.address</p>
+            <p><b>Telefone:</b> @Model.volunteer.phone</p>
+        </div>
+        @if (Model.status == EventStatus.Waiting)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Aprovar:</label>
+                            <input type="hidden" name="eventId" value="@Model.id" />
+                            <select class="form-control" name="newStatus" onchange="selectChange(this.value)">
+                                <option value="1"> Sim, desejo aprovar este evento.</option>
+                                <option value="2"> Não, desejo bloquear este evento.</option>
+                            </select>
+                        </div>
+                        <script>
+                            function selectChange(value) {
+                                if (value == 2) {
+                                    document.getElementById("justificationDiv").style.display = "block";
+                                    document.getElementById("justification").required = true;
+
+                                } else {
+                                    document.getElementById("justificationDiv").style.display = "none";
+                                    document.getElementById("justification").required = false;
+                                }
+                            }
+                        </script>
+                        <div id="justificationDiv" class="form-group" style="display:none">
+                            <label>Justificativa:</label>
+                            <textarea id="justification" class="form-control" name="justification"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new { status = Model.status })">Voltar</a>
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
 </div>
