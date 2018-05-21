@@ -26,6 +26,9 @@ namespace VolunteeringSystem.Controllers
         [HttpPost]
         public IActionResult Index(Event Model)
         {
+            Model.institute = "";
+            Model.volunteerId = 2018;
+
             var added = eventDAO.Add(Model);
 
             if (!added)
