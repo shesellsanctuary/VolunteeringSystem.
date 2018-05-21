@@ -21,15 +21,21 @@ namespace VolunteeringSystem.DAO
         {
         }
 
-        /// <summary>
-        /// List all events
-        /// </summary>
-        /// <returns> Event list </returns>
         public IEnumerable<Event> GetAll()
         {
             using (var sql = new NpgsqlConnection(connString))
             {
                 var list = sql.Query<Event>("SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, createdAt FROM event").AsList();
+                return list;
+            }
+        }
+
+        public IEnumerable<Event> GetByStatus(int status)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                var list = sql.Query<Event>("SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, createdAt FROM event WHERE status = @status ORDER BY createdAt",
+                                            new { status = status }).AsList();
                 return list;
             }
         }

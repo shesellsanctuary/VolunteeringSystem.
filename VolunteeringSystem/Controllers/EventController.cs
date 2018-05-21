@@ -18,7 +18,6 @@ namespace VolunteeringSystem.Controllers
         {
             var Model = new Event();
         
-            // ViewBag é um dicionário de dados, no qual podemos mandar dados para dentro da View
             ViewBag.ageGroups = ageGroupDAO.ToSelectList(ageGroupDAO.GetAll());
 
             return View(Model);
@@ -47,7 +46,7 @@ namespace VolunteeringSystem.Controllers
         [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
-            var eventList = eventDAO.GetAll();
+            var eventList = eventDAO.GetByStatus(status);
             var ageGroups = ageGroupDAO.GetAll();
 
             foreach (var item in eventList)
