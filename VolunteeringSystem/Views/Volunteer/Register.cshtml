@@ -1,8 +1,7 @@
 ﻿@model VolunteeringSystem.Models.Volunteer
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Register"
 }
-
 
 <div class="container">
     <div class="bgVolunteerRegister"></div>
@@ -16,17 +15,17 @@
                 <p class="text-center" style="color: red"><b>@ViewBag.Error</b></p>
             }
             <label for="inputName" class="sr-only">Nome Completo</label>
-            @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "Nome Completo", required = "", autofocus = "", type = "text", id = "inputName" });
+            @Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "Nome Completo", required = "", autofocus = "", type = "text", id = "inputName" })
 
             <label for="inputEmail" class="sr-only">e-mail</label>
-            @Html.TextBoxFor(m => m.credentials.email, new { @class = "form-control", placeholder = "meuemail@provider.com", required = "", autofocus = "", type = "email", id = "inputEmail" });
+            @Html.TextBoxFor(m => m.credentials.email, new { @class = "form-control", placeholder = "meuemail@provider.com", required = "", autofocus = "", type = "email", id = "inputEmail" })
             <br />
 
             <label for="inputBirthdate" class="sr-only">Data de Nascimento</label>
-            @Html.TextBoxFor(m => m.birthDate, new { @class = "form-control", placeholder = "Data de Nascimento", required = "", autofocus = "", type = "date", id = "inputBirthdate" });
+            @Html.TextBoxFor(m => m.birthDate, new { @class = "form-control", placeholder = "Data de Nascimento", required = "", autofocus = "", type = "date", id = "inputBirthdate" })
 
             <label for="inputCPF" class="sr-only">CPF</label>
-            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*" });
+            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*" })
 
             <div class="form-group">
                 <label for="inputSex" class="sr-only">Sexo</label>
@@ -36,41 +35,41 @@
             <br />
 
             <label for="inputProfession" class="sr-only">Profissão</label>
-            @Html.TextBoxFor(m => m.profession, new { @class = "form-control", placeholder = "Profissão", required = "", autofocus = "", type = "text", id = "inputProfession" });
+            @Html.TextBoxFor(m => m.profession, new { @class = "form-control", placeholder = "Profissão", required = "", autofocus = "", type = "text", id = "inputProfession" })
 
             <label for="inputAdress" class="sr-only">Endereço</label>
-            @Html.TextBoxFor(m => m.address, new { @class = "form-control", placeholder = "Rua Exemplo, 123 Bairro Cidade", required = "", autofocus = "", type = "text", id = "inputAddress" });
+            @Html.TextBoxFor(m => m.address, new { @class = "form-control", placeholder = "Rua Exemplo, 123 Bairro Cidade", required = "", autofocus = "", type = "text", id = "inputAddress" })
 
             <label for="inputPhone" class="sr-only">Telefone</label>
-            @Html.TextBoxFor(m => m.phone, new { @class = "form-control", placeholder = "Telefone (somente números)", required = "", autofocus = "", type = "text", id = "inputPhone", pattern = "[0-9]*" });
+            @Html.TextBoxFor(m => m.phone, new { @class = "form-control", placeholder = "Telefone (somente números)", required = "", autofocus = "", type = "text", id = "inputPhone", pattern = "[0-9]*" })
 
             <br />
             <label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
-            @Html.TextBoxFor(m => m.photo, new { @class = "form-control", accept = "image/*", required = "", autofocus = "", type = "file", id = "inputPhoto" });
+            @Html.TextBoxFor(m => m.photo, new { @class = "form-control", accept = "image/*", required = "", autofocus = "", type = "file", id = "inputPhoto" })
             <!--TODO: display when pic was properly uploaded-->
 
             <label for="inputCriminalRecord" class="sr-only">Histórico Criminal</label>
-            @Html.TextBoxFor(m => m.criminalRecord, new { @class = "form-control", required = "", placeholder = "Histórico Criminal", autofocus = "", type = "text", id = "inputCriminalRecord" });
+            @Html.TextBoxFor(m => m.criminalRecord, new { @class = "form-control", required = "", placeholder = "Histórico Criminal", autofocus = "", type = "text", id = "inputCriminalRecord" })
 
             <br />
             <label for="inputPassword" class="sr-only">Senha</label>
-            @Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPassword", placeholder = "Senha", required = "", autofocus = "" });
+            @Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPassword", placeholder = "Senha", required = "", autofocus = "" })
             <label for="inputPasswordCheck" class="sr-only">Senha Confirma</label>
-            @Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPasswordCheck", placeholder = "Repita a Senha", required = "", autofocus = "" });
+            @Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPasswordCheck", placeholder = "Repita a Senha", required = "", autofocus = "" })
 
             <br />
             <button class="btn btn-sm pull-right btn-success btn-block" type="submit">Registrar</button>
         </form>
     </div>
     <script>
-        var password = document.getElementById("inputPassword"),
+		var password = document.getElementById("inputPassword"),
             confirm_password = document.getElementById("inputPasswordCheck");
 
         function validatePassword() {
             if (password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Passwords Don't Match");
+            	confirm_password.setCustomValidity("Passwords Don't Match");
             } else {
-                confirm_password.setCustomValidity('');
+            	confirm_password.setCustomValidity('');
             }
         }
 
