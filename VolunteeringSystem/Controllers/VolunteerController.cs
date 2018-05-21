@@ -10,6 +10,12 @@ namespace VolunteeringSystem.Controllers
     {
         private VolunteerDAO volunteerDAO = new VolunteerDAO();
 
+        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
         [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
@@ -58,7 +64,7 @@ namespace VolunteeringSystem.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpGet]
+        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Created()
         {
             return View();
@@ -81,7 +87,8 @@ namespace VolunteeringSystem.Controllers
                 
                 HttpContext.Session.SetString("volunteerId", volunteerId.ToString());
                 HttpContext.Session.SetString("volunteerName", volunteer.name);
-                return RedirectToAction("Index");
+                HttpContext.Session.SetString("type", "VOLUNTEER");
+                return RedirectToAction("Dashboard");
             }
 
             ViewBag.Error = "Usuário ou senha incorretos!";

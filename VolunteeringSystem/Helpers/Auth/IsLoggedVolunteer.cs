@@ -9,12 +9,12 @@ namespace Admin.Helpers
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var user = context.HttpContext.Session.GetString("user");
+            var volunteerId = context.HttpContext.Session.GetString("volunteerId");
             var type = context.HttpContext.Session.GetString("type");
 
-            if (string.IsNullOrEmpty(user) || type != "VOLUNTEER")
+            if (string.IsNullOrEmpty(volunteerId) || type != "VOLUNTEER")
             {
-                context.Result = new RedirectResult("~/");
+                context.Result = new RedirectResult("~/Volunteer/Login");
             }
         }
 
