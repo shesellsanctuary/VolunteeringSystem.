@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 
 namespace VolunteeringSystem.Models
 {
     public class Event
     {
+        public EventStatus status { get; set; }
+
         public int id { get; set; }
 
         public string institute { get; set; }
@@ -16,12 +18,14 @@ namespace VolunteeringSystem.Models
 
         public DateTime date { get; set; }
 
-        public DateTime createdAt { get; set; }
+        public DateTime createdOn { get; set; }
 
         public string description { get; set; }
 
         public int volunteerId { get; set; }
 
         public Volunteer volunteer { get; set; }
+
+        public string justification { get; set; }
     }
 }

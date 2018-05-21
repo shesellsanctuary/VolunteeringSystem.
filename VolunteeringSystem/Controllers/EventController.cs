@@ -66,5 +66,13 @@ namespace VolunteeringSystem.Controllers
 
             return View(eventSelected);
         }
+        
+        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult Homolog(int eventId, int newStatus, string justification)
+        {
+            eventDAO.Homolog(eventId, newStatus, justification);
+
+            return RedirectToAction("List", new { status = (int) EventStatus.Waiting });
+        }
     }
 }

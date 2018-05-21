@@ -44,7 +44,7 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(connString))
             {
-                return sql.QueryFirst<Event>("SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, volunteerId, createdAt FROM event WHERE id = @id",
+                return sql.QueryFirst<Event>("SELECT id, status, institute, kidLimit, date, description, ageGroup As ageGroupId, volunteerId, createdAt FROM event WHERE id = @id",
                     new { id = eventId });
             }
         }
@@ -112,6 +112,32 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(connString))
             {
                 var response = sql.Execute("DELETE FROM event WHERE ID = @id", new { id = id });
+                return Convert.ToBoolean(response);
+            }
+        }
+        
+        /// <summary>
+        /// Aprove or block an event 
+        /// </summary>
+        /// <param name="id"> event object </param>
+        /// <param name="status"> event status </param>
+        /// <param name="justification"> event justification </param>
+        /// <returns> true: edited | false: error </returns>
+
+        public bool Homolog(int id, int status, string justification)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                var response = sql.Execute(@"UPDATE event SET 
+                                                    status = @status, 
+                                                    justification = @justification 
+                                            WHERE id = @id",
+                                            new {
+                                                id = id,
+                                                status = status,
+                                                justification = justification
+                                            });
+
                 return Convert.ToBoolean(response);
             }
         }
