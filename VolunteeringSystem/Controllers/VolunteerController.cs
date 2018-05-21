@@ -1,6 +1,7 @@
 ﻿using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
 
@@ -13,7 +14,10 @@ namespace VolunteeringSystem.Controllers
         [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Dashboard()
         {
-            return View();
+            var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
+            var volunteer = volunteerDAO.Get(volunteerId);
+
+            return View(volunteer);
         }
 
         [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
