@@ -93,5 +93,21 @@ namespace VolunteeringSystem.DAO
                 return Convert.ToBoolean(response);
             }
         }
+
+        public int Login(string email, string password)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                var volunteerId = sql.QueryFirstOrDefault<int>(@"SELECT id FROM volunteer WHERE credentials = @email", new { email = email });
+                if (volunteerId > 0)
+                {
+                    var volunteerEmail = sql.QueryFirstOrDefault<string>(@"SELECT email FROM credentials WHERE email = @email AND password = @password", new { email = email, password = password });
+                    if (!string.IsNullOrEmpty(volunteerEmail))
+                        return volunteerId;
+                }
+            }
+
+            return 0;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Admin.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
@@ -44,6 +45,7 @@ namespace VolunteeringSystem.Controllers
         [HttpPost]
         public IActionResult Register(Volunteer Model)
         {
+            Model.photo = "";
             var added = volunteerDAO.Add(Model);
 
             if(!added)
@@ -53,12 +55,36 @@ namespace VolunteeringSystem.Controllers
                 return View(Model);
             }
 
-            return RedirectToAction("Created");
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
         public IActionResult Created()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            int volunteerId = volunteerDAO.Login(email, password);
+
+            if (volunteerId > 0)
+            {
+                var volunteer = volunteerDAO.Get(volunteerId);
+                
+                HttpContext.Session.SetString("volunteerId", volunteerId.ToString());
+                HttpContext.Session.SetString("volunteerName", volunteer.name);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Error = "Usuário ou senha incorretos!";
             return View();
         }
     }
