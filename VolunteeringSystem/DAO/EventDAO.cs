@@ -109,5 +109,31 @@ namespace VolunteeringSystem.DAO
                 return Convert.ToBoolean(response);
             }
         }
+        
+        /// <summary>
+        /// Aprove or block an event 
+        /// </summary>
+        /// <param name="id"> event object </param>
+        /// <param name="status"> event status </param>
+        /// <param name="justification"> event justification </param>
+        /// <returns> true: edited | false: error </returns>
+
+        public bool Homolog(int id, int status, string justification)
+        {
+            using (var sql = new NpgsqlConnection(connString))
+            {
+                var response = sql.Execute(@"UPDATE event SET 
+                                                    status = @status, 
+                                                    justification = @justification 
+                                            WHERE id = @id",
+                                            new {
+                                                id = id,
+                                                status = status,
+                                                justification = justification
+                                            });
+
+                return Convert.ToBoolean(response);
+            }
+        }
     }
 }
