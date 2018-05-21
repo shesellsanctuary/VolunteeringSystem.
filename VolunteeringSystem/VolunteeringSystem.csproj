@@ -19,4 +19,8 @@
   <ItemGroup>
     <Compile Remove="Models\EmptyClass.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\images\criminalRecords\" />
+    <Folder Include="wwwroot\images\volunteers\" />
+  </ItemGroup>
 </Project>

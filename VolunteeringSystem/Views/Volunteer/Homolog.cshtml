@@ -4,7 +4,7 @@
 	ViewData["Title"] = "Aprovar Voluntário";
 }
 
-<h2>Aprovar Voluntário</h2>
+<h2>@(Model.status == VolunteerStatus.Waiting ? "Aprovar " : "")Voluntário</h2>
 
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -19,10 +19,14 @@
 				<p><b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
 				<p><b>Profissão:</b> @Model.profession</p>
 				<p><b>Endereço:</b> @Model.address</p>
+				<p>
+					<b>Atestado de Antecedentes Criminais:</b> 
+					<a href="~/images/criminalRecords/@Model.criminalRecord" target="_blank"><i class="fas fa-file-pdf"></i></a>
+				</p>
 				<br />
 			</div>
 			<div class="col-md-6 text-center">
-				<img class="img-responsive img-circle" src="https://openclipart.org/image/2400px/svg_to_png/211821/matt-icons_preferences-desktop-personal.png" style="max-height: 250px; margin: 0 auto;" />
+				<img class="img-responsive img-circle" src="~/images/volunteers/@Model.photo" style="max-height: 250px; margin: 0 auto;" />
 			</div>
 		</div>
 		@if (Model.status == VolunteerStatus.Waiting)

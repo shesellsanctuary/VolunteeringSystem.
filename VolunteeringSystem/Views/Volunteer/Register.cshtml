@@ -1,12 +1,12 @@
 ﻿@model VolunteeringSystem.Models.Volunteer
 @{
-    ViewData["Title"] = "Register"
+	ViewData["Title"] = "Register";
 }
 
 <div class="container">
     <div class="bgVolunteerRegister"></div>
     <div class="col-md-4 col-md-offset-4 col-sm-12">
-        <form method="post" class="form-signin" role="form">
+        <form method="post" class="form-signin"  enctype="multipart/form-data" role="form">
             <br />
             <br />
             <h3 class="form-signin-heading text-center" style="color: white">Bem-vindo !</h3>
@@ -45,11 +45,15 @@
 
             <br />
             <label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
-            @Html.TextBoxFor(m => m.photo, new { @class = "form-control", accept = "image/*", required = "", autofocus = "", type = "file", id = "inputPhoto" })
-            <!--TODO: display when pic was properly uploaded-->
+			@*<label for="inputPhoto" class="sr-only">Foto</label>*@
+			<input id="inputPhoto" type="file" class="form-control" name="photo" placeholder="Foto de Perfil" />
+			<!--TODO: display when pic was properly uploaded-->
+			<br />
 
-            <label for="inputCriminalRecord" class="sr-only">Histórico Criminal</label>
-            @Html.TextBoxFor(m => m.criminalRecord, new { @class = "form-control", required = "", placeholder = "Histórico Criminal", autofocus = "", type = "text", id = "inputCriminalRecord" })
+			@*<label for="inputCriminalRecord" class="sr-only">Histórico Criminal</label>*@
+			<label for="inputCriminalRecord" class="btn btn-primary btn-block btn-outlined">Adicionar Histórico Criminal</label>
+			<input id="inputCriminalRecord" type="file" class="form-control" name="criminalRecord" placeholder="Histórico Criminal" />
+            <!--TODO: display when pic was properly uploaded-->
 
             <br />
             <label for="inputPassword" class="sr-only">Senha</label>

@@ -34,9 +34,10 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Eventos <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="@Url.Action("List", "Event", new { status = 0 })">Solicitações</a></li>
+							<li><a href="@Url.Action("List", "Event", new { status = 0 })">Em Aprovação</a></li>
 							<li><a href="@Url.Action("List", "Event", new { status = 1 })">Aprovados</a></li>
-							<li><a href="@Url.Action("List", "Event", new { status = 2 })">Realizados</a></li>
+							<li><a href="@Url.Action("List", "Event", new { status = 2 })">Negados</a></li>
+							<li><a href="@Url.Action("List", "Event", new { status = 3 })">Realizados</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
