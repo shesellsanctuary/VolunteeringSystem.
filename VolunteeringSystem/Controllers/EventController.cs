@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace VolunteeringSystem.Controllers
 {
@@ -27,7 +29,7 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Index(Event Model)
         {
             Model.institute = "";
-            Model.volunteerId = 2018;
+            Model.volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
 
             var added = eventDAO.Add(Model);
 
