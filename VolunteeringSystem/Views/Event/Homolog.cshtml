@@ -3,7 +3,13 @@
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "Homologar Evento";
 }
-<h2>Homologar Evento</h2>
+@switch (Model.status)
+{
+    case EventStatus.Active: <h2>Evento Aprovado</h2>; break;
+    case EventStatus.Blocked: <h2>Evento Bloqueado</h2>; break;
+    case EventStatus.Waiting: <h2>Homologar Evento</h2>; break;
+
+}
 <div class="panel panel-default">
     <div class="panel-heading">Evento criado por @Model.volunteer.name</div>
     <div class="panel-body">
@@ -13,6 +19,10 @@
             <p><b>Limite de Crianças:</b> @Model.kidLimit</p>
             <p><b>Data:</b> @Model.date</p>
             <p><b>Criado em:</b> @Model.createdOn</p>
+            @if (Model.status == EventStatus.Blocked)
+            {
+                <p><b>Justificativa:</b> @Model.justification</p>
+            }
         </div>
         <div class="col-md-6">
             <h4>Dados do Voluntário</h4>
@@ -24,6 +34,7 @@
             <p><b>Endereço:</b> @Model.volunteer.address</p>
             <p><b>Telefone:</b> @Model.volunteer.phone</p>
         </div>
+        
         @if (Model.status == EventStatus.Waiting)
         {
             <div class="row">
@@ -51,7 +62,7 @@
                         </script>
                         <div id="justificationDiv" class="form-group" style="display:none">
                             <label>Justificativa:</label>
-                            <textarea id="justification" class="form-control" name="justification"></textarea>
+                            <textarea id="justification" class="form-control" name="justification" ></textarea>
                         </div>
                         <div class="text-right">
                             <a class="btn btn-danger" href="@Url.Action("List", "Event", new { status = Model.status })">Voltar</a>
