@@ -18,7 +18,7 @@ namespace VolunteeringSystem.Models
 
         public DateTime date { get; set; }
 
-        public DateTime createdOn { get; set; }
+        public DateTime createdAt { get; set; }
 
         public string description { get; set; }
 

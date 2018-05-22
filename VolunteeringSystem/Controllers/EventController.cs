@@ -13,18 +13,17 @@ namespace VolunteeringSystem.Controllers
         private EventDAO eventDAO = new EventDAO();
         private AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
         private VolunteerDAO volunteerDAO = new VolunteerDAO();
-
-
-        [HttpGet]
+        
+        /* VOLUNTEER ACTIONS */
+        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Index()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
 
             Volunteer volunteer = volunteerDAO.Get(volunteerId);
 
-
-            if(volunteer.status == VolunteerStatus.Waiting || volunteer.status == VolunteerStatus.Blocked) {
-
+            if(volunteer.status == VolunteerStatus.Waiting || volunteer.status == VolunteerStatus.Blocked)
+            {
                 // error
                 return RedirectToAction("Denied"); //change this later
             }
@@ -37,7 +36,7 @@ namespace VolunteeringSystem.Controllers
             return View(Model);
         }
 
-        [HttpPost]
+        [HttpPost, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Index(Event Model)
         {
             
@@ -55,17 +54,18 @@ namespace VolunteeringSystem.Controllers
             return RedirectToAction("Created");
         }
 
-        [HttpGet]
+        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Denied() {
             return View();
         }
 
-        [HttpGet]
+        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Created()
         {
             return View();
         }
 
+        /* ADMIN ACTIONS */
         [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
@@ -76,6 +76,9 @@ namespace VolunteeringSystem.Controllers
             {
                 item.ageGroup = ageGroups.Single(a => a.id == item.ageGroupId);
             }
+
+            ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "negados";
+
             return View(eventList);
         }
 

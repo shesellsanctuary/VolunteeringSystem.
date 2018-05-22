@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
-using System.Net.Http.Headers;
-using System.Net.Mail;
-using System.Text;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
 
@@ -16,14 +13,7 @@ namespace VolunteeringSystem.Controllers
     {
         private VolunteerDAO volunteerDAO = new VolunteerDAO();
 
-        private readonly IHostingEnvironment _environment;
-
-        // Constructor
-        public VolunteerController(IHostingEnvironment IHostingEnvironment)
-        {
-            _environment = IHostingEnvironment;
-        }
-
+        /* VOLUNTEER ACTIONS */
         [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Dashboard()
         {
@@ -31,47 +21,6 @@ namespace VolunteeringSystem.Controllers
             var volunteer = volunteerDAO.Get(volunteerId);
 
             return View(volunteer);
-        }
-
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
-        public IActionResult List(int status)
-        {
-            var volunteerList = volunteerDAO.GetByStatus(status);
-            ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "bloqueados";
-
-            return View(volunteerList);
-        }
-
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
-        public IActionResult Homolog(int volunteerId)
-        {
-            var volunteer = volunteerDAO.Get(volunteerId);
-
-            return View(volunteer);
-        }
-
-        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
-        public IActionResult Homolog(int volunteerId, int newStatus)
-        {
-            volunteerDAO.ChangeStatus(volunteerId, newStatus);
-
-            // Command line argument must the the SMTP host.
-            //SmtpClient client = new SmtpClient();
-            //client.Port = 587;
-            //client.Host = "smtp.gmail.com";
-            //client.EnableSsl = true;
-            //client.Timeout = 10000;
-            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            //client.UseDefaultCredentials = false;
-            //client.Credentials = new System.Net.NetworkCredential("delazeri1997@gmail.com", "password");
-
-            //MailMessage mm = new MailMessage("delazeri1997@gmail.com", "guilherme_delazeri@hotmail.com", "test", "test");
-            //mm.BodyEncoding = UTF8Encoding.UTF8;
-            //mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-
-            //client.Send(mm);
-
-            return RedirectToAction("List", new { status = VolunteerStatus.Waiting });
         }
 
         [HttpGet]
@@ -107,22 +56,48 @@ namespace VolunteeringSystem.Controllers
             Model.photo = photo.FileName;
             Model.criminalRecord = criminalRecord.FileName;
             var added = volunteerDAO.Add(Model);
-            if (!added)
+            if (added)
+            {
+                int volunteerId = volunteerDAO.Login(Model.credentials.email, Model.credentials.password);
+                Model.id = volunteerId;
+                SetSession(Model);
+                return RedirectToAction("Dashboard");
+            }
+            else
             {
                 Model.credentials.email = "";
                 ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado !";
                 return View(Model);
             }
-
-            return RedirectToAction("Login");
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
-        public IActionResult Created()
+        /* ADMIN ACTIONS */
+        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult List(int status)
         {
-            return View();
+            var volunteerList = volunteerDAO.GetByStatus(status);
+            ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "bloqueados";
+
+            return View(volunteerList);
         }
 
+        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult Homolog(int volunteerId)
+        {
+            var volunteer = volunteerDAO.Get(volunteerId);
+
+            return View(volunteer);
+        }
+
+        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult Homolog(int volunteerId, int newStatus)
+        {
+            volunteerDAO.ChangeStatus(volunteerId, newStatus);
+
+            return RedirectToAction("List", new { status = VolunteerStatus.Waiting });
+        }
+
+        /* FREE ACTIONS */
         [HttpGet]
         public IActionResult Login()
         {
@@ -137,15 +112,20 @@ namespace VolunteeringSystem.Controllers
             if (volunteerId > 0)
             {
                 var volunteer = volunteerDAO.Get(volunteerId);
-                
-                HttpContext.Session.SetString("volunteerId", volunteerId.ToString());
-                HttpContext.Session.SetString("volunteerName", volunteer.name);
-                HttpContext.Session.SetString("type", "VOLUNTEER");
+                SetSession(volunteer);
+
                 return RedirectToAction("Dashboard");
             }
 
             ViewBag.Error = "Usuário ou senha incorretos!";
             return View();
+        }
+
+        public void SetSession(Volunteer volunteer)
+        {
+            HttpContext.Session.SetString("volunteerId", volunteer.id.ToString());
+            HttpContext.Session.SetString("volunteerName", volunteer.name);
+            HttpContext.Session.SetString("type", "VOLUNTEER");
         }
     }
 }

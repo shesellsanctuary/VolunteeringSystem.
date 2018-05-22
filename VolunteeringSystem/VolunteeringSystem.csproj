@@ -20,6 +20,10 @@
     <Compile Remove="Models\EmptyClass.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Views\Home\About.cshtml" />
+    <Content Remove="Views\Home\Contact.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="wwwroot\images\criminalRecords\" />
     <Folder Include="wwwroot\images\volunteers\" />
   </ItemGroup>
