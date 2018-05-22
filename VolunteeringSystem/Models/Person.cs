@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace VolunteeringSystem.Models
 {
@@ -6,6 +7,7 @@ namespace VolunteeringSystem.Models
     {
         public int id { get; set; }
 
+        [Required(ErrorMessage = "O campo nome é obrigatório.")]
         public string name { get; set; }
 
         public DateTime birthDate { get; set; }

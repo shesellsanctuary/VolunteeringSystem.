@@ -22,7 +22,7 @@ namespace VolunteeringSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Redirect("Home");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
