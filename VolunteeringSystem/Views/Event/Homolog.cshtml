@@ -15,7 +15,8 @@
     <div class="panel-body">
         <div class="col-md-6">
             <h4>Dados do Evento</h4>
-            <p><b>Grupo:</b> @Model.ageGroup.label</p>
+			<p><b>Grupo:</b> @Model.ageGroup.label</p>
+            <p><b>Descrição:</b> @Model.description</p>
             <p><b>Limite de Crianças:</b> @Model.kidLimit</p>
             <p><b>Data:</b> @Model.date.ToShortDateString()</p>
             <p><b>Criado em:</b> @Model.createdAt</p>
@@ -28,7 +29,7 @@
             <h4>Dados do Voluntário</h4>
             <p><b>CPF:</b> @Model.volunteer.CPF</p>
             <p><b>Nome:</b> @Model.volunteer.name</p>
-            <p><b>Sexo:</b> @Model.volunteer.sex</p>
+            <p><b>Sexo:</b> @Model.volunteer.sex.GetString()</p>
             <p><b>Data de Nascimento:</b> @Model.volunteer.birthDate.ToShortDateString()</p>
             <p><b>Profissão:</b> @Model.volunteer.profession</p>
             <p><b>Endereço:</b> @Model.volunteer.address</p>
