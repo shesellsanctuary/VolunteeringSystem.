@@ -1,2 +1,7 @@
-VolunteeringSystem/VolunteeringSystem.csproj.user 
-.vs/*.DS_Store
+.idea
+
+**/*.DS_Store
+
+VolunteeringSystem/bin/
+VolunteeringSystem/obj/
+VolunteeringSystem/VolunteerinSystem/*.csproj.user
