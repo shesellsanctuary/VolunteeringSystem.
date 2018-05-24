@@ -1,9 +1,8 @@
-﻿using Admin.Helpers;
-using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using System.IO;
+using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
 
@@ -11,10 +10,11 @@ namespace VolunteeringSystem.Controllers
 {
     public class VolunteerController : Controller
     {
-        private VolunteerDAO volunteerDAO = new VolunteerDAO();
+        private readonly VolunteerDAO volunteerDAO = new VolunteerDAO();
 
         /* VOLUNTEER ACTIONS */
-        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Dashboard()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
@@ -47,7 +47,8 @@ namespace VolunteeringSystem.Controllers
             }
 
             // Save criminal record
-            var pathCriminal = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/criminalRecords", criminalRecord.FileName);
+            var pathCriminal = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/criminalRecords",
+                criminalRecord.FileName);
             using (var stream = new FileStream(pathCriminal, FileMode.Create))
             {
                 criminalRecord.CopyToAsync(stream);
@@ -58,21 +59,20 @@ namespace VolunteeringSystem.Controllers
             var added = volunteerDAO.Add(Model);
             if (added)
             {
-                int volunteerId = volunteerDAO.Login(Model.credentials.email, Model.credentials.password);
+                var volunteerId = volunteerDAO.Login(Model.credentials.email, Model.credentials.password);
                 Model.id = volunteerId;
                 SetSession(Model);
                 return RedirectToAction("Dashboard");
             }
-            else
-            {
-                Model.credentials.email = "";
-                ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado !";
-                return View(Model);
-            }
+
+            Model.credentials.email = "";
+            ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado !";
+            return View(Model);
         }
 
         /* ADMIN ACTIONS */
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
             var volunteerList = volunteerDAO.GetByStatus(status);
@@ -81,7 +81,8 @@ namespace VolunteeringSystem.Controllers
             return View(volunteerList);
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int volunteerId)
         {
             var volunteer = volunteerDAO.Get(volunteerId);
@@ -89,12 +90,13 @@ namespace VolunteeringSystem.Controllers
             return View(volunteer);
         }
 
-        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpPost]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int volunteerId, int newStatus)
         {
             volunteerDAO.ChangeStatus(volunteerId, newStatus);
 
-            return RedirectToAction("List", new { status = VolunteerStatus.Waiting });
+            return RedirectToAction("List", new {status = VolunteerStatus.Waiting});
         }
 
         /* FREE ACTIONS */
@@ -107,7 +109,7 @@ namespace VolunteeringSystem.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            int volunteerId = volunteerDAO.Login(email, password);
+            var volunteerId = volunteerDAO.Login(email, password);
 
             if (volunteerId > 0)
             {

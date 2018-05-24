@@ -1,45 +1,43 @@
-﻿using Admin.Helpers;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using System.Linq;
+using Admin.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
-using Microsoft.AspNetCore.Http;
-using System;
 
 namespace VolunteeringSystem.Controllers
 {
     public class EventController : Controller
     {
-        private EventDAO eventDAO = new EventDAO();
-        private AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
-        private VolunteerDAO volunteerDAO = new VolunteerDAO();
-        
+        private readonly AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
+        private readonly EventDAO eventDAO = new EventDAO();
+        private readonly VolunteerDAO volunteerDAO = new VolunteerDAO();
+
         /* VOLUNTEER ACTIONS */
-        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Index()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
 
-            Volunteer volunteer = volunteerDAO.Get(volunteerId);
+            var volunteer = volunteerDAO.Get(volunteerId);
 
-            if(volunteer.status == VolunteerStatus.Waiting || volunteer.status == VolunteerStatus.Blocked)
-            {
-                // error
+            if (volunteer.status == VolunteerStatus.Waiting || volunteer.status == VolunteerStatus.Blocked)
                 return RedirectToAction("Denied"); //change this later
-            }
 
-            
+
             var Model = new Event();
-        
+
             ViewBag.ageGroups = ageGroupDAO.ToSelectList(ageGroupDAO.GetAll());
 
             return View(Model);
         }
 
-        [HttpPost, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpPost]
+        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Index(Event Model)
         {
-            
             Model.institute = "";
             Model.volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
 
@@ -54,35 +52,37 @@ namespace VolunteeringSystem.Controllers
             return RedirectToAction("Created");
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
-        public IActionResult Denied() {
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        public IActionResult Denied()
+        {
             return View();
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
         public IActionResult Created()
         {
             return View();
         }
 
         /* ADMIN ACTIONS */
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
             var eventList = eventDAO.GetByStatus(status);
             var ageGroups = ageGroupDAO.GetAll();
 
-            foreach (var item in eventList)
-            {
-                item.ageGroup = ageGroups.Single(a => a.id == item.ageGroupId);
-            }
+            foreach (var item in eventList) item.ageGroup = ageGroups.Single(a => a.id == item.ageGroupId);
 
             ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "negados";
 
             return View(eventList);
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int eventId)
         {
             var eventSelected = eventDAO.Get(eventId);
@@ -92,13 +92,14 @@ namespace VolunteeringSystem.Controllers
 
             return View(eventSelected);
         }
-        
-        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+
+        [HttpPost]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int eventId, int newStatus, string justification)
         {
             eventDAO.Homolog(eventId, newStatus, justification);
 
-            return RedirectToAction("List", new { status = (int) EventStatus.Waiting });
+            return RedirectToAction("List", new {status = (int) EventStatus.Waiting});
         }
     }
 }

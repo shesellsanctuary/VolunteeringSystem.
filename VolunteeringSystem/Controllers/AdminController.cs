@@ -22,17 +22,16 @@ namespace VolunteeringSystem.Controllers
 
                 return RedirectToAction("Dashboard");
             }
-            else
-            {
-                user = "";
-                password = "";
-                ViewBag.error = "Usuário ou senha estão incorretos!";
 
-                return View();
-            }
+            user = "";
+            password = "";
+            ViewBag.error = "Usuário ou senha estão incorretos!";
+
+            return View();
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet]
+        [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Dashboard()
         {
             return View();
