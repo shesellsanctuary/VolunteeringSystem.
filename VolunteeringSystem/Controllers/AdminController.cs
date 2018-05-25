@@ -1,6 +1,7 @@
 ﻿using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VolunteeringSystem.DAO;
 
 namespace VolunteeringSystem.Controllers
 {
@@ -33,6 +34,16 @@ namespace VolunteeringSystem.Controllers
         [HttpGet]
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        public IActionResult List()
+        {
+            return View(new AdministratorDao().GetAll());
+        }
+
+        public IActionResult Logout()
         {
             return View();
         }
