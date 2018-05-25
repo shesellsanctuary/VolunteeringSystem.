@@ -1,5 +1,4 @@
-﻿using System;
-namespace VolunteeringSystem.Models
+﻿namespace VolunteeringSystem.Models
 {
     public class AgeGroup
     {
@@ -14,14 +13,10 @@ namespace VolunteeringSystem.Models
         // override object.Equals
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (obj == null || GetType() != obj.GetType()) return false;
 
-            AgeGroup rhs = (AgeGroup) obj;
+            var rhs = (AgeGroup) obj;
             return min == rhs.min && max == rhs.max;
         }
-        
     }
 }

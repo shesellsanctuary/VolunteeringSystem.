@@ -1,90 +1,86 @@
-﻿@model VolunteeringSystem.Models.Volunteer
+﻿@model Volunteer
 @{
-	ViewData["Title"] = "Register";
+    ViewData["Title"] = "Register";
 }
 
 <div class="container">
-	<div class="bgVolunteerRegister hidden-sm hidden-xs"></div>
-	<div class="col-sm-12">
-		<h3 class="form-signin-heading text-center" style="color: white">Bem-vindo !</h3>
-		<h3 class="form-signin-heading text-center" style="color: white">Preencha seus dados para realizar seu cadastro</h3>
-	</div>
-	<form method="post" class="form-signin" enctype="multipart/form-data" role="form">
-		<div class="col-md-4 col-md-offset-2 col-sm-12">
-			<br />
-			@if (!string.IsNullOrEmpty(ViewBag.Error))
+    <div class="bgVolunteerRegister hidden-sm hidden-xs"></div>
+    <div class="col-sm-12">
+        <h3 class="form-signin-heading text-center" style="color: white">Bem-vindo!</h3>
+        <h3 class="form-signin-heading text-center" style="color: white">Preencha seus dados para realizar seu cadastro</h3>
+    </div>
+    <form method="post" class="form-signin" enctype="multipart/form-data" role="form">
+        <div class="col-md-4 col-md-offset-2 col-sm-12">
+            <br/>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
             {
-				<p class="text-center" style="color: red"><b>@ViewBag.Error</b></p>
+                <p class="text-center" style="color: red">
+                    <b>@ViewBag.Error</b>
+                </p>
             }
-			<label for="inputName" class="sr-only">Nome Completo</label>
-			@Html.TextBoxFor(m => m.name, new { @class = "form-control", placeholder = "Nome Completo", required = "", autofocus = "", type = "text", id = "inputName" })
+            <label for="inputName" class="sr-only">Nome Completo</label>
+            @Html.TextBoxFor(m => m.name, new {@class = "form-control", placeholder = "Nome Completo", required = "", autofocus = "", type = "text", id = "inputName"})
 
-			<label for="inputEmail" class="sr-only">e-mail</label>
-			@Html.TextBoxFor(m => m.credentials.email, new { @class = "form-control", placeholder = "meuemail@provider.com", required = "", autofocus = "", type = "email", id = "inputEmail" })
-			<br />
+            <label for="inputEmail" class="sr-only">e-mail</label>
+            @Html.TextBoxFor(m => m.credentials.email, new {@class = "form-control", placeholder = "meuemail@provider.com", required = "", autofocus = "", type = "email", id = "inputEmail"})
+            <br/>
 
-			<label for="inputBirthdate" class="sr-only">Data de Nascimento</label>
-			@Html.TextBoxFor(m => m.birthDate, new { @class = "form-control", placeholder = "Data de Nascimento", required = "", autofocus = "", type = "date", id = "inputBirthdate" })
+            <label for="inputBirthdate" class="sr-only">Data de Nascimento</label>
+            @Html.TextBoxFor(m => m.birthDate, new {@class = "form-control", placeholder = "Data de Nascimento", required = "", autofocus = "", type = "date", id = "inputBirthdate"})
 
-			<label for="inputCPF" class="sr-only">CPF</label>
-			@Html.TextBoxFor(m => m.CPF, new { @class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*" })
+            <label for="inputCPF" class="sr-only">CPF</label>
+            @Html.TextBoxFor(m => m.CPF, new {@class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*"})
 
-			<div class="form-group">
-				<label for="inputSex" class="sr-only">Sexo</label>
-				@*@Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), "Selecione seu sexo", new { @class = "form-control", required = "", id = "inputSex" })*@
-				<select class="form-control" name="sex" required id="inputSex">
-					<option value="f">Feminino</option>
-					<option value="m">Masculino</option>
-				</select>
-			</div>
-			<br />
+            <div class="form-group">
+                <select asp-for="sex" asp-items="Html.GetEnumSelectList<Sex>()"></select>
+            </div>
+            <br/>
+            <label for="inputProfession" class="sr-only">Profissão</label>
+            @Html.TextBoxFor(m => m.profession, new {@class = "form-control", placeholder = "Profissão", required = "", autofocus = "", type = "text", id = "inputProfession"})
 
-			<label for="inputProfession" class="sr-only">Profissão</label>
-			@Html.TextBoxFor(m => m.profession, new { @class = "form-control", placeholder = "Profissão", required = "", autofocus = "", type = "text", id = "inputProfession" })
+            <label for="inputAdress" class="sr-only">Endereço</label>
+            @Html.TextBoxFor(m => m.address, new {@class = "form-control", placeholder = "Rua Exemplo, 123 Bairro Cidade", required = "", autofocus = "", type = "text", id = "inputAddress"})
 
-			<label for="inputAdress" class="sr-only">Endereço</label>
-			@Html.TextBoxFor(m => m.address, new { @class = "form-control", placeholder = "Rua Exemplo, 123 Bairro Cidade", required = "", autofocus = "", type = "text", id = "inputAddress" })
+            <label for="inputPhone" class="sr-only">Telefone</label>
+            @Html.TextBoxFor(m => m.phone, new {@class = "form-control", placeholder = "Telefone (somente números)", required = "", autofocus = "", type = "text", id = "inputPhone", pattern = "[0-9]*"})
 
-			<label for="inputPhone" class="sr-only">Telefone</label>
-			@Html.TextBoxFor(m => m.phone, new { @class = "form-control", placeholder = "Telefone (somente números)", required = "", autofocus = "", type = "text", id = "inputPhone", pattern = "[0-9]*" })
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <br/>
+            <label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
+            <input id="inputPhoto" type="file" class="form-control" name="photo" placeholder="Foto de Perfil"/>
+            <!--TODO: display when pic was properly uploaded-->
+            <br/>
 
-		</div>
-		<div class="col-md-4 col-sm-12">
-			<br />
-			<label for="inputPhoto" class="btn btn-primary btn-block btn-outlined">Adicionar Foto</label>
-			<input id="inputPhoto" type="file" class="form-control" name="photo" placeholder="Foto de Perfil" />
-			<!--TODO: display when pic was properly uploaded-->
-			<br />
+            <label for="inputCriminalRecord" class="btn btn-primary btn-block btn-outlined">Adicionar Histórico Criminal</label>
+            <input id="inputCriminalRecord" type="file" class="form-control" name="criminalRecord" placeholder="Histórico Criminal"/>
 
-			<label for="inputCriminalRecord" class="btn btn-primary btn-block btn-outlined">Adicionar Histórico Criminal</label>
-			<input id="inputCriminalRecord" type="file" class="form-control" name="criminalRecord" placeholder="Histórico Criminal" />
+            <br/>
+            <label for="inputPassword" class="sr-only">Senha</label>
+            @Html.TextBoxFor(m => m.credentials.password, new {@class = "form-control", type = "password", id = "inputPassword", placeholder = "Senha", required = "", autofocus = ""})
+            <label for="inputPasswordCheck" class="sr-only">Senha Confirma</label>
+            @Html.TextBoxFor(m => m.credentials.password, new {@class = "form-control", type = "password", id = "inputPasswordCheck", placeholder = "Repita a Senha", required = "", autofocus = ""})
 
-			<br />
-			<label for="inputPassword" class="sr-only">Senha</label>
-			@Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPassword", placeholder = "Senha", required = "", autofocus = "" })
-			<label for="inputPasswordCheck" class="sr-only">Senha Confirma</label>
-			@Html.TextBoxFor(m => m.credentials.password, new { @class = "form-control", type = "password", id = "inputPasswordCheck", placeholder = "Repita a Senha", required = "", autofocus = "" })
+        </div>
+        <div class="col-sm-12 text-right">
+            <br/>
+            <button class="col-sm-12 col-md-4 col-md-offset-4 btn btn-success" type="submit">Registrar</button>
+        </div>
+    </form>
+    <script>
+        var password = document.getElementById("inputPassword"),
+            confirm_password = document.getElementById("inputPasswordCheck");
 
-		</div>
-		<div class="col-sm-12 text-right">
-			<br />
-			<button class="col-sm-12 col-md-4 col-md-offset-4 btn btn-success" type="submit">Registrar</button>
-		</div>
-	</form>
-	<script>
-		var password = document.getElementById("inputPassword"),
-			confirm_password = document.getElementById("inputPasswordCheck");
+        function validatePassword() {
+            if (password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords Don't Match");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
 
-		function validatePassword() {
-			if (password.value != confirm_password.value) {
-				confirm_password.setCustomValidity("Passwords Don't Match");
-			} else {
-				confirm_password.setCustomValidity('');
-			}
-		}
-
-		password.onchange = validatePassword;
-		confirm_password.onkeyup = validatePassword;
-	</script>
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;
+    </script>
 
 </div>

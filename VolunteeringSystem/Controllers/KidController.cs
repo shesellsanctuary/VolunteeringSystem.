@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VolunteeringSystem.DAO;
 using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.Controllers
@@ -8,17 +9,20 @@ namespace VolunteeringSystem.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            var kid = new Kid();
-
-            return View(kid);
+            return View(new Kid());
         }
 
         [HttpPost]
         public IActionResult Add(Kid model)
         {
             if (ModelState.IsValid) return RedirectToAction("Index", "Home");
-
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            return View(new KidDAO().GetAll());
         }
     }
 }

@@ -1,70 +1,79 @@
-﻿@model VolunteeringSystem.Models.Volunteer
+﻿@model Volunteer
 @{
-	Layout = "_LayoutAdmin";
-	ViewData["Title"] = "Aprovar Voluntário";
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Aprovar Voluntário";
 }
 
 <h2>@(Model.status == VolunteerStatus.Waiting ? "Aprovar " : "")Voluntário</h2>
 
 <div class="panel panel-default">
-	<div class="panel-body">
-		<a class="pull-right" href="@Url.Action("List", "Volunteer", new { status = (int) Model.status })">Voltar</a>
-		<div class="row">
-			<div class="col-md-6">
-				<h4>Dados do Voluntário</h4>
-				<p><b>Nome:</b> @Model.name</p>
-				<p><b>CPF:</b> @Model.CPF</p>
-				<p><b>Telefone:</b> @Model.phone</p>
-				<p><b>Sexo:</b> @Model.sex.GetString()</p>
-				<p><b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
-				<p><b>Profissão:</b> @Model.profession</p>
-				<p><b>Endereço:</b> @Model.address</p>
-				<p>
-					<b>Atestado de Antecedentes Criminais:</b> 
-					<a href="~/images/criminalRecords/@Model.criminalRecord" target="_blank"><i class="fas fa-file-pdf"></i></a>
-				</p>
-				<br />
-			</div>
-			<div class="col-md-6 text-center">
-				<img class="img-responsive img-circle" src="~/images/volunteers/@Model.photo" style="max-height: 250px; margin: 0 auto;" />
-			</div>
-		</div>
-		@if (Model.status == VolunteerStatus.Waiting)
-		{
-			<div class="row">
-				<div class="col-md-6">
-					<form method="post">
-						<div class="form-group">
-							<label>Aprovar voluntário:</label>
-							<input type="hidden" name="volunteerId" value="@Model.id" />
-							<select class="form-control" name="newStatus">
-								<option selected value="0"> Por enquanto não.</option>
-								<option value="1"> Sim, desejo aprovar este voluntário.</option>
-								<option value="2"> Não, desejo bloquear este voluntário.</option>
-							</select>
-						</div>
-						<div class="text-right">
-							<button type="submit" class="btn btn-success">Salvar</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		}
-		else if (Model.status == VolunteerStatus.Active)
-		{
-			<div class="row">
-				<div class="col-md-6">
-					<label>Este voluntário já foi aprovado</label>
-				</div>
-			</div>
-		}
-		else if (Model.status == VolunteerStatus.Blocked)
-		{
-			<div class="row">
-				<div class="col-md-6">
-					<label>Este voluntário está bloqueado</label>
-				</div>
-			</div>
-		}
-	</div>
+    <div class="panel-body">
+        <a class="pull-right" href="@Url.Action("List", "Volunteer", new {status = (int) Model.status})">Voltar</a>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Dados do Voluntário</h4>
+                <p>
+                    <b>Nome:</b> @Model.name</p>
+                <p>
+                    <b>CPF:</b> @Model.CPF</p>
+                <p>
+                    <b>Telefone:</b> @Model.phone</p>
+                <p>
+                    <b>Sexo:</b> @Model.sex.GetString()</p>
+                <p>
+                    <b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
+                <p>
+                    <b>Profissão:</b> @Model.profession</p>
+                <p>
+                    <b>Endereço:</b> @Model.address</p>
+                <p>
+                    <b>Atestado de Antecedentes Criminais:</b>
+                    <a href="~/images/criminalRecords/@Model.criminalRecord" target="_blank">
+                        <i class="fas fa-file-pdf"></i>
+                    </a>
+                </p>
+                <br/>
+            </div>
+            <div class="col-md-6 text-center">
+                <img class="img-responsive img-circle" src="~/images/volunteers/@Model.photo" style="margin: 0 auto; max-height: 250px;"/>
+            </div>
+        </div>
+        @if (Model.status == VolunteerStatus.Waiting)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Aprovar voluntário:</label>
+                            <input type="hidden" name="volunteerId" value="@Model.id"/>
+                            <select class="form-control" name="newStatus">
+                                <option selected value="0"> Por enquanto não.</option>
+                                <option value="1"> Sim, desejo aprovar este voluntário.</option>
+                                <option value="2"> Não, desejo bloquear este voluntário.</option>
+                            </select>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+        else if (Model.status == VolunteerStatus.Active)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Este voluntário já foi aprovado</label>
+                </div>
+            </div>
+        }
+        else if (Model.status == VolunteerStatus.Blocked)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Este voluntário está bloqueado</label>
+                </div>
+            </div>
+        }
+    </div>
 </div>

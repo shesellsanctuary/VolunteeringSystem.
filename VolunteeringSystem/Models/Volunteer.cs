@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using VolunteeringSystem.Domain;
 
 namespace VolunteeringSystem.Models
@@ -24,7 +21,8 @@ namespace VolunteeringSystem.Models
 
         public Credentials credentials { get; set; }
 
-        public int GetScore() {
+        public int GetScore()
+        {
             return 0;
         }
     }

@@ -1,8 +1,8 @@
-﻿using System;
-namespace VolunteeringSystem.Models
+﻿namespace VolunteeringSystem.Models
 {
     public enum PartOfDay
     {
-        Morning, Afternoon
+        Morning,
+        Afternoon
     }
 }

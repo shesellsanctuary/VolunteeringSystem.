@@ -1,5 +1,3 @@
-using System;
-
 namespace VolunteeringSystem.Models
 {
     public class ErrorViewModel

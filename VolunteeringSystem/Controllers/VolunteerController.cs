@@ -66,7 +66,7 @@ namespace VolunteeringSystem.Controllers
             }
 
             Model.credentials.email = "";
-            ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado !";
+            ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado!";
             return View(Model);
         }
 
@@ -77,7 +77,6 @@ namespace VolunteeringSystem.Controllers
         {
             var volunteerList = volunteerDAO.GetByStatus(status);
             ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "bloqueados";
-
             return View(volunteerList);
         }
 

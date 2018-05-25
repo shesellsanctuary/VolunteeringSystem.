@@ -1,83 +1,85 @@
-﻿using Dapper;
-using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Dapper;
+using Npgsql;
 using VolunteeringSystem.Models;
-using VolunteeringSystem.Domain;
 
 namespace VolunteeringSystem.DAO
 {
     public class VolunteerDAO
     {
-        private string connString = "Server=volunteeringsystem-postgres-sp.cr0sahgirswg.sa-east-1.rds.amazonaws.com;Database=orphanage;Port=5432;User Id=vol_sys_postgres_db_admin;Password=valpwd4242;";
-
-        public VolunteerDAO()
-        {
-        }
-
         public IEnumerable<Volunteer> GetAll()
         {
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
-                var list = sql.Query<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer").AsList();
+                var list = sql
+                    .Query<Volunteer>(
+                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer")
+                    .AsList();
                 return list;
             }
         }
 
         public IEnumerable<Volunteer> GetByStatus(int status)
         {
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
-                var list = sql.Query<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE status = @status ORDER BY createdAt", new { status = status }).AsList();
+                var list = sql
+                    .Query<Volunteer>(
+                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE status = @status ORDER BY createdAt",
+                        new {status}).AsList();
                 return list;
             }
         }
 
         public Volunteer Get(int volunteerId)
         {
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
-                return sql.QueryFirstOrDefault<Volunteer>("SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE id = @id", new { id = volunteerId });
+                return sql.QueryFirstOrDefault<Volunteer>(
+                    "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE id = @id",
+                    new {id = volunteerId});
             }
         }
 
         public bool Add(Volunteer newVolunteer)
         {
-
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
                 try
                 {
-                    int setCredentialsResponse = sql.Execute(@"
+                    var setCredentialsResponse = sql.Execute(@"
                         INSERT INTO credentials (email, password)
                         VALUES  (@email, @password)",
                         new
                         {
-                            email = newVolunteer.credentials.email,
-                            password = newVolunteer.credentials.password
+                            newVolunteer.credentials.email,
+                            newVolunteer.credentials.password
                         });
-                } catch (Npgsql.PostgresException e)
+                }
+                catch (PostgresException e)
                 {
                     return false;
                 }
+
+                Console.WriteLine(newVolunteer.sex);
 
                 var response = sql.Execute(@"
                     INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminalRecord, credentials)
                     VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminalRecord, @credentials)",
                     new
                     {
-                        name = newVolunteer.name,
+                        newVolunteer.name,
                         birthdate = newVolunteer.birthDate,
                         cpf = newVolunteer.CPF,
                         sex = char.ToLower(newVolunteer.sex.ToString().ElementAt(0)).ToString(),
                         status = VolunteerStatus.Waiting,
-                        profession = newVolunteer.profession,
-                        address = newVolunteer.address,
-                        phone = newVolunteer.phone,
-                        photo = newVolunteer.photo,
-                        criminalRecord = newVolunteer.criminalRecord,
+                        newVolunteer.profession,
+                        newVolunteer.address,
+                        newVolunteer.phone,
+                        newVolunteer.photo,
+                        newVolunteer.criminalRecord,
                         credentials = newVolunteer.credentials.email
                     });
                 return Convert.ToBoolean(response);
@@ -86,24 +88,26 @@ namespace VolunteeringSystem.DAO
 
         public bool ChangeStatus(int volunteerId, int newStatus)
         {
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
-                int response = sql.Execute(@"UPDATE volunteer SET status = @status WHERE id = @id", new { id = volunteerId, status = newStatus });
+                var response = sql.Execute(@"UPDATE volunteer SET status = @status WHERE id = @id",
+                    new {id = volunteerId, status = newStatus});
                 return Convert.ToBoolean(response);
             }
         }
 
         public int Login(string email, string password)
         {
-            using (var sql = new NpgsqlConnection(connString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
             {
-                var volunteerId = sql.QueryFirstOrDefault<int>(@"SELECT id FROM volunteer WHERE credentials = @email", new { email = email });
-                if (volunteerId > 0)
-                {
-                    var volunteerEmail = sql.QueryFirstOrDefault<string>(@"SELECT email FROM credentials WHERE email = @email AND password = @password", new { email = email, password = password });
-                    if (!string.IsNullOrEmpty(volunteerEmail))
-                        return volunteerId;
-                }
+                var volunteerId = sql.QueryFirstOrDefault<int>(@"SELECT id FROM volunteer WHERE credentials = @email",
+                    new {email});
+                if (volunteerId <= 0) return 0;
+                var volunteerEmail = sql.QueryFirstOrDefault<string>(
+                    @"SELECT email FROM credentials WHERE email = @email AND password = @password",
+                    new {email, password});
+                if (!string.IsNullOrEmpty(volunteerEmail))
+                    return volunteerId;
             }
 
             return 0;

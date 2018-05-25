@@ -1,41 +1,62 @@
-@model VolunteeringSystem.Models.Event
+@model Event
 @{
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "Homologar Evento";
 }
 @switch (Model.status)
 {
-    case EventStatus.Active: <h2>Evento Aprovado</h2>; break;
-    case EventStatus.Blocked: <h2>Evento Bloqueado</h2>; break;
-    case EventStatus.Waiting: <h2>Homologar Evento</h2>; break;
-
+    case EventStatus.Active:
+        <h2>Evento Aprovado</h2>
+        ;
+        break;
+    case EventStatus.Blocked:
+        <h2>Evento Bloqueado</h2>
+        ;
+        break;
+    case EventStatus.Waiting:
+        <h2>Homologar Evento</h2>
+        ;
+        break;
 }
 <div class="panel panel-default">
     <div class="panel-heading">Evento criado por @Model.volunteer.name</div>
     <div class="panel-body">
         <div class="col-md-6">
             <h4>Dados do Evento</h4>
-			<p><b>Grupo:</b> @Model.ageGroup.label</p>
-            <p><b>Descrição:</b> @Model.description</p>
-            <p><b>Limite de Crianças:</b> @Model.kidLimit</p>
-            <p><b>Data:</b> @Model.date.ToShortDateString()</p>
-            <p><b>Criado em:</b> @Model.createdAt</p>
+            <p>
+                <b>Grupo:</b> @Model.ageGroup.label</p>
+            <p>
+                <b>Descrição:</b> @Model.description</p>
+            <p>
+                <b>Limite de Crianças:</b> @Model.kidLimit</p>
+            <p>
+                <b>Data:</b> @Model.date.ToShortDateString()</p>
+            <p>
+                <b>Criado em:</b> @Model.createdAt</p>
             @if (Model.status == EventStatus.Blocked)
             {
-                <p><b>Justificativa:</b> @Model.justification</p>
+                <p>
+                    <b>Justificativa:</b> @Model.justification</p>
             }
         </div>
         <div class="col-md-6">
             <h4>Dados do Voluntário</h4>
-            <p><b>CPF:</b> @Model.volunteer.CPF</p>
-            <p><b>Nome:</b> @Model.volunteer.name</p>
-            <p><b>Sexo:</b> @Model.volunteer.sex.GetString()</p>
-            <p><b>Data de Nascimento:</b> @Model.volunteer.birthDate.ToShortDateString()</p>
-            <p><b>Profissão:</b> @Model.volunteer.profession</p>
-            <p><b>Endereço:</b> @Model.volunteer.address</p>
-            <p><b>Telefone:</b> @Model.volunteer.phone</p>
+            <p>
+                <b>CPF:</b> @Model.volunteer.CPF</p>
+            <p>
+                <b>Nome:</b> @Model.volunteer.name</p>
+            <p>
+                <b>Sexo:</b> @Model.volunteer.sex.GetString()</p>
+            <p>
+                <b>Data de Nascimento:</b> @Model.volunteer.birthDate.ToShortDateString()</p>
+            <p>
+                <b>Profissão:</b> @Model.volunteer.profession</p>
+            <p>
+                <b>Endereço:</b> @Model.volunteer.address</p>
+            <p>
+                <b>Telefone:</b> @Model.volunteer.phone</p>
         </div>
-        
+
         @if (Model.status == EventStatus.Waiting)
         {
             <div class="row">
@@ -43,7 +64,7 @@
                     <form method="post">
                         <div class="form-group">
                             <label>Aprovar:</label>
-                            <input type="hidden" name="eventId" value="@Model.id" />
+                            <input type="hidden" name="eventId" value="@Model.id"/>
                             <select class="form-control" name="newStatus" onchange="selectChange(this.value)">
                                 <option value="1"> Sim, desejo aprovar este evento.</option>
                                 <option value="2"> Não, desejo bloquear este evento.</option>
@@ -61,12 +82,12 @@
                                 }
                             }
                         </script>
-                        <div id="justificationDiv" class="form-group" style="display:none">
+                        <div id="justificationDiv" class="form-group" style="display: none">
                             <label>Justificativa:</label>
                             <textarea id="justification" class="form-control" name="justification" ></textarea>
                         </div>
                         <div class="text-right">
-                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new { status = Model.status })">Voltar</a>
+                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new {Model.status})">Voltar</a>
                             <button type="submit" class="btn btn-success">Salvar</button>
                         </div>
                     </form>

@@ -1,2 +1,3 @@
 # VolunteeringSystem
-Voluntary system implemented for the Software Engineering discipline 2018/1. UFRGS - Brazil.
+
+Volunteering system implemented for the Software Engineering course 2018/1. UFRGS - Brazil.

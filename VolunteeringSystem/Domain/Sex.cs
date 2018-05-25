@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 namespace VolunteeringSystem.Models
-{   
+{
     public enum Sex
     {
         [Display(Name = "Feminino")] f,
@@ -10,7 +11,7 @@ namespace VolunteeringSystem.Models
 
     public static class SexMethods
     {
-        public static String GetString(this Sex s)
+        public static string GetString(this Sex s)
         {
             switch (s)
             {
@@ -19,7 +20,7 @@ namespace VolunteeringSystem.Models
                 case Sex.m:
                     return "Masculino";
                 default:
-                    return "";
+                    throw new ArgumentOutOfRangeException(nameof(s), s, null);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Http;
 
 namespace Admin.Helpers
 {
@@ -13,14 +13,11 @@ namespace Admin.Helpers
             var type = context.HttpContext.Session.GetString("type");
 
             if (string.IsNullOrEmpty(volunteerId) || type != "VOLUNTEER")
-            {
                 context.Result = new RedirectResult("~/Volunteer/Login");
-            }
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            //To do : after the action executes  
         }
     }
 }

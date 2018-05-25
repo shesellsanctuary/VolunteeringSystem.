@@ -1,7 +1,7 @@
-﻿@model VolunteeringSystem.Models.Volunteer
+﻿@model Volunteer
 @{
-	Layout = "_LayoutVolunteer";
-	ViewData["Title"] = "Dashboard";
+    Layout = "_LayoutVolunteer";
+    ViewData["Title"] = "Dashboard";
 }
 
 <h2>Dashboard</h2>
@@ -10,30 +10,37 @@
 
 @if (Model.status == VolunteerStatus.Waiting)
 {
-		<div class="alert alert-danger" role="alert">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;
-			<span>Seu cadastro ainda não foi aprovado por nossos administradores.</span>
-			<span>Até o dia @Model.createdAt.AddDays(5).ToShortDateString() você deverá receber um e-mail informando se foi aprovado ou não.</span>
-		</div>
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;
+        <span>Seu cadastro ainda não foi aprovado por nossos administradores.</span>
+        <span>Até o dia @Model.createdAt.AddDays(5).ToShortDateString() você deverá receber um e-mail informando se foi aprovado ou não.</span>
+    </div>
 }
 
 <div class="row">
-	<div class="col-md-6">
-		<h4>Meus Dados</h4>
-		<p><b>Nome:</b> @Model.name</p>
-		<p><b>CPF:</b> @Model.CPF</p>
-		<p><b>Telefone:</b> @Model.phone</p>
-		<p><b>Sexo:</b> @Model.sex.GetString()</p>
-		<p><b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
-		<p><b>Profissão:</b> @Model.profession</p>
-		<p><b>Endereço:</b> @Model.address</p>
-	</div>
+    <div class="col-md-6">
+        <h4>Meus Dados</h4>
+        <p>
+            <b>Nome:</b> @Model.name</p>
+        <p>
+            <b>CPF:</b> @Model.CPF</p>
+        <p>
+            <b>Telefone:</b> @Model.phone</p>
+        <p>
+            <b>Sexo:</b> @Model.sex.GetString()</p>
+        <p>
+            <b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
+        <p>
+            <b>Profissão:</b> @Model.profession</p>
+        <p>
+            <b>Endereço:</b> @Model.address</p>
+    </div>
 
-	<div class="col-md-6">
-		<h4>Opções</h4>
-		<div class="list-group">
-			<a href="@Url.Action("Index", "Event")" class="list-group-item">Criar evento</a>
-			<a href="#" class="list-group-item">Ver histórico de eventos</a>
-		</div>
-	</div>
+    <div class="col-md-6">
+        <h4>Opções</h4>
+        <div class="list-group">
+            <a href="@Url.Action("Index", "Event")" class="list-group-item">Criar evento</a>
+            <a href="#" class="list-group-item">Ver histórico de eventos</a>
+        </div>
+    </div>
 </div>

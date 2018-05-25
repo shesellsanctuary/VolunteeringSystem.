@@ -4,4 +4,9 @@
 
 VolunteeringSystem/bin/
 VolunteeringSystem/obj/
-VolunteeringSystem/VolunteerinSystem/*.csproj.user
+
+VolunteeringSystem/wwwroot/lib/*
+VolunteeringSystem/wwwroot/images/volunteers/*
+VolunteeringSystem/wwwroot/images/criminalRecords/*
+
+VolunteeringSystem.sln.DotSettings.user
