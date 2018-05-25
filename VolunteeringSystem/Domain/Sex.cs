@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace VolunteeringSystem.Models
+namespace VolunteeringSystem.Domain
 {
     public enum Sex
     {

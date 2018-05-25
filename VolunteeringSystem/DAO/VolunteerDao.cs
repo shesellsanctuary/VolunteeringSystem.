@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using Npgsql;
+using VolunteeringSystem.Domain;
 using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.DAO

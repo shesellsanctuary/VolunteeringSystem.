@@ -1,4 +1,4 @@
-﻿namespace VolunteeringSystem.Models
+﻿namespace VolunteeringSystem.Domain
 {
     public enum VolunteerStatus
     {

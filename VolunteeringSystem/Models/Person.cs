@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using VolunteeringSystem.Domain;
 
 namespace VolunteeringSystem.Models
 {

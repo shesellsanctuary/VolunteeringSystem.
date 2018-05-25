@@ -4,6 +4,7 @@ using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VolunteeringSystem.DAO;
+using VolunteeringSystem.Domain;
 using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.Controllers
