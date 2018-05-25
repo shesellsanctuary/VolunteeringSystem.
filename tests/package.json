@@ -1,0 +1,18 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha index.js --recursive \"./*.test.js*\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "lodash": "^4.17.10",
+    "mocha": "^4.0.1",
+    "puppeteer": "^1.4.0"
+  }
+}
