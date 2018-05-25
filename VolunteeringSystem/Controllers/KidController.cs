@@ -22,7 +22,7 @@ namespace VolunteeringSystem.Controllers
         [HttpGet]
         public IActionResult List()
         {
-            return View(new KidDAO().GetAll());
+            return View(new KidDao().GetAll());
         }
     }
 }

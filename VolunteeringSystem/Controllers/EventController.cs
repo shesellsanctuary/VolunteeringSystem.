@@ -10,9 +10,9 @@ namespace VolunteeringSystem.Controllers
 {
     public class EventController : Controller
     {
-        private readonly AgeGroupDAO ageGroupDAO = new AgeGroupDAO();
-        private readonly EventDAO eventDAO = new EventDAO();
-        private readonly VolunteerDAO volunteerDAO = new VolunteerDAO();
+        private readonly AgeGroupDao ageGroupDAO = new AgeGroupDao();
+        private readonly EventDao eventDAO = new EventDao();
+        private readonly VolunteerDao volunteerDAO = new VolunteerDao();
 
         /* VOLUNTEER ACTIONS */
         [HttpGet]

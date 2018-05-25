@@ -7,7 +7,7 @@ using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.DAO
 {
-    public class VolunteerDAO
+    public class VolunteerDao
     {
         public IEnumerable<Volunteer> GetAll()
         {

@@ -3,7 +3,7 @@ using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.DAO
 {
-    public class KidDAO
+    public class KidDao
     {
         public bool Add(Kid kid)
         {

@@ -13,7 +13,7 @@ namespace VolunteeringSystem.DAO
         coloca os registros que vieram do "SELECT * FROM event" em uma lisa de objetos Event.
     */
 
-    public class EventDAO
+    public class EventDao
     {
         
         public IEnumerable<Event> GetAll()

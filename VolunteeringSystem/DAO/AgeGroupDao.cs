@@ -6,7 +6,7 @@ using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.DAO
 {
-    public class AgeGroupDAO
+    public class AgeGroupDao
     {
         public IEnumerable<AgeGroup> GetAll()
         {

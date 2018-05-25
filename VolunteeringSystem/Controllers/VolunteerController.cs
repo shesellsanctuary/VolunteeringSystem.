@@ -10,7 +10,7 @@ namespace VolunteeringSystem.Controllers
 {
     public class VolunteerController : Controller
     {
-        private readonly VolunteerDAO volunteerDAO = new VolunteerDAO();
+        private readonly VolunteerDao volunteerDAO = new VolunteerDao();
 
         /* VOLUNTEER ACTIONS */
         [HttpGet]
