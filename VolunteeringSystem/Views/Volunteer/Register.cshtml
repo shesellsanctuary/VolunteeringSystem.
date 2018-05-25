@@ -31,9 +31,9 @@
             <label for="inputCPF" class="sr-only">CPF</label>
             @Html.TextBoxFor(m => m.CPF, new {@class = "form-control", placeholder = "CPF (somente números)", required = "", autofocus = "", type = "text", id = "inputCPF", pattern = "[0-9]*"})
 
-            <div class="form-group">
-                <select asp-for="sex" asp-items="Html.GetEnumSelectList<Sex>()"></select>
-            </div>
+            <label for="inputSex">Sexo</label>
+            @Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), new {@class = "form-control", required = "", autofocus = "", type = "", id = "inputSex"})
+
             <br/>
             <label for="inputProfession" class="sr-only">Profissão</label>
             @Html.TextBoxFor(m => m.profession, new {@class = "form-control", placeholder = "Profissão", required = "", autofocus = "", type = "text", id = "inputProfession"})

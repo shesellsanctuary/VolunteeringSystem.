@@ -14,7 +14,7 @@ namespace VolunteeringSystem.Models
 
         public string CPF { get; set; }
 
-        public Sex sex { get; }
+        public Sex sex { get; set; }
 
         public DateTime createdAt { get; set; }
     }

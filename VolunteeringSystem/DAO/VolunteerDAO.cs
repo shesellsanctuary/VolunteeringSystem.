@@ -63,8 +63,6 @@ namespace VolunteeringSystem.DAO
                     return false;
                 }
 
-                Console.WriteLine(newVolunteer.sex);
-
                 var response = sql.Execute(@"
                     INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminalRecord, credentials)
                     VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminalRecord, @credentials)",

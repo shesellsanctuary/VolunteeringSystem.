@@ -55,11 +55,8 @@ namespace VolunteeringSystem.Controllers
             if (volunteerDAO.Add(model))
             {
                 var volunteerId = volunteerDAO.Login(model.credentials.email, model.credentials.password);
-                Console.WriteLine("A");
                 model.id = volunteerId;
-                Console.WriteLine("B");
                 SetSession(model);
-                Console.WriteLine("C");
                 return RedirectToAction("Dashboard");
             }
 
