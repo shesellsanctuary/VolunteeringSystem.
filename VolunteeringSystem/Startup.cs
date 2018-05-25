@@ -1,8 +1,10 @@
 ﻿using Admin.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace VolunteeringSystem
 {
@@ -13,7 +15,7 @@ namespace VolunteeringSystem
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -22,6 +24,7 @@ namespace VolunteeringSystem
                 .AddSessionStateTempDataProvider();
 
             services.AddSession();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IsLoggedAdminAttribute>();
             services.AddScoped<IsLoggedVolunteerAttribute>();
         }
