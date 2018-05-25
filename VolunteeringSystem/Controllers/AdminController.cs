@@ -20,7 +20,6 @@ namespace VolunteeringSystem.Controllers
             {
                 HttpContext.Session.SetString("user", user);
                 HttpContext.Session.SetString("type", "ADMIN");
-
                 return RedirectToAction("Dashboard");
             }
 
@@ -45,7 +44,9 @@ namespace VolunteeringSystem.Controllers
 
         public IActionResult Logout()
         {
-            return View();
+            HttpContext.Session.SetString("user", "");
+            HttpContext.Session.SetString("type", "");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

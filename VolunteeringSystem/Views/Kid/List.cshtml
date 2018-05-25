@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<Kid>
 
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Crianças";
+}
+
 <h2>Crianças</h2>
 
 @foreach (var item in Model)

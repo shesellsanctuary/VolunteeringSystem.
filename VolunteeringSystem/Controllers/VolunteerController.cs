@@ -19,34 +19,30 @@ namespace VolunteeringSystem.Controllers
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
             var volunteer = volunteerDAO.Get(volunteerId);
-
             return View(volunteer);
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            var Model = new Volunteer();
-            return View(Model);
+            return View(new Volunteer());
         }
 
         [HttpPost]
-        public IActionResult Register(Volunteer Model, IFormFile photo, IFormFile criminalRecord)
+        public IActionResult Register(Volunteer model, IFormFile photo, IFormFile criminalRecord)
         {
             if (photo == null || criminalRecord == null)
             {
-                ViewBag.Error = "É obrigatório inserir uma foto e o registro de antecedentes criminais";
-                return View(Model);
+                ViewBag.Error = "É obrigatório inserir uma foto e o registro de antecedentes criminais!";
+                return View(model);
             }
 
-            // Save photo
             var pathPhoto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/volunteers", photo.FileName);
             using (var stream = new FileStream(pathPhoto, FileMode.Create))
             {
                 photo.CopyToAsync(stream);
             }
 
-            // Save criminal record
             var pathCriminal = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/criminalRecords",
                 criminalRecord.FileName);
             using (var stream = new FileStream(pathCriminal, FileMode.Create))
@@ -54,20 +50,22 @@ namespace VolunteeringSystem.Controllers
                 criminalRecord.CopyToAsync(stream);
             }
 
-            Model.photo = photo.FileName;
-            Model.criminalRecord = criminalRecord.FileName;
-            var added = volunteerDAO.Add(Model);
-            if (added)
+            model.photo = photo.FileName;
+            model.criminalRecord = criminalRecord.FileName;
+            if (volunteerDAO.Add(model))
             {
-                var volunteerId = volunteerDAO.Login(Model.credentials.email, Model.credentials.password);
-                Model.id = volunteerId;
-                SetSession(Model);
+                var volunteerId = volunteerDAO.Login(model.credentials.email, model.credentials.password);
+                Console.WriteLine("A");
+                model.id = volunteerId;
+                Console.WriteLine("B");
+                SetSession(model);
+                Console.WriteLine("C");
                 return RedirectToAction("Dashboard");
             }
 
-            Model.credentials.email = "";
+            model.credentials.email = "";
             ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado!";
-            return View(Model);
+            return View(model);
         }
 
         /* ADMIN ACTIONS */
@@ -85,7 +83,6 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Homolog(int volunteerId)
         {
             var volunteer = volunteerDAO.Get(volunteerId);
-
             return View(volunteer);
         }
 
@@ -94,7 +91,6 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Homolog(int volunteerId, int newStatus)
         {
             volunteerDAO.ChangeStatus(volunteerId, newStatus);
-
             return RedirectToAction("List", new {status = VolunteerStatus.Waiting});
         }
 
@@ -109,12 +105,10 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Login(string email, string password)
         {
             var volunteerId = volunteerDAO.Login(email, password);
-
             if (volunteerId > 0)
             {
                 var volunteer = volunteerDAO.Get(volunteerId);
                 SetSession(volunteer);
-
                 return RedirectToAction("Dashboard");
             }
 
@@ -122,8 +116,25 @@ namespace VolunteeringSystem.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            SetSession(null);
+            HttpContext.Session.SetString("user", "");
+            HttpContext.Session.SetString("type", "");
+            return RedirectToAction("Index", "Home");
+        }
+
         public void SetSession(Volunteer volunteer)
         {
+            if (volunteer == null)
+            {
+                HttpContext.Session.SetString("volunteerId", "");
+                HttpContext.Session.SetString("volunteerName", "");
+                HttpContext.Session.SetString("type", "");
+                return;
+            }
+
             HttpContext.Session.SetString("volunteerId", volunteer.id.ToString());
             HttpContext.Session.SetString("volunteerName", volunteer.name);
             HttpContext.Session.SetString("type", "VOLUNTEER");
