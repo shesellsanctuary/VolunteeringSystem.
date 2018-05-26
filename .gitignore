@@ -10,3 +10,5 @@ VolunteeringSystem/wwwroot/images/volunteers/*
 VolunteeringSystem/wwwroot/images/criminalRecords/*
 
 VolunteeringSystem.sln.DotSettings.user
+.vscode
+node_modules/

@@ -6,13 +6,13 @@ const globalVariables = _.pick(global, ['browser', 'expect', 'TEST_ENV']);
 // puppeteer options
 const opts = {
   headless: false,
-  slowMo: 100,
+  slowMo: 30,
   timeout: 30000
 };
 
 before (async () => {
   global.expect = expect;
-  global.TEST_ENV = 'http://localhost:5001/';
+  global.TEST_ENV = 'http://localhost:55556/';
   global.browser = await puppeteer.launch(opts);
 });
 
