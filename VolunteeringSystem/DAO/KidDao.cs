@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Dapper;
+using Npgsql;
 using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.DAO
@@ -10,10 +12,12 @@ namespace VolunteeringSystem.DAO
             return false;
         }
 
-
         public IEnumerable<Kid> GetAll()
         {
-            return new List<Kid>();
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
+            {
+                return sql.Query<Kid>("SELECT * FROM kid").AsList();
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace VolunteeringSystem
                 .AddSessionStateTempDataProvider();
 
             services.AddSession();
+            services.AddLogging();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IsLoggedAdminAttribute>();
             services.AddScoped<IsLoggedVolunteerAttribute>();

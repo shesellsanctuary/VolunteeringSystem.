@@ -1,13 +1,27 @@
 ﻿@model IEnumerable<Kid>
-
 @{
+    ViewData["Title"] = "Crianças " + ViewBag.Status;
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Crianças";
 }
 
 <h2>Crianças</h2>
 
-@foreach (var item in Model)
-{
-    <p>Kid.</p>
-}
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+            <th>Nome</th>
+            <th>Sexo</th>
+            <th>Nascimento</th>
+            <th>Disponibilidade</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.name</td>
+                <td>@item.sex</td>
+                <td>@item.birthDate</td>
+                <td>@item.availability</td>
+            </tr>
+        }
+    </table>
+</div>

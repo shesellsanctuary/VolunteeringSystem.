@@ -6,11 +6,11 @@
 }
 @switch (Model.status)
 {
-    case EventStatus.Active:
+    case EventStatus.Approved:
         <h2>Evento Aprovado</h2>
         ;
         break;
-    case EventStatus.Blocked:
+    case EventStatus.Rejected:
         <h2>Evento Bloqueado</h2>
         ;
         break;
@@ -33,8 +33,8 @@
             <p>
                 <b>Data:</b> @Model.date.ToShortDateString()</p>
             <p>
-                <b>Criado em:</b> @Model.createdAt</p>
-            @if (Model.status == EventStatus.Blocked)
+                <b>Criado em:</b> @Model.creationDate</p>
+            @if (Model.status == EventStatus.Rejected)
             {
                 <p>
                     <b>Justificativa:</b> @Model.justification</p>

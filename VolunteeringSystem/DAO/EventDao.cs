@@ -15,14 +15,13 @@ namespace VolunteeringSystem.DAO
 
     public class EventDao
     {
-        
         public IEnumerable<Event> GetAll()
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql
                     .Query<Event>(
-                        "SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, createdAt FROM event")
+                        "SELECT id, institute, kid_limit, date, description, age_group_id, creation_date FROM event")
                     .AsList();
                 return list;
             }
@@ -30,10 +29,10 @@ namespace VolunteeringSystem.DAO
 
         public IEnumerable<Event> GetByStatus(int status)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql.Query<Event>(
-                    "SELECT id, institute, kidLimit, date, description, ageGroup As ageGroupId, createdAt FROM event WHERE status = @status ORDER BY createdAt",
+                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification FROM event WHERE status = @status ORDER BY creation_date",
                     new {status}).AsList();
                 return list;
             }
@@ -41,10 +40,10 @@ namespace VolunteeringSystem.DAO
 
         public Event Get(int eventId)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 return sql.QueryFirst<Event>(
-                    "SELECT id, status, justification, institute, kidLimit, date, description, ageGroup As ageGroupId, volunteerId, createdAt FROM event WHERE id = @id",
+                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification FROM event WHERE id = @id",
                     new {id = eventId});
             }
         }
@@ -56,19 +55,19 @@ namespace VolunteeringSystem.DAO
         /// <returns> true: saved | false: error </returns>
         public bool Add(Event newEvent)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"
-                    INSERT INTO event (institute, ageGroup, kidLimit, date, description, volunteerid)
-                    VALUES (@institute, @ageGroup, @kidLimit, @date, @description, @volunteerid)",
+                    INSERT INTO event (institute, age_group_id, kid_limit, date, description, volunteer_id)
+                    VALUES (@institute, @ageGroup, @kidLimit, @date, @description, @volunteerId)",
                     new
                     {
                         newEvent.institute,
-                        ageGroup = newEvent.ageGroup.label,
+                        ageGroup = newEvent.ageGroup.id,
                         newEvent.kidLimit,
                         newEvent.date,
                         newEvent.description,
-                        volunteerid = newEvent.volunteerId
+                        newEvent.volunteerId
                     });
 
                 return Convert.ToBoolean(response);
@@ -82,12 +81,12 @@ namespace VolunteeringSystem.DAO
         /// <returns> true: edited | false: error </returns>
         public bool Edit(Event editedEvent)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE event SET 
                                                 institute = @institute,
-                                                ageGroup = @ageGroup,
-                                                kidLimit = @kidLimit,
+                                                age_group_id = @ageGroup,
+                                                kid_limit = @kid_limit,
                                                 date = @date,
                                                 description = @description
                                             WHERE ID=@id",
@@ -110,7 +109,7 @@ namespace VolunteeringSystem.DAO
         /// <param name="ID"> event Id </param>
         public bool Remove(int id)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute("DELETE FROM event WHERE ID = @id", new {id});
                 return Convert.ToBoolean(response);
@@ -126,7 +125,7 @@ namespace VolunteeringSystem.DAO
         /// <returns> true: edited | false: error </returns>
         public bool Homolog(int id, int status, string justification)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE event SET 
                                                     status = @status, 

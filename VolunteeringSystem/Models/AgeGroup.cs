@@ -10,13 +10,22 @@
 
         public string label { get; set; }
 
-        // override object.Equals
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType()) return false;
 
             var rhs = (AgeGroup) obj;
             return min == rhs.min && max == rhs.max;
+        }
+
+        public override string ToString()
+        {
+            return label + " (" + min + ", " + max + ")";
         }
     }
 }

@@ -10,18 +10,18 @@ namespace VolunteeringSystem.DAO
     {
         public IEnumerable<AgeGroup> GetAll()
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                var list = sql.Query<AgeGroup>("SELECT * FROM ageGroup").AsList();
+                var list = sql.Query<AgeGroup>("SELECT * FROM age_group").AsList();
                 return list;
             }
         }
 
         public AgeGroup Get(int ageGroupId)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                return sql.QueryFirst<AgeGroup>("SELECT * FROM ageGroup WHERE id = @id", new {id = ageGroupId});
+                return sql.QueryFirst<AgeGroup>("SELECT * FROM age_group WHERE id = @id", new {id = ageGroupId});
             }
         }
 

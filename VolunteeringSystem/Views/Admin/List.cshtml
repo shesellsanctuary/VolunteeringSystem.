@@ -1,17 +1,25 @@
 ﻿@model IEnumerable<Administrator>
-
 @{
+    ViewData["Title"] = "Administradores " + ViewBag.Status;
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Administradores";
 }
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
+<h2>Administradores</h2>
 
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Contato</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.name</td>
+                <td>@item.CPF</td>
+                <td>@item.credentials.email</td>
+            </tr>
+        }
+    </table>
 </div>
-</body>
-</html>

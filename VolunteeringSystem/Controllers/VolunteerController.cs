@@ -3,6 +3,7 @@ using System.IO;
 using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Domain;
 using VolunteeringSystem.Models;
@@ -11,7 +12,13 @@ namespace VolunteeringSystem.Controllers
 {
     public class VolunteerController : Controller
     {
-        private readonly VolunteerDao volunteerDAO = new VolunteerDao();
+        private readonly ILogger<VolunteerController> _logger;
+        private readonly VolunteerDao _volunteerDao = new VolunteerDao();
+
+        public VolunteerController(ILogger<VolunteerController> logger)
+        {
+            _logger = logger;
+        }
 
         /* VOLUNTEER ACTIONS */
         [HttpGet]
@@ -19,7 +26,7 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Dashboard()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
-            var volunteer = volunteerDAO.Get(volunteerId);
+            var volunteer = _volunteerDao.Get(volunteerId);
             return View(volunteer);
         }
 
@@ -53,13 +60,7 @@ namespace VolunteeringSystem.Controllers
 
             model.photo = photo.FileName;
             model.criminalRecord = criminalRecord.FileName;
-            if (volunteerDAO.Add(model))
-            {
-                var volunteerId = volunteerDAO.Login(model.credentials.email, model.credentials.password);
-                model.id = volunteerId;
-                SetSession(model);
-                return RedirectToAction("Dashboard");
-            }
+            if (_volunteerDao.Add(model)) return Login(model.credentials.email, model.credentials.password);
 
             model.credentials.email = "";
             ViewBag.Error = "Usuário já existe, por favor insira um e-mail não cadastrado!";
@@ -71,8 +72,8 @@ namespace VolunteeringSystem.Controllers
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult List(int status)
         {
-            var volunteerList = volunteerDAO.GetByStatus(status);
-            ViewBag.Status = status == 0 ? "em aprovação" : status == 1 ? "aprovados" : "bloqueados";
+            var volunteerList = _volunteerDao.GetByStatus(status);
+            ViewBag.Status = ((VolunteerStatus) status).ToPortugueseString() + "s";
             return View(volunteerList);
         }
 
@@ -80,7 +81,7 @@ namespace VolunteeringSystem.Controllers
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int volunteerId)
         {
-            var volunteer = volunteerDAO.Get(volunteerId);
+            var volunteer = _volunteerDao.Get(volunteerId);
             return View(volunteer);
         }
 
@@ -88,39 +89,8 @@ namespace VolunteeringSystem.Controllers
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
         public IActionResult Homolog(int volunteerId, int newStatus)
         {
-            volunteerDAO.ChangeStatus(volunteerId, newStatus);
+            _volunteerDao.ChangeStatus(volunteerId, newStatus);
             return RedirectToAction("List", new {status = VolunteerStatus.Waiting});
-        }
-
-        /* FREE ACTIONS */
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string email, string password)
-        {
-            var volunteerId = volunteerDAO.Login(email, password);
-            if (volunteerId > 0)
-            {
-                var volunteer = volunteerDAO.Get(volunteerId);
-                SetSession(volunteer);
-                return RedirectToAction("Dashboard");
-            }
-
-            ViewBag.Error = "Usuário ou senha incorretos!";
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            SetSession(null);
-            HttpContext.Session.SetString("user", "");
-            HttpContext.Session.SetString("type", "");
-            return RedirectToAction("Index", "Home");
         }
 
         public void SetSession(Volunteer volunteer)
@@ -136,6 +106,36 @@ namespace VolunteeringSystem.Controllers
             HttpContext.Session.SetString("volunteerId", volunteer.id.ToString());
             HttpContext.Session.SetString("volunteerName", volunteer.name);
             HttpContext.Session.SetString("type", "VOLUNTEER");
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            try
+            {
+                SetSession(_volunteerDao.Login(email, password));
+                return RedirectToAction("Dashboard");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogWarning(exception.Message);
+                ViewBag.Error = "Usuário ou senha incorretos!";
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            SetSession(null);
+            HttpContext.Session.SetString("user", "");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

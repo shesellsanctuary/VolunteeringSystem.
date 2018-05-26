@@ -12,11 +12,11 @@ namespace VolunteeringSystem.DAO
     {
         public IEnumerable<Volunteer> GetAll()
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql
                     .Query<Volunteer>(
-                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord FROM volunteer")
+                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record FROM volunteer")
                     .AsList();
                 return list;
             }
@@ -24,11 +24,11 @@ namespace VolunteeringSystem.DAO
 
         public IEnumerable<Volunteer> GetByStatus(int status)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql
                     .Query<Volunteer>(
-                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE status = @status ORDER BY createdAt",
+                        "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record, creation_date FROM volunteer WHERE status = @status ORDER BY creation_date",
                         new {status}).AsList();
                 return list;
             }
@@ -36,37 +36,36 @@ namespace VolunteeringSystem.DAO
 
         public Volunteer Get(int volunteerId)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 return sql.QueryFirstOrDefault<Volunteer>(
-                    "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminalrecord, createdAt FROM volunteer WHERE id = @id",
+                    "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record, creation_date FROM volunteer WHERE id = @id",
                     new {id = volunteerId});
             }
         }
 
         public bool Add(Volunteer newVolunteer)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 try
                 {
-                    var setCredentialsResponse = sql.Execute(@"
-                        INSERT INTO credentials (email, password)
-                        VALUES  (@email, @password)",
+                    var setCredentialsResponse = sql.Execute(
+                        @"INSERT INTO credential (email, password) VALUES (@email, @password)",
                         new
                         {
                             newVolunteer.credentials.email,
                             newVolunteer.credentials.password
                         });
                 }
-                catch (PostgresException e)
+                catch (PostgresException)
                 {
                     return false;
                 }
 
                 var response = sql.Execute(@"
-                    INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminalRecord, credentials)
-                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminalRecord, @credentials)",
+                    INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminal_record, credentials)
+                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminal_record, @credentials)",
                     new
                     {
                         newVolunteer.name,
@@ -87,7 +86,7 @@ namespace VolunteeringSystem.DAO
 
         public bool ChangeStatus(int volunteerId, int newStatus)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE volunteer SET status = @status WHERE id = @id",
                     new {id = volunteerId, status = newStatus});
@@ -95,21 +94,22 @@ namespace VolunteeringSystem.DAO
             }
         }
 
-        public int Login(string email, string password)
+        public Volunteer Login(string email, string password)
         {
-            using (var sql = new NpgsqlConnection(ConnectionProvider.ConnectionString))
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                var volunteerId = sql.QueryFirstOrDefault<int>(@"SELECT id FROM volunteer WHERE credentials = @email",
-                    new {email});
-                if (volunteerId <= 0) return 0;
-                var volunteerEmail = sql.QueryFirstOrDefault<string>(
-                    @"SELECT email FROM credentials WHERE email = @email AND password = @password",
-                    new {email, password});
-                if (!string.IsNullOrEmpty(volunteerEmail))
-                    return volunteerId;
+                try
+                {
+                    var volunteerId = sql.QueryFirst<int>(
+                        @"SELECT id FROM volunteer JOIN credential ON volunteer.email = credential.email WHERE credential.email = @email AND credential.password = @password",
+                        new {email, password});
+                    return Get(volunteerId);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException("User not found in the database.");
+                }
             }
-
-            return 0;
         }
     }
 }

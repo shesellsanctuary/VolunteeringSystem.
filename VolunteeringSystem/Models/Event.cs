@@ -18,9 +18,9 @@ namespace VolunteeringSystem.Models
 
         public DateTime date { get; set; }
 
-        public DateTime createdAt { get; set; }
-
         public string description { get; set; }
+
+        public DateTime creationDate { get; set; }
 
         public int volunteerId { get; set; }
 
