@@ -64,21 +64,21 @@ namespace VolunteeringSystem.DAO
                 }
 
                 var response = sql.Execute(@"
-                    INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminal_record, credentials)
-                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminal_record, @credentials)",
+                    INSERT INTO volunteer (name, birthdate, cpf, sex, status, profession, address, phone, photo, criminal_record, email)
+                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @status, @profession, @address, @phone, @photo, @criminal_record, @email)",
                     new
                     {
                         newVolunteer.name,
                         birthdate = newVolunteer.birthDate,
                         cpf = newVolunteer.CPF,
-                        sex = char.ToLower(newVolunteer.sex.ToString().ElementAt(0)).ToString(),
+                        sex = char.ToUpper(newVolunteer.sex.ToString().ElementAt(0)).ToString(),
                         status = VolunteerStatus.Waiting,
                         newVolunteer.profession,
                         newVolunteer.address,
                         newVolunteer.phone,
                         newVolunteer.photo,
-                        newVolunteer.criminalRecord,
-                        credentials = newVolunteer.credentials.email
+                        criminal_record = newVolunteer.criminalRecord,
+                        email = newVolunteer.credentials.email
                     });
                 return Convert.ToBoolean(response);
             }

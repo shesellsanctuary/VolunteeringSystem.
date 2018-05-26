@@ -45,13 +45,13 @@ namespace VolunteeringSystem.Controllers
                 return View(model);
             }
 
-            var pathPhoto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/volunteers", photo.FileName);
+            var pathPhoto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets", photo.FileName);
             using (var stream = new FileStream(pathPhoto, FileMode.Create))
             {
                 photo.CopyToAsync(stream);
             }
 
-            var pathCriminal = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/criminalRecords",
+            var pathCriminal = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets",
                 criminalRecord.FileName);
             using (var stream = new FileStream(pathCriminal, FileMode.Create))
             {
