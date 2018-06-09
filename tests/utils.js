@@ -8,21 +8,19 @@ async function navigateToRegistationScreen(page) {
 
 async function registerVolunteer(volunteer, page) {
   
-  await page.click('#inputName');
-  await page.keyboard.type(volunteer.name);
-  await page.click('#inputEmail');
-  await page.keyboard.type(volunteer.email);
+
+  await _clearAndType(page, '#inputName', volunteer.name);
+  await _clearAndType(page, '#inputEmail', volunteer.email);
+
   await page.click('#inputBirthdate');
   await fillDateField(page, volunteer.birthdate);
-  await page.click('#inputCPF');
-  await page.keyboard.type(volunteer.cpf);
+  
+  await _clearAndType(page, '#inputCPF', volunteer.cpf);
+
   await page.select('#inputSex', volunteer.sex);
-  await page.click('#inputProfession');
-  await page.keyboard.type(volunteer.profession);
-  await page.click('#inputAddress');
-  await page.keyboard.type(volunteer.address);
-  await page.click('#inputPhone');
-  await page.keyboard.type(volunteer.phone);
+  await _clearAndType(page, '#inputProfession', volunteer.profession);
+  await _clearAndType(page, '#inputAddress', volunteer.address);
+  await _clearAndType(page, '#inputPhone', volunteer.phone);
   
   const inputPhoto = await page.$('#inputPhoto');
   const photoPath = `C:\\git\\VolunteeringSystem\\VolunteeringSystem\\wwwroot\\assets\\${volunteer.photo}`;
@@ -34,11 +32,9 @@ async function registerVolunteer(volunteer, page) {
   await inputCriminalRecord.uploadFile(criminalRecordPath);
   await page.waitFor(2000);
   
-  await page.click('#inputPassword');
-  await page.keyboard.type(volunteer.pwd);
-  await page.click('#inputPasswordCheck');
-  await page.keyboard.type(volunteer.pwd);
-  
+  await _clearAndType(page, '#inputPassword' ,volunteer.pwd);
+  await _clearAndType(page, '#inputPasswordCheck' ,volunteer.pwd);
+
   await page.keyboard.press('Enter');
   await page.waitForNavigation();
   await page.waitFor(5000);
@@ -55,8 +51,28 @@ async function fillDateField(page, date) {
   await page.keyboard.type(date.split('/')[2]);
 }
 
+async function loginAsAdmin(page) {
+  await page.click('#inputEmail');
+  await page.keyboard.type('otavio@jacobi.com');
+  await page.click('#inputPassword');
+  await page.keyboard.type('yes');
+  
+  await page.keyboard.press('Enter');
+  await page.waitForNavigation();
+}
+
+async function _clearAndType(page, selector, text) {
+  const elementHandle = await page.$(selector);
+  await elementHandle.click();
+  await elementHandle.focus();
+  await elementHandle.click({clickCount: 3});
+  await elementHandle.press('Backspace');
+  await elementHandle.type(text);
+}
+
 module.exports = {
   navigateToRegistationScreen,
   registerVolunteer,
-  fillDateField
+  fillDateField,
+  loginAsAdmin
 }
