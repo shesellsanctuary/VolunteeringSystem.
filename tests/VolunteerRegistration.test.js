@@ -2,6 +2,8 @@ const { expect } = require('chai');
 const path = require('path');
 const pg = require('pg');
 const testUsers = require('./testUsers.json');
+const { registerVolunteer, navigateToRegistationScreen } = require('./utils.js');
+
 const dbConfig = { 
   user: 'vol_sys_postgres_db_admin',
   password: 'valpwd4242',
@@ -28,11 +30,8 @@ describe('Create a new volunteer',  function() {
   });
 
   it('Should navigate to registration screen when clicking on registration button', async () => {
-    const registrationButtons = await page.$x("//a[contains(text(), 'Cadastre-se')]");
-    const registrationButton = registrationButtons[registrationButtons.length - 1];
 
-    await registrationButton.click();
-    await page.waitForNavigation();
+    await navigateToRegistationScreen(page);
 
     expect(await page.url()).to.equals(`${TEST_ENV}Volunteer/Register`);
     expect(await page.title()).to.equals('Register - Voluntariado');
@@ -44,64 +43,31 @@ describe('Create a new volunteer',  function() {
     expect(warning.length).to.equals(1);
   });
 
+  it('Should logout from main dashboard', async () => {
+    const exitButton = await page.$x("//a[contains(text(), 'Sair')]");
+    await exitButton[0].click();
+    await page.waitForNavigation();
+    expect(await page.url()).to.equals(TEST_ENV);
+
+  });
+
+  it('Should fail to register the same user', async () => {
+    
+    await navigateToRegistationScreen(page);    
+    await registerVolunteer(testUsers.volunteers[0], page);  
+    expect(await page.url()).to.equals(`${TEST_ENV}Volunteer/Register`);
+
+    const alreadyExists = await page.$x("//b[contains(text(), 'Usuário já existe, por favor insira um e-mail não cadastrado')]");
+    expect(alreadyExists.length).to.equals(1);
+  });
+
   after (async () => {
     let client = new pg.Client(dbConfig);
     await client.connect();
     await client.query(`DELETE FROM volunteer WHERE email='${testUsers.volunteers[0].email}'`)
     await client.query(`DELETE FROM credential WHERE email='${testUsers.volunteers[0].email}'`);
 
-
-    client.end();
+    await client.end();
     await page.close();
   })
 });
-
-async function registerVolunteer(volunteer, page) {
-
-  await page.click('#inputName');
-  await page.keyboard.type(volunteer.name);
-  await page.click('#inputEmail');
-  await page.keyboard.type(volunteer.email);
-  await page.click('#inputBirthdate');
-  await fillDateField(page, volunteer.birthdate);
-  await page.click('#inputCPF');
-  await page.keyboard.type(volunteer.cpf);
-  await page.select('#inputSex', volunteer.sex);
-  await page.click('#inputProfession');
-  await page.keyboard.type(volunteer.profession);
-  await page.click('#inputAddress');
-  await page.keyboard.type(volunteer.address);
-  await page.click('#inputPhone');
-  await page.keyboard.type(volunteer.phone);
-
-  const inputPhoto = await page.$('#inputPhoto');
-  const photoPath = `C:\\git\\VolunteeringSystem\\VolunteeringSystem\\wwwroot\\assets\\${volunteer.photo}`;
-  await inputPhoto.uploadFile(photoPath);
-  await page.waitFor(2000);
-
-  const inputCriminalRecord = await page.$('#inputCriminalRecord');
-  const criminalRecordPath = `C:\\git\\VolunteeringSystem\\VolunteeringSystem\\wwwroot\\assets\\${volunteer.criminalRecord}`;//path.relative(process.cwd(), __dirname + volunteer.criminalRecord);
-  await inputCriminalRecord.uploadFile(criminalRecordPath);
-  await page.waitFor(2000);
-
-  await page.click('#inputPassword');
-  await page.keyboard.type(volunteer.pwd);
-  await page.click('#inputPasswordCheck');
-  await page.keyboard.type(volunteer.pwd);
-
-  await page.keyboard.press('Enter');
-  await page.waitForNavigation();
-  await page.waitFor(5000);
-  
-}
-
-async function fillDateField(page, date) {
-  await page.keyboard.press('Backspace');
-  await page.keyboard.type(date.split('/')[0]);
-  await page.waitFor(2);
-  await page.keyboard.press('Backspace');
-  await page.keyboard.type(date.split('/')[1]);
-  await page.waitFor(2);
-  await page.keyboard.press('Backspace');
-  await page.keyboard.type(date.split('/')[2]);
-}
