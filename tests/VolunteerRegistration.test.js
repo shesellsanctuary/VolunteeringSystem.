@@ -2,9 +2,13 @@ const { expect } = require('chai');
 const path = require('path');
 const pg = require('pg');
 const testUsers = require('./testUsers.json');
-
-const connectionString = `jdbc:postgresql://volunteeringsystem-postgres-sp.cr0sahgirswg.sa-east-1.rds.amazonaws.com/orphanage?user=vol_sys_postgres_db_admin&password=valpwd4242`;
-
+const dbConfig = { 
+  user: 'vol_sys_postgres_db_admin',
+  password: 'valpwd4242',
+  database: 'orphanage',
+  host: 'volunteeringsystem-postgres-sp.cr0sahgirswg.sa-east-1.rds.amazonaws.com',
+  port: 5432
+};
 
 describe('Create a new volunteer',  function() {
     
@@ -36,16 +40,18 @@ describe('Create a new volunteer',  function() {
 
   it('Should register one volunteer', async () => {
     await registerVolunteer(testUsers.volunteers[0], page);
+    const warning = await page.$x("//span[contains(text(), 'Seu cadastro ainda não foi aprovado por nossos administradores')]");
+    expect(warning.length).to.equals(1);
   });
 
-
   after (async () => {
-    // let client = new pg.Client(connectionString);
-    // await client.connect();
-    // testUsers.volunteers.map(volunteer => { 
-    //   client.query(`DELETE FROM volunteer WHERE email='${volunteer.email}'`);
-    //   client.query(`DELETE FROM credential WHERE email='${volunteer.email}'`);
-    // });
+    let client = new pg.Client(dbConfig);
+    await client.connect();
+    await client.query(`DELETE FROM volunteer WHERE email='${testUsers.volunteers[0].email}'`)
+    await client.query(`DELETE FROM credential WHERE email='${testUsers.volunteers[0].email}'`);
+
+
+    client.end();
     await page.close();
   })
 });
