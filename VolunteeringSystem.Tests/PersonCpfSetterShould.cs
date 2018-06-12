@@ -79,9 +79,9 @@ namespace VolunteeringSystem.Tests
         [Test]
         public void StripAllPunctuation()
         {
-            var unused = new Person();
-            Assert.DoesNotThrow(() => { unused.CPF = "546.760.405-80"; });
-            Assert.AreEqual(unused.CPF, "54676040580");
+            var person = new Person();
+            Assert.DoesNotThrow(() => { person.CPF = "546.760.405-80"; });
+            Assert.AreEqual(person.CPF, "54676040580");
         }
     }
 }
