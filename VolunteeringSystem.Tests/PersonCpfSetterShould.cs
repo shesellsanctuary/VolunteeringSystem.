@@ -59,5 +59,29 @@ namespace VolunteeringSystem.Tests
                 var unused = new Person {CPF = "546.760.405-80"};
             });
         }
+
+        [Test]
+        public void ActuallySetTheValue()
+        {
+            var unused = new Person();
+            Assert.DoesNotThrow(() => { unused.CPF = "54676040580"; });
+            Assert.AreEqual(unused.CPF, "54676040580");
+        }
+
+        [Test]
+        public void StripDashes()
+        {
+            var unused = new Person();
+            Assert.DoesNotThrow(() => { unused.CPF = "546760405-80"; });
+            Assert.AreEqual(unused.CPF, "54676040580");
+        }
+
+        [Test]
+        public void StripAllPunctuation()
+        {
+            var unused = new Person();
+            Assert.DoesNotThrow(() => { unused.CPF = "546.760.405-80"; });
+            Assert.AreEqual(unused.CPF, "54676040580");
+        }
     }
 }

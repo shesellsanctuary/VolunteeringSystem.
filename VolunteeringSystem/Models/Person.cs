@@ -15,9 +15,6 @@ namespace VolunteeringSystem.Models
 
         private static bool validate_cpf(string cpf)
         {
-            if (cpf == null) return true;
-            Console.WriteLine("Hey.");
-            cpf = cpf.Trim().Replace(".", "").Replace("-", "");
             if (cpf.Length != 11) return false;
             var helper = cpf.Substring(0, 9);
             var sum = 0;
@@ -42,7 +39,12 @@ namespace VolunteeringSystem.Models
             get => _cpf;
             set
             {
-                if (!validate_cpf(value)) throw new ArgumentOutOfRangeException();
+                if (value != null)
+                {
+                    value = value.Trim().Replace(".", "").Replace("-", "");
+                    if (!validate_cpf(value)) throw new ArgumentOutOfRangeException();
+                }
+
                 _cpf = value;
             }
         }
