@@ -2,8 +2,11 @@
 
 **/*.DS_Store
 
-VolunteeringSystem/bin/
-VolunteeringSystem/obj/
+**/node_modules/
+**/package-lock.json
+
+**/bin/
+**/obj/
 
 VolunteeringSystem/wwwroot/lib/*
 VolunteeringSystem/wwwroot/images/volunteers/*
