@@ -69,5 +69,70 @@ namespace VolunteeringSystem.Controllers
         {
             return View(new AdministratorDao().GetAll());
         }
+
+        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult Add()
+        {
+            var admin = new Administrator();
+            return View(admin);
+        }
+
+        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        public IActionResult Add(Administrator Model, string type, string code)
+        {
+            if (ModelState.IsValid)
+            {
+                var _administratorDao = new AdministratorDao();
+                switch (type)
+                {
+                    case "ADMIN":
+                        _administratorDao.Add(Model);
+                        break;
+                    case "MEDIC":
+                        var medic = new Medic
+                        {
+                            name = Model.name,
+                            birthDate = Model.birthDate,
+                            CPF = Model.CPF,
+                            sex = Model.sex,
+                            credentials = Model.credentials
+                        };
+                        medic.CRM = code;
+                        _administratorDao.Add(medic);
+                        break;
+                    case "PSYCHOLOGY":
+                        var psychology = new Psychology
+                        {
+                            name = Model.name,
+                            birthDate = Model.birthDate,
+                            CPF = Model.CPF,
+                            sex = Model.sex,
+                            credentials = Model.credentials
+                        };
+                        psychology.CFP = code;
+                        _administratorDao.Add(psychology);
+                        break;
+                    case "EDUCATOR":
+                        var educator = new Educator
+                        {
+                            name = Model.name,
+                            birthDate = Model.birthDate,
+                            CPF = Model.CPF,
+                            sex = Model.sex,
+                            credentials = Model.credentials
+                        };
+                        educator.CFEP = code;
+                        _administratorDao.Add(educator);
+                        break;
+                    default:
+                        ViewBag.Error = "Informe o tipo de administrador";
+                        return View(Model);
+                }
+
+                return RedirectToAction("List");
+            }
+
+            return View(Model);
+        }
     }
 }
