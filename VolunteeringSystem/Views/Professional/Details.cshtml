@@ -1,0 +1,27 @@
+﻿@using VolunteeringSystem.Domain
+@model Professional
+@{
+	Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Detalhes do Profissional";
+}
+
+<h2>Detalhes do Profissional</h2>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<a class="pull-right" href="@Url.Action("List", "Professional")">Voltar</a>
+		<div class="row">
+			<div class="col-md-6">
+				<h4>Dados do Voluntário</h4>
+				<p><b>Nome:</b> @Model.name</p>
+				<p><b>CPF:</b> @Model.CPF</p>
+				<p><b>Sexo:</b> @Model.sex.GetString()</p>
+				<p><b>Data de Nascimento:</b> @Model.birthDate.ToShortDateString()</p>
+				<p><b>E-mail:</b> @Model.credentials.email</p>
+				<p><b>Tipo:</b> @Model.type</p>
+				<p><b>Código:</b> @Model.professionalId</p>
+				<br />
+			</div>
+		</div>
+	</div>
+</div>

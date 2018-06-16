@@ -1,11 +1,11 @@
 ﻿@using VolunteeringSystem.Domain
-@model Administrator
+@model Professional
 @{
 	Layout = "_LayoutAdmin";
-	ViewData["Title"] = "Criar Novo Administrador";
+	ViewData["Title"] = "Criar Novo Profissional";
 }
 
-<h2>Administradores</h2>
+<h2>Profissionais</h2>
 
 <div class="panel panel-default">
 	<div class="panel-body">
@@ -47,12 +47,17 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Tipo de Administrador</label>
-						<select name="type" class="form-control" onchange="changeType(this.value)">
-							<option value="ADMIN">Administrador(a)</option>
-							<option value="MEDIC">Médico(a)</option>
-							<option value="PSYCHOLOGY">Psicólogo(a)</option>
-							<option value="EDUCATOR">Pedagogo(a)</option>
+						<select asp-for="type" class="form-control" onchange="changeType(this.value)">
+							<option value="Médico">Médico(a)</option>
+							<option value="Psicólogo">Psicólogo(a)</option>
+							<option value="Pedagogo">Pedagogo(a)</option>
 						</select>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="codeDiv">
+						<label class="control-label" id="codeLabel">Código</label>
+						<input type="text" asp-for="professionalId" class="form-control" />
 					</div>
 				</div>
 			</div>

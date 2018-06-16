@@ -1,12 +1,12 @@
-﻿@model IEnumerable<Administrator>
+﻿@model IEnumerable<Professional>
 @{
-    ViewData["Title"] = "Administradores " + ViewBag.Status;
+    ViewData["Title"] = "Profissionais ";
     Layout = "_LayoutAdmin";
 }
 
 <h2>
-	Administradores
-	<a href="@Url.Action("Add", "Admin")" class="btn btn-success pull-right">Criar Novo</a>
+	Profissionais
+	<a href="@Url.Action("Add", "Professional")" class="btn btn-success pull-right">Criar Novo</a>
 </h2>
 
 <div class="panel panel-default">
@@ -14,6 +14,7 @@
         <tr>
             <th>Nome</th>
 			<th>CPF</th>
+            <th>Tipo</th>
 			<th>Contato</th>
             <th></th>
         </tr>
@@ -22,8 +23,9 @@
             <tr>
                 <td>@item.name</td>
 				<td>@item.CPF</td>
+                <td>@item.type</td>
 				<td>@item.credentials.email</td>
-				<td><a class="btn btn-success" href="@Url.Action("Details", "Admin", new { adminId = item.id })">Detalhes</a></td>
+                <td><a class="btn btn-success" href="@Url.Action("Details", "Professional", new { professionalId = item.id })" >Detalhes</a></td>
             </tr>
         }
     </table>

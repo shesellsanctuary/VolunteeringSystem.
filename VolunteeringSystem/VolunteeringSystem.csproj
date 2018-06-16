@@ -22,6 +22,7 @@
     <Content Remove="Views\Admin\Logout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Professional\" />
     <Folder Include="wwwroot\images\criminalRecords\" />
     <Folder Include="wwwroot\images\volunteers\" />
   </ItemGroup>
