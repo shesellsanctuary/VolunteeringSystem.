@@ -1,0 +1,115 @@
+﻿@using VolunteeringSystem.Domain
+@model Administrator
+@{
+	Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Criar Novo Administrador";
+}
+
+<h2>Administradores</h2>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<a class="pull-right" href="@Url.Action("List", "Admin")">Voltar</a>
+		<h4>Criar Novo</h4>
+		<form action="" method="post">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="control-label">Nome</label>
+						<input type="text" asp-for="name" class="form-control" />
+						<span asp-validation-for="name"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">CPF</label>
+						<input type="text" asp-for="CPF" class="form-control" />
+						<span asp-validation-for="CPF"></span>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Sexo</label>
+						@Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputSex" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Data de Nascimento</label>
+						<input type="date" asp-for="birthDate" value="@Model.birthDate.ToShortDateString()" class="form-control" />
+						<span asp-validation-for="birthDate"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Tipo de Administrador</label>
+						<select name="type" class="form-control" onchange="changeType(this.value)">
+							<option value="ADMIN">Administrador(a)</option>
+							<option value="MEDIC">Médico(a)</option>
+							<option value="PSYCHOLOGY">Psicólogo(a)</option>
+							<option value="EDUCATOR">Pedagogo(a)</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="codeDiv" style="display: none;">
+						<label class="control-label" id="codeLabel">Código</label>
+						<input type="text" name="code" class="form-control" id="code" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">E-mail</label>
+						<input type="email" asp-for="credentials.email" class="form-control" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Senha</label>
+						<input type="password" asp-for="credentials.password" class="form-control" />
+					</div>
+				</div>
+			</div>
+			<div class="text-right">
+				<button type="submit" class="btn btn-success">Salvar</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+	function changeType(type) {
+		var codeDiv = document.getElementById('codeDiv');
+		var codeLabel = document.getElementById('codeLabel');
+		var code = document.getElementById('code');
+		code.value = '';
+
+		switch (type.toUpperCase())
+		{
+			case "ADMIN":
+				codeDiv.style.display = 'none';
+				break;
+			case "MEDIC":
+				codeLabel.innerText = 'CRM';
+				codeDiv.style.display = 'block';
+				break;
+			case "PSYCHOLOGY":
+				codeLabel.innerText = 'CFP';
+				codeDiv.style.display = 'block';
+				break;
+			case "EDUCATOR":
+				codeLabel.innerText = 'CFEP';
+				codeDiv.style.display = 'block';
+				break;
+			default:
+				codeDiv.style.display = 'none';
+				break;
+		}
+	}
+</script>
