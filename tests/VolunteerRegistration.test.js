@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const path = require('path');
 const pg = require('pg');
 const testUsers = require('./testUsers.json');
-const { registerVolunteer, navigateToRegistationScreen, loginAsAdmin } = require('./utils.js');
+const { registerVolunteer, navigateToRegistationScreen, loginAsAdmin, logout } = require('./utils.js');
 
 const dbConfig = { 
   user: 'vol_sys_postgres_db_admin',
@@ -47,11 +47,8 @@ describe('Create a new volunteer',  function() {
   });
 
   it('Should logout from main dashboard', async () => {
-    const exitButton = await page.$x("//a[contains(text(), 'Sair')]");
-    await exitButton[0].click();
-    await page.waitForNavigation();
+    await logout(page);
     expect(await page.url()).to.equals(TEST_ENV);
-
   });
 
   it('Should fail to register the same user', async () => {

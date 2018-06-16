@@ -8,32 +8,31 @@ async function navigateToRegistationScreen(page) {
 
 async function registerVolunteer(volunteer, page) {
   
-
-  await _clearAndType(page, '#inputName', volunteer.name);
-  await _clearAndType(page, '#inputEmail', volunteer.email);
+  await clearAndType(page, '#inputName', volunteer.name);
+  await clearAndType(page, '#inputEmail', volunteer.email);
 
   await page.click('#inputBirthdate');
   await fillDateField(page, volunteer.birthdate);
   
-  await _clearAndType(page, '#inputCPF', volunteer.cpf);
+  await clearAndType(page, '#inputCPF', volunteer.cpf);
 
   await page.select('#inputSex', volunteer.sex);
-  await _clearAndType(page, '#inputProfession', volunteer.profession);
-  await _clearAndType(page, '#inputAddress', volunteer.address);
-  await _clearAndType(page, '#inputPhone', volunteer.phone);
+  await clearAndType(page, '#inputProfession', volunteer.profession);
+  await clearAndType(page, '#inputAddress', volunteer.address);
+  await clearAndType(page, '#inputPhone', volunteer.phone);
   
   const inputPhoto = await page.$('#inputPhoto');
-  const photoPath = `C:\\git\\VolunteeringSystem\\VolunteeringSystem\\wwwroot\\assets\\${volunteer.photo}`;
+  const photoPath = `.\\assets\\${volunteer.photo}`;
   await inputPhoto.uploadFile(photoPath);
   await page.waitFor(2000);
   
   const inputCriminalRecord = await page.$('#inputCriminalRecord');
-  const criminalRecordPath = `C:\\git\\VolunteeringSystem\\VolunteeringSystem\\wwwroot\\assets\\${volunteer.criminalRecord}`;//path.relative(process.cwd(), __dirname + volunteer.criminalRecord);
+  const criminalRecordPath = `.\\assets\\${volunteer.criminalRecord}`;//path.relative(process.cwd(), __dirname + volunteer.criminalRecord);
   await inputCriminalRecord.uploadFile(criminalRecordPath);
   await page.waitFor(2000);
   
-  await _clearAndType(page, '#inputPassword' ,volunteer.pwd);
-  await _clearAndType(page, '#inputPasswordCheck' ,volunteer.pwd);
+  await clearAndType(page, '#inputPassword' ,volunteer.pwd);
+  await clearAndType(page, '#inputPasswordCheck' ,volunteer.pwd);
 
   await page.keyboard.press('Enter');
   await page.waitForNavigation();
@@ -51,17 +50,25 @@ async function fillDateField(page, date) {
   await page.keyboard.type(date.split('/')[2]);
 }
 
-async function loginAsAdmin(page) {
+async function _login(page, credentials) {
   await page.click('#inputEmail');
-  await page.keyboard.type('otavio@jacobi.com');
+  await page.keyboard.type(credentials.user);
   await page.click('#inputPassword');
-  await page.keyboard.type('yes');
-  
+  await page.keyboard.type(credentials.password);
+
   await page.keyboard.press('Enter');
   await page.waitForNavigation();
 }
 
-async function _clearAndType(page, selector, text) {
+async function loginAsAdmin(page) {
+  await _login(page, {user:'otavio@jacobi.com', password: 'yes'});
+}
+
+async function loginAsVolunteer(page, customUser) {
+  await _login(page, customUser || {user:'test@volunteer.com', password: 'test'});
+}
+
+async function clearAndType(page, selector, text) {
   const elementHandle = await page.$(selector);
   await elementHandle.click();
   await elementHandle.focus();
@@ -70,9 +77,18 @@ async function _clearAndType(page, selector, text) {
   await elementHandle.type(text);
 }
 
+async function logout(page) {
+  const exitButton = await page.$x("//a[contains(text(), 'Sair')]");
+  await exitButton[0].click();
+  await page.waitForNavigation();
+}
+
 module.exports = {
   navigateToRegistationScreen,
   registerVolunteer,
   fillDateField,
-  loginAsAdmin
+  loginAsAdmin,
+  loginAsVolunteer,
+  clearAndType,
+  logout
 }
