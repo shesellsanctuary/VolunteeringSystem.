@@ -9,24 +9,44 @@ namespace VolunteeringSystem.Helpers.Email
         private static string host = "smtp.gmail.com";
         private static int port = 587;
 
-        public static void SendNewStatus(string receiver_email, int new_status)
+        public static void SendNewVolunteerStatus(string receiver_email, int new_status)
         {
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-            smtp.UseDefaultCredentials = false;
-            smtp.Host = host;
-            smtp.Port = port;
-            smtp.EnableSsl = true;
-            smtp.Credentials = new System.Net.NetworkCredential(email, password);
+            System.Net.Mail.SmtpClient client = getClient();
 
             System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage();
             mailMessage.From = new System.Net.Mail.MailAddress(email);
             mailMessage.To.Add(receiver_email);
-            mailMessage.Body = getEmailBody(new_status);
-            mailMessage.Subject = getEmailSubject(new_status);
-            smtp.Send(mailMessage);
+            mailMessage.Body = getVolunteerEmailBody(new_status);
+            mailMessage.Subject = getVolunteerEmailSubject(new_status);
+            client.Send(mailMessage);
         }
 
-        private static string getEmailBody(int status)
+        //TODO: remove duplicated code kappa
+        public static void SendNewEventStatus(string receiver_email, int new_status, string justification)
+        {
+            System.Net.Mail.SmtpClient client = getClient();
+
+            System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage();
+            mailMessage.From = new System.Net.Mail.MailAddress(email);
+            mailMessage.To.Add(receiver_email);
+            mailMessage.Body = getEventEmailBody(new_status, justification);
+            mailMessage.Subject = getEventEmailSubject(new_status);
+            client.Send(mailMessage);
+        }
+
+        private static System.Net.Mail.SmtpClient getClient()
+        {
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+            client.UseDefaultCredentials = false;
+            client.Host = host;
+            client.Port = port;
+            client.EnableSsl = true;
+            client.Credentials = new System.Net.NetworkCredential(email, password);
+
+            return client;
+        }
+
+        private static string getVolunteerEmailBody(int status)
         {
 
             if (status == 1) return @"
@@ -53,12 +73,51 @@ namespace VolunteeringSystem.Helpers.Email
                     Equipe do sistema de voluntariado de orfanatos.";
         }
 
-        private static string getEmailSubject(int status)
+        private static string getVolunteerEmailSubject(int status)
         {
             if (status == 1) return "Aprovação confirmada";
             if (status == 2) return "Conta bloqueada";
 
             return "Aprovação em progresso";
+        }
+
+        private static string getEventEmailBody(int status, string justification)
+        {
+
+            if (status == 1) return @"
+                                Olá,
+                                O seu evento no sistema de voluntariado de orfanatos foi aprovada !
+                                Agradecemos o seu evento e aguardamos sua presença.
+
+                                Até breve,
+                                Equipe do sistema de voluntariado de orfanatos.";
+
+            if (status == 2) return @"
+                                Olá,
+                                O seu evento no sistema de voluntariados não foi aprovado e está agora bloqueada e a justificativa é: 
+                                " +
+                                justification +
+                                @"
+
+                                Qualquer dúvidas você pode entrar em contato com nós através de volunteering.system@gmail.com
+
+                                Atenciosamente,
+                                Equipe do sistema de voluntariado de orfanatos.";
+            return @"
+                    Olá,
+                    Agradecemos a criação do seu evento na nossa plataforma de ajuda para voluntários.
+                    No momento a aprovação do seu evento está em andamento.
+                            
+                    Agradecemos a compreensão,
+                    Equipe do sistema de voluntariado de orfanatos.";
+        }
+
+        private static string getEventEmailSubject(int status)
+        {
+            if (status == 1) return "Evento aprovado";
+            if (status == 2) return "Evento bloqueado";
+
+            return "Evento em aprovação";
         }
 
     }

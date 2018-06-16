@@ -93,7 +93,7 @@ namespace VolunteeringSystem.Controllers
         public IActionResult Homolog(int volunteerId, int newStatus, string email)
         {
             _volunteerDao.ChangeStatus(volunteerId, newStatus);
-            SendMail.SendNewStatus(email, newStatus);
+            SendMail.SendNewVolunteerStatus(email, newStatus);
             return RedirectToAction("List", new {status = VolunteerStatus.Waiting});
         }
 

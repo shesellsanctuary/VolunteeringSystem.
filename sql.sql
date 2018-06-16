@@ -37,6 +37,7 @@ CREATE TABLE event
   justification TEXT
 );
 
+
 CREATE TABLE credential
 (
   email    TEXT NOT NULL UNIQUE PRIMARY KEY,
@@ -103,7 +104,9 @@ INSERT INTO credential (email, password) VALUES
   ('otavio@jacobi.com', 'yes'),
   ('pietra@castro.com', 'no'),
   ('eduardo@costa.com', 'no'),
-  ('pedro@cardoso.com', 'no');
+  ('pedro@cardoso.com', 'no'),
+  ('otaviojacobi@hotmail.com', 'no'),
+  ('test@volunteer.com', 'test');
 
 INSERT INTO administrator (name, birthdate, cpf, sex, email)
 VALUES
@@ -117,4 +120,21 @@ INSERT INTO volunteer (name, birthdate, cpf, sex, email, status, profession, add
 VALUES
   ('Pietra Castro', cast('1993-06-06' AS TIMESTAMP), '094.227.889-51', 'F', 'pietra@castro.com', 0, 'Jornalista', 'Avenida da Rua, 800', '+55-51-98846-5555', '1.jpg', '1.pdf'),
   ('Eduardo Costa', cast('1992-05-05' AS TIMESTAMP), '509.324.075-36', 'M', 'eduardo@costa.com', 1, 'Professor', 'Avenida da Rua, 900', '+55-51-98846-5555', '2.jpg', '2.pdf'),
-  ('Pedro Cardoso', cast('1991-04-04' AS TIMESTAMP), '509.324.075-36', 'M', 'pedro@cardoso.com', 2, 'Ladrão', 'Avenida da Rua, 1000', '+55-51-98846-5555', '3.jpg', '3.pdf');
+  ('Pedro Cardoso', cast('1991-04-04' AS TIMESTAMP), '509.324.075-36', 'M', 'pedro@cardoso.com', 2, 'Ladrão', 'Avenida da Rua, 1000', '+55-51-98846-5555', '3.jpg', '3.pdf'),
+  ('Test Volunteer', cast('1991-04-04' AS TIMESTAMP), '038.598.170-86', 'M', 'test@volunteer.com', 1, 'Tester', 'Test, -1', '+55-51-98846-5552', '4.jpg', '4.pdf'),
+  ('Otavio Email', cast('1993-06-06' AS TIMESTAMP), '477.840.220-00', 'M', 'otaviojacobi@hotmail.com', 0, 'Jornalista', 'Avenida da Rua, 800', '+55-51-98846-5555', '5.jpg', '5.pdf');
+ 
+INSERT INTO event (institute, age_group_id, kid_limit, date, description, volunteer_id, status) VALUES
+  ('Orfanato Lar Esperança', 2, 3, cast('2018-06-06' AS TIMESTAMP),'Jogar bola', 18, 0),
+  ('Orfanato Treze de Maio', 1, 5, cast('2018-07-06' AS TIMESTAMP),'Jogar volei', 18, 0),
+  ('Orfanato Treze de Maio', 3, 1, cast('2018-06-07' AS TIMESTAMP),'Brincar de carrinho', 18, 1),
+  ('Abrigo João Paulo II', 2, 3, cast('2018-05-06' AS TIMESTAMP),'Oficina de profissoes', 18, 1),
+  ('Orfanato Treze de Maio', 1, 2, cast('2018-11-11' AS TIMESTAMP),'Jogar basquete', 18, 2),
+  ('Orfanato Lar Esperança', 4, 4, cast('2018-12-12' AS TIMESTAMP),'Fazer bolo', 18, 2),
+  ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP),'Ir no cinema', 18, 3),
+  ('Orfanato Lar Esperança', 1, 3, cast('2018-08-12' AS TIMESTAMP),'Brincar de empinar pipa', 18, 0);
+  
+SELECT * FROM credential;
+SELECT * FROM volunteer;
+SELECT * FROM administrator;
+SELECT * FROM event;
