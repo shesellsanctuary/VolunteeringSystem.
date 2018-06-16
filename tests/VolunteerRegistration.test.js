@@ -51,16 +51,17 @@ describe('Create a new volunteer',  function() {
     expect(await page.url()).to.equals(TEST_ENV);
   });
 
-  it('Should fail to register the same user', async () => {
-    await navigateToRegistationScreen(page);    
-    await registerVolunteer(testUsers.volunteers[0], page);  
-    expect(await page.url()).to.equals(`${TEST_ENV}Volunteer/Register`);
+  // it('Should fail to register the same user', async () => {
+  //   await navigateToRegistationScreen(page);    
+  //   await registerVolunteer(testUsers.volunteers[0], page);  
+  //   expect(await page.url()).to.equals(`${TEST_ENV}Volunteer/Register`);
 
-    const alreadyExists = await page.$x("//b[contains(text(), 'Usuário já existe, por favor insira um e-mail não cadastrado')]");
-    expect(alreadyExists.length).to.equals(1);
-  });
+  //   const alreadyExists = await page.$x("//b[contains(text(), 'Usuário já existe, por favor insira um e-mail não cadastrado')]");
+  //   expect(alreadyExists.length).to.equals(1);
+  // });
 
   it('Should register second volunteer', async () => {
+    await navigateToRegistationScreen(page);
     await registerVolunteer(testUsers.volunteers[1], page);
     const warning = await page.$x("//span[contains(text(), 'Seu cadastro ainda não foi aprovado por nossos administradores')]");
     expect(warning.length).to.equals(1);
