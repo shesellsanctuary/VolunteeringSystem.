@@ -29,7 +29,7 @@ namespace VolunteeringSystem.DAO
                 var list = sql
                     .Query<Volunteer>(
                         "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record, creation_date FROM volunteer WHERE status = @status ORDER BY creation_date",
-                        new {status}).AsList();
+                        new { status }).ToList();
                 return list;
             }
         }
@@ -38,9 +38,12 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                return sql.QueryFirstOrDefault<Volunteer>(
+                Volunteer volunteer = sql.QueryFirstOrDefault<Volunteer>(
                     "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record, creation_date FROM volunteer WHERE id = @id",
-                    new {id = volunteerId});
+                    new { id = volunteerId });
+                volunteer.credentials = sql.QueryFirst<Credentials>("SELECT * FROM credential JOIN volunteer ON credential.email = volunteer.email WHERE id = @id", 
+                    new { id = volunteerId });
+                return volunteer;
             }
         }
 
