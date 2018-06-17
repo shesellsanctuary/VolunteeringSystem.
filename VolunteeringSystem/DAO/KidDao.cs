@@ -19,5 +19,13 @@ namespace VolunteeringSystem.DAO
                 return sql.Query<Kid>("SELECT * FROM kid").AsList();
             }
         }
+
+        public int Quantity()
+        {
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
+            {
+                return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM kid");
+            }
+        }
     }
 }

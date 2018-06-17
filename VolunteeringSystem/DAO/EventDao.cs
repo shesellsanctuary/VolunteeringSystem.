@@ -141,5 +141,16 @@ namespace VolunteeringSystem.DAO
                 return Convert.ToBoolean(response);
             }
         }
+
+        public int Quantity(int? status)
+        {
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
+            {
+                if (status == null)
+                    return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event");
+                else
+                    return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event WHERE status = " + status);
+            }
+        }
     }
 }

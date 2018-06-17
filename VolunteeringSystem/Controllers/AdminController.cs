@@ -1,5 +1,4 @@
-﻿using System;
-using Admin.Helpers;
+﻿using Admin.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -66,6 +65,11 @@ namespace VolunteeringSystem.Controllers
         [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult Dashboard()
         {
+            ViewBag.volunteersWaitingQtd = new VolunteerDao().Quantity(0);
+            ViewBag.eventsWaitingQtd = new EventDao().Quantity(0);
+            ViewBag.eventsRealizedQtd = new EventDao().Quantity(3);
+            ViewBag.kidsQtd = new KidDao().Quantity();
+
             return View();
         }
 
