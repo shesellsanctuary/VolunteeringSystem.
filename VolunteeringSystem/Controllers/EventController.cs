@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Domain;
 using VolunteeringSystem.Models;
+using VolunteeringSystem.Helpers.Email;
 
 namespace VolunteeringSystem.Controllers
 {
@@ -90,9 +91,10 @@ namespace VolunteeringSystem.Controllers
 
         [HttpPost]
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
-        public IActionResult Homolog(int eventId, int newStatus, string justification)
+        public IActionResult Homolog(int eventId, int newStatus, string justification, string email)
         {
             _eventDao.Homolog(eventId, newStatus, justification);
+            SendMail.SendNewEventStatus(email, newStatus, justification);
             return RedirectToAction("List", new {status = (int) EventStatus.Waiting});
         }
     }

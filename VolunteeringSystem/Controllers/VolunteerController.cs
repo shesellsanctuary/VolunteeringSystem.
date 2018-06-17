@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using VolunteeringSystem.DAO;
 using VolunteeringSystem.Domain;
 using VolunteeringSystem.Models;
+using System.Threading;
+using System.Threading.Tasks;
+using VolunteeringSystem.Helpers.Email;
 
 namespace VolunteeringSystem.Controllers
 {
@@ -87,9 +90,10 @@ namespace VolunteeringSystem.Controllers
 
         [HttpPost]
         [TypeFilter(typeof(IsLoggedAdminAttribute))]
-        public IActionResult Homolog(int volunteerId, int newStatus)
+        public IActionResult Homolog(int volunteerId, int newStatus, string email)
         {
             _volunteerDao.ChangeStatus(volunteerId, newStatus);
+            SendMail.SendNewVolunteerStatus(email, newStatus);
             return RedirectToAction("List", new {status = VolunteerStatus.Waiting});
         }
 
@@ -137,5 +141,6 @@ namespace VolunteeringSystem.Controllers
             HttpContext.Session.SetString("user", "");
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
