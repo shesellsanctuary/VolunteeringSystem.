@@ -11,6 +11,7 @@ using VolunteeringSystem.Helpers.Email;
 
 namespace VolunteeringSystem.Controllers
 {
+    [TypeFilter(typeof(IsLoggedAttribute))]
     public class EventController : Controller
     {
         private readonly AgeGroupDao _ageGroupDao = new AgeGroupDao();
@@ -24,8 +25,7 @@ namespace VolunteeringSystem.Controllers
         }
 
         /* VOLUNTEER ACTIONS */
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet, CheckAccess(new string[] { "VOLUNTEER" })]
         public IActionResult Index()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
@@ -37,8 +37,7 @@ namespace VolunteeringSystem.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpPost, CheckAccess(new string[] { "VOLUNTEER" })]
         public IActionResult Index(Event Model)
         {
             Model.institute = "";
@@ -53,23 +52,20 @@ namespace VolunteeringSystem.Controllers
             return View(Model);
         }
 
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet, CheckAccess(new string[] { "VOLUNTEER" })]
         public IActionResult Denied()
         {
             return View();
         }
 
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet, CheckAccess(new string[] { "VOLUNTEER" })]
         public IActionResult Created()
         {
             return View();
         }
 
         /* ADMIN ACTIONS */
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult List(int status)
         {
             var ageGroups = _ageGroupDao.GetAll();
@@ -79,8 +75,7 @@ namespace VolunteeringSystem.Controllers
             return View(eventList);
         }
 
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult Homolog(int eventId)
         {
             var anEvent = _eventDao.Get(eventId);
@@ -89,8 +84,7 @@ namespace VolunteeringSystem.Controllers
             return View(anEvent);
         }
 
-        [HttpPost]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpPost, CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult Homolog(int eventId, int newStatus, string justification, string email)
         {
             _eventDao.Homolog(eventId, newStatus, justification);

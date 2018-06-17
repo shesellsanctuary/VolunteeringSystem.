@@ -11,6 +11,11 @@ namespace VolunteeringSystem.Controllers
             return View();
         }
 
+        public IActionResult Denied()
+        {
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});

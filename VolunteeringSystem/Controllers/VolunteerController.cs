@@ -24,8 +24,7 @@ namespace VolunteeringSystem.Controllers
         }
 
         /* VOLUNTEER ACTIONS */
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedVolunteerAttribute))]
+        [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "VOLUNTEER" })]
         public IActionResult Dashboard()
         {
             var volunteerId = Convert.ToInt32(HttpContext.Session.GetString("volunteerId"));
@@ -71,8 +70,7 @@ namespace VolunteeringSystem.Controllers
         }
 
         /* ADMIN ACTIONS */
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN" })]
         public IActionResult List(int status)
         {
             var volunteerList = _volunteerDao.GetByStatus(status);
@@ -80,16 +78,14 @@ namespace VolunteeringSystem.Controllers
             return View(volunteerList);
         }
 
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Homolog(int volunteerId)
         {
             var volunteer = _volunteerDao.Get(volunteerId);
             return View(volunteer);
         }
 
-        [HttpPost]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpPost, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Homolog(int volunteerId, int newStatus, string email)
         {
             _volunteerDao.ChangeStatus(volunteerId, newStatus);

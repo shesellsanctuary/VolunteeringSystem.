@@ -17,17 +17,17 @@ namespace VolunteeringSystem.Controllers
             _logger = logger;
         }
 
-        public void SetSession(Administrator administrator)
+        public void SetSession(string name, string type)
         {
-            if (administrator == null)
+            if (name == null || type == null)
             {
                 HttpContext.Session.SetString("user", "");
                 HttpContext.Session.SetString("type", "");
                 return;
             }
 
-            HttpContext.Session.SetString("user", administrator.name);
-            HttpContext.Session.SetString("type", "ADMIN");
+            HttpContext.Session.SetString("user", name);
+            HttpContext.Session.SetString("type", type.ToUpper());
         }
 
         [HttpGet]
@@ -39,45 +39,50 @@ namespace VolunteeringSystem.Controllers
         [HttpPost]
         public IActionResult Login(string user, string password)
         {
-            try
+            var admin = new AdministratorDao().Login(user, password);
+            if (admin != null)
             {
-                SetSession(new AdministratorDao().Login(user, password));
+                SetSession(admin.name, "ADMIN");
                 return RedirectToAction("Dashboard");
             }
-            catch (Exception exception)
+            var professional = new ProfessionalDao().Login(user, password);
+            if (professional != null)
             {
-                _logger.LogWarning(exception.Message);
-                ViewBag.error = "Usuário ou senha estão incorretos!";
-                return View();
+                SetSession(professional.name, "PROFESSIONAL");
+                return RedirectToAction("Dashboard");
             }
+
+            ViewBag.error = "Usuário ou senha estão incorretos!";
+            return View();
         }
 
+        [TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult Logout()
         {
-            SetSession(null);
+            SetSession(null, null);
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        [TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult Dashboard()
         {
             return View();
         }
 
+        [HttpGet, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult List()
         {
             return View(new AdministratorDao().GetAll());
         }
 
-        [HttpGet, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpGet, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Add()
         {
             var admin = new Administrator();
             return View(admin);
         }
 
-        [HttpPost, TypeFilter(typeof(IsLoggedAdminAttribute))]
+        [HttpPost, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Add(Administrator Model, string type, string code)
         {
             if (ModelState.IsValid)
@@ -90,7 +95,7 @@ namespace VolunteeringSystem.Controllers
             return View(Model);
         }
 
-        [HttpGet]
+        [HttpGet, TypeFilter(typeof(IsLoggedAttribute)), CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Details(int adminId)
         {
             return View(new AdministratorDao().Get(adminId));

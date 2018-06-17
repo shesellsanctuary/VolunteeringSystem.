@@ -5,27 +5,23 @@ using VolunteeringSystem.Models;
 
 namespace VolunteeringSystem.Controllers
 {
+    [TypeFilter(typeof(IsLoggedAttribute))]
     public class ProfessionalController : Controller
     {
-        [HttpGet]
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
+        [HttpGet, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult List()
         {
             return View(new ProfessionalDao().GetAll());
         }
 
-        [HttpGet]
+        [HttpGet, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Add()
         {
             var professional = new Professional();
             return View(professional);
         }
 
-        [HttpPost]
+        [HttpPost, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Add(Professional Model)
         {
             if (ModelState.IsValid)
@@ -38,7 +34,7 @@ namespace VolunteeringSystem.Controllers
             return View(Model);
         }
 
-        [HttpGet]
+        [HttpGet, CheckAccess(new string[] { "ADMIN" })]
         public IActionResult Details(int professionalId)
         {
             return View(new ProfessionalDao().Get(professionalId));

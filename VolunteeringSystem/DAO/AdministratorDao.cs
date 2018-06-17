@@ -24,17 +24,12 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                try
-                {
-                    var id = sql.QueryFirst<int>(
-                        @"SELECT id FROM administrator JOIN credential ON administrator.email = credential.email WHERE credential.email = @email AND credential.password = @password",
-                        new {email, password});
-                    return Get(id);
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException("User not found in the database.");
-                }
+                var id = sql.QueryFirstOrDefault<int>(
+                    @"SELECT id FROM administrator JOIN credential ON administrator.email = credential.email WHERE credential.email = @email AND credential.password = @password",
+                    new {email, password});
+                if (id == 0)
+                    return null;
+                return Get(id);
             }
         }
 

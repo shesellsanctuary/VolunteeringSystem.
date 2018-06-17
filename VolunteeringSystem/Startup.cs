@@ -26,8 +26,8 @@ namespace VolunteeringSystem
             services.AddSession();
             services.AddLogging();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IsLoggedAdminAttribute>();
-            services.AddScoped<IsLoggedVolunteerAttribute>();
+            services.AddScoped<IsLoggedAttribute>();
+            services.AddScoped<CheckAccessAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
