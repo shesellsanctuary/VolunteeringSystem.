@@ -32,6 +32,7 @@ CREATE TABLE event
   date          TIMESTAMP NOT NULL,
   description   TEXT      NOT NULL,
   volunteer_id  INT       NOT NULL,
+  evaluated     BOOLEAN NOT NULL DEFAULT FALSE,
   creation_date TIMESTAMP DEFAULT now(),
   status        INT       DEFAULT 0,
   justification TEXT
