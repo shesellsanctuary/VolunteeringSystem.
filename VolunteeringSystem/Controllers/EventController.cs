@@ -85,10 +85,13 @@ namespace VolunteeringSystem.Controllers
         }
 
         [HttpPost, CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
-        public IActionResult Homolog(int eventId, int newStatus, string justification, string email)
+        public IActionResult Homolog(int eventId, int newStatus, string justification, string email, string comentary)
         {
-            _eventDao.Homolog(eventId, newStatus, justification);
-            SendMail.SendNewEventStatus(email, newStatus, justification);
+            _eventDao.Homolog(eventId, newStatus, justification, comentary);
+            if(newStatus == 1 || newStatus == 2)
+            {
+                SendMail.SendNewEventStatus(email, newStatus, justification);
+            }
             return RedirectToAction("List", new {status = (int) EventStatus.Waiting});
         }
     }

@@ -103,6 +103,7 @@ namespace VolunteeringSystem.Controllers
                 return;
             }
 
+            HttpContext.Session.SetString("user", volunteer.name);
             HttpContext.Session.SetString("volunteerId", volunteer.id.ToString());
             HttpContext.Session.SetString("volunteerName", volunteer.name);
             HttpContext.Session.SetString("type", "VOLUNTEER");

@@ -32,7 +32,7 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql.Query<Event>(
-                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification FROM event WHERE status = @status ORDER BY creation_date",
+                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification, evaluated FROM event WHERE status = @status ORDER BY creation_date",
                     new {status}).AsList();
                 return list;
             }
@@ -123,19 +123,21 @@ namespace VolunteeringSystem.DAO
         /// <param name="status"> event status </param>
         /// <param name="justification"> event justification </param>
         /// <returns> true: edited | false: error </returns>
-        public bool Homolog(int id, int status, string justification)
+        public bool Homolog(int id, int status, string justification, string comentary)
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE event SET 
                                                     status = @status, 
-                                                    justification = @justification 
+                                                    justification = @justification,
+                                                    comentary = @comentary
                                             WHERE id = @id",
                     new
                     {
                         id,
                         status,
-                        justification
+                        justification,
+                        comentary
                     });
 
                 return Convert.ToBoolean(response);

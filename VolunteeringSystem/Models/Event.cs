@@ -27,5 +27,7 @@ namespace VolunteeringSystem.Models
         public Volunteer volunteer { get; set; }
 
         public string justification { get; set; }
+
+        public bool evaluated { get; set; }
     }
 }
