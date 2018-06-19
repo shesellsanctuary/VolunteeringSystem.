@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Event>
 @{
     ViewData["Title"] = "Eventos ";
-    Layout = "_LayoutAdmin";
+    Layout = "_LayoutVolunteer";
 }
 
 <h2>Histórico de Eventos</h2>
@@ -23,7 +23,7 @@
                 <td>@item.description</td>
                 <td>@item.date.ToShortDateString()</td>
                 <td>
-                    <a href="@Url.Action("Homolog", "Event", new {eventId = item.id})" class="btn btn-success">Detalhes</a>
+                    <a href="@Url.Action("Display", "Event", new {eventId = item.id})" class="btn btn-success">Detalhes</a>
                 </td>
             </tr>
         }
