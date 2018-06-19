@@ -34,7 +34,7 @@ namespace VolunteeringSystem.Models
 
         public Sex sex { get; set; }
 
-        public DateTime createdAt { get; set; }
+        public DateTime creation_date { get; set; }
 
         private static bool validate_cpf(string cpf)
         {
