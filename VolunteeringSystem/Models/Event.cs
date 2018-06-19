@@ -28,6 +28,8 @@ namespace VolunteeringSystem.Models
 
         public string justification { get; set; }
 
-        public bool evaluated { get; set; }
+        public int grade { get; set; }
+
+        public string comment { get; set; }
     }
 }

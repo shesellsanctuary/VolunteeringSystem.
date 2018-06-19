@@ -17,16 +17,15 @@
         </tr>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>@item.id</td>
-            <td>@item.ageGroup.label</td>
-            <td>@item.description</td>
-            <td>@item.date.ToShortDateString()</td>
-            <td>@item.evaluated</td>
-            <td>
-                <a href="@Url.Action("Homolog", "Event", new {eventId = item.id})" class="btn btn-success">Detalhes</a>
-            </td>
-        </tr>
+            <tr>
+                <td>@item.id</td>
+                <td>@item.ageGroup.label</td>
+                <td>@item.description</td>
+                <td>@item.date.ToShortDateString()</td>
+                <td>
+                    <a href="@Url.Action("Homolog", "Event", new {eventId = item.id})" class="btn btn-success">Detalhes</a>
+                </td>
+            </tr>
         }
     </table>
 </div>

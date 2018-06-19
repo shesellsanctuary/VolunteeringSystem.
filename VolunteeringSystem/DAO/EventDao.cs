@@ -32,7 +32,7 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var list = sql.Query<Event>(
-                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification, evaluated FROM event WHERE status = @status ORDER BY creation_date",
+                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification FROM event WHERE status = @status ORDER BY creation_date",
                     new {status}).AsList();
                 return list;
             }
@@ -150,8 +150,7 @@ namespace VolunteeringSystem.DAO
             {
                 if (status == null)
                     return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event");
-                else
-                    return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event WHERE status = " + status);
+                return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event WHERE status = " + status);
             }
         }
     }

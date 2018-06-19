@@ -32,11 +32,11 @@ CREATE TABLE event
   date          TIMESTAMP NOT NULL,
   description   TEXT      NOT NULL,
   volunteer_id  INT       NOT NULL,
-  evaluated     BOOLEAN   NOT NULL DEFAULT FALSE,
-  creation_date TIMESTAMP          DEFAULT now(),
-  status        INT                DEFAULT 0,
+  creation_date TIMESTAMP DEFAULT now(),
+  status        INT       DEFAULT 0,
   justification TEXT,
-  comentary     TEXT
+  grade         INT,
+  comment       TEXT
 );
 
 CREATE TABLE credential
@@ -49,7 +49,7 @@ CREATE TABLE person
 (
   id        SERIAL PRIMARY KEY NOT NULL,
   name      TEXT               NOT NULL,
-  birthdate TIMESTAMP,
+  birthdate TIMESTAMP          NOT NULL,
   cpf       CHAR(14) UNIQUE,
   sex       SEX                NOT NULL
 );
@@ -75,30 +75,11 @@ CREATE TABLE volunteer
 )
   INHERITS (person);
 
-CREATE TABLE volunteer
-(
-  email           TEXT NOT NULL UNIQUE REFERENCES credential,
-  status          INT  NOT NULL,
-  profession      TEXT NOT NULL,
-  address         TEXT NOT NULL,
-  phone           TEXT NOT NULL,
-  photo           TEXT NOT NULL UNIQUE,
-  criminal_record TEXT NOT NULL UNIQUE,
-  creation_date   TIMESTAMP DEFAULT now(),
-  PRIMARY KEY (id)
-)
-  INHERITS (person);
-
 CREATE TABLE professional
 (
-  email           TEXT NOT NULL UNIQUE REFERENCES credential,
-  status          INT  NOT NULL,
-  profession      TEXT NOT NULL,
-  address         TEXT NOT NULL,
-  phone           TEXT NOT NULL,
-  photo           TEXT NOT NULL UNIQUE,
-  criminal_record TEXT NOT NULL UNIQUE,
-  creation_date   TIMESTAMP DEFAULT now(),
+  email          TEXT NOT NULL UNIQUE REFERENCES credential,
+  type           TEXT NOT NULL,
+  professionalid TEXT NOT NULL UNIQUE,
   PRIMARY KEY (id)
 )
   INHERITS (person);
@@ -113,12 +94,6 @@ CREATE TABLE kid_opinion (
   kid_id      INT     NOT NULL REFERENCES kid,
   activity_id INT     NOT NULL REFERENCES activity,
   likes       BOOLEAN NOT NULL
-);
-
-CREATE TABLE evaluation (
-  cpf     TEXT NOT NULL,
-  grade   INT  NOT NULL,
-  comment TEXT NOT NULL
 );
 
 INSERT INTO kid (name, birthdate, sex, availability) VALUES
@@ -159,12 +134,13 @@ VALUES
   ('Test Volunteer', cast('1991-04-04' AS TIMESTAMP), '038.598.170-86', 'M', 'test@volunteer.com', 1, 'Tester', 'Test, -1', '+55-51-98846-5552', '4.jpg', '4.pdf'),
   ('Otavio Email', cast('1993-06-06' AS TIMESTAMP), '477.840.220-00', 'M', 'otaviojacobi@hotmail.com', 0, 'Jornalista', 'Avenida da Rua, 800', '+55-51-98846-5555', '5.jpg', '5.pdf');
 
-INSERT INTO event (institute, age_group_id, kid_limit, date, description, volunteer_id, status) VALUES
-  ('Orfanato Lar Esperança', 2, 3, cast('2018-06-06' AS TIMESTAMP), 'Jogar bola', 18, 0),
-  ('Orfanato Treze de Maio', 1, 5, cast('2018-07-06' AS TIMESTAMP), 'Jogar volei', 18, 0),
-  ('Orfanato Treze de Maio', 3, 1, cast('2018-06-07' AS TIMESTAMP), 'Brincar de carrinho', 18, 1),
-  ('Abrigo João Paulo II', 2, 3, cast('2018-05-06' AS TIMESTAMP), 'Oficina de profissoes', 18, 1),
-  ('Orfanato Treze de Maio', 1, 2, cast('2018-11-11' AS TIMESTAMP), 'Jogar basquete', 18, 2),
-  ('Orfanato Lar Esperança', 4, 4, cast('2018-12-12' AS TIMESTAMP), 'Fazer bolo', 18, 2),
-  ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Ir no cinema', 18, 3),
-  ('Orfanato Lar Esperança', 1, 3, cast('2018-08-12' AS TIMESTAMP), 'Brincar de empinar pipa', 18, 0);
+INSERT INTO event (institute, age_group_id, kid_limit, date, description, volunteer_id, status, grade, comment) VALUES
+  ('Orfanato Lar Esperança', 2, 3, cast('2018-06-06' AS TIMESTAMP), 'Jogar bola', 18, 0, NULL, NULL),
+  ('Orfanato Treze de Maio', 1, 5, cast('2018-07-06' AS TIMESTAMP), 'Jogar volei', 18, 0, NULL, NULL),
+  ('Orfanato Lar Esperança', 1, 3, cast('2018-08-12' AS TIMESTAMP), 'Brincar de empinar pipa', 18, 0, NULL, NULL),
+  ('Orfanato Treze de Maio', 3, 1, cast('2018-06-07' AS TIMESTAMP), 'Brincar de carrinho', 18, 1, NULL, NULL),
+  ('Abrigo João Paulo II', 2, 3, cast('2018-05-06' AS TIMESTAMP), 'Oficina de profissoes', 18, 1, NULL, NULL),
+  ('Orfanato Treze de Maio', 1, 2, cast('2018-11-11' AS TIMESTAMP), 'Jogar basquete', 18, 2, NULL, NULL),
+  ('Orfanato Lar Esperança', 4, 4, cast('2018-12-12' AS TIMESTAMP), 'Fazer bolo', 18, 2, NULL, NULL),
+  ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Ir no cinema', 18, 3, NULL, NULL),
+  ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Passeio no parque', 18, 4, 5, 'Interessante.');

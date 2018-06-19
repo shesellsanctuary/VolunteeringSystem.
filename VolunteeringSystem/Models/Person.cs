@@ -6,12 +6,35 @@ namespace VolunteeringSystem.Models
 {
     public class Person
     {
+        private string _cpf;
         public int id { get; set; }
 
         [Required(ErrorMessage = "O campo nome é obrigatório.")]
         public string name { get; set; }
 
         public DateTime birthDate { get; set; }
+
+        public string CPF
+        {
+            get => _cpf;
+            set
+            {
+                if (value != null)
+                {
+                    value = value.Trim().Replace(".", "").Replace("-", "");
+                    if (!validate_cpf(value)) throw new ArgumentOutOfRangeException();
+                    value = value.Insert(3, ".");
+                    value = value.Insert(7, ".");
+                    value = value.Insert(11, "-");
+                }
+
+                _cpf = value;
+            }
+        }
+
+        public Sex sex { get; set; }
+
+        public DateTime createdAt { get; set; }
 
         private static bool validate_cpf(string cpf)
         {
@@ -31,26 +54,5 @@ namespace VolunteeringSystem.Models
             else remainder = 11 - remainder;
             return cpf.EndsWith(digit + remainder);
         }
-
-        private string _cpf;
-
-        public string CPF
-        {
-            get => _cpf;
-            set
-            {
-                if (value != null)
-                {
-                    value = value.Trim().Replace(".", "").Replace("-", "");
-                    if (!validate_cpf(value)) throw new ArgumentOutOfRangeException();
-                }
-
-                _cpf = value;
-            }
-        }
-
-        public Sex sex { get; set; }
-
-        public DateTime createdAt { get; set; }
     }
 }

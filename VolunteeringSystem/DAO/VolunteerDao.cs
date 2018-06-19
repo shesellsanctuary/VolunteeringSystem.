@@ -15,10 +15,7 @@ namespace VolunteeringSystem.DAO
             var volunteers = new List<Volunteer>();
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                foreach (var id in sql.Query<int>("SELECT id FROM volunteer").AsList())
-                {
-                    volunteers.Add(Get(id));
-                }
+                foreach (var id in sql.Query<int>("SELECT id FROM volunteer").AsList()) volunteers.Add(Get(id));
             }
 
             return volunteers;
@@ -29,10 +26,8 @@ namespace VolunteeringSystem.DAO
             var volunteers = new List<Volunteer>();
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                foreach (var id in sql.Query<int>("SELECT id FROM volunteer WHERE status = @status").AsList())
-                {
-                    volunteers.Add(Get(id));
-                }
+                var ids = sql.Query<int>("SELECT id FROM volunteer WHERE status = @status", new {status}).AsList();
+                foreach (var id in ids) volunteers.Add(Get(id));
             }
 
             return volunteers;
@@ -42,14 +37,16 @@ namespace VolunteeringSystem.DAO
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
-                Volunteer volunteer = sql.QueryFirstOrDefault<Volunteer>(
+                var volunteer = sql.QueryFirstOrDefault<Volunteer>(
                     "SELECT id, status, name, birthdate, cpf, sex, profession, address, phone, photo, criminal_record, creation_date FROM volunteer WHERE id = @id",
                     new {id});
                 volunteer.credentials = sql.QueryFirst<Credentials>(
                     "SELECT * FROM credential JOIN volunteer ON credential.email = volunteer.email WHERE id = @id",
                     new {id});
-                volunteer.evaluations = sql.Query<Evaluation>("SELECT grade, comment FROM evaluations WHERE cpf = @cpf",
-                    new {volunteer.CPF}).AsList();
+                volunteer.evaluations =
+                    sql.Query<Evaluation>(
+                            "SELECT grade, comment FROM event WHERE volunteer_id = @id AND grade IS NOT NULL", new {id})
+                        .AsList();
                 return volunteer;
             }
         }
@@ -88,20 +85,8 @@ namespace VolunteeringSystem.DAO
                         volunteer.phone,
                         volunteer.photo,
                         criminal_record = volunteer.criminalRecord,
-                        email = volunteer.credentials.email
+                        volunteer.credentials.email
                     });
-
-                foreach (var evaluation in volunteer.evaluations)
-                {
-                    sql.Execute(@"INSERT INTO evaluation (cpf, grade, comment) VALUES (@cpf, @grade, @comment)",
-                        new
-                        {
-                            volunteer.CPF,
-                            evaluation.grade,
-                            evaluation.comentary
-                        });
-                }
-
                 return Convert.ToBoolean(response);
             }
         }

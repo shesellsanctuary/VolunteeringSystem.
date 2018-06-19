@@ -4,6 +4,6 @@
     {
         public int grade { get; set; }
 
-        public string comentary { get; set; }
+        public string comment { get; set; }
     }
 }
