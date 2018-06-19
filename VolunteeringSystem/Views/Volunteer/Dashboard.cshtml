@@ -14,7 +14,7 @@
     <div class="alert alert-danger" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;
         <span>Seu cadastro ainda não foi aprovado por nossos administradores.</span>
-        <span>Até o dia @Model.createdAt.AddDays(5).ToShortDateString() você deverá receber um e-mail informando se foi aprovado ou não.</span>
+        <span>Até o dia @Model.creation_date.AddDays(5).ToShortDateString() você deverá receber um e-mail informando se foi aprovado ou não.</span>
     </div>
 }
 

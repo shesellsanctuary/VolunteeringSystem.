@@ -24,7 +24,7 @@
                 <td>@item.name</td>
                 <td>@item.sex.GetString()</td>
                 <td>@item.phone</td>
-                <td>@item.createdAt.ToShortDateString()</td>
+                <td>@item.creation_date.ToShortDateString()</td>
                 <td>
                     <a href="@Url.Action("Homolog", "Volunteer", new {volunteerId = item.id})" class="btn btn-success">Detalhes</a>
                 </td>

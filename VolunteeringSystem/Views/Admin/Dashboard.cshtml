@@ -1,6 +1,6 @@
 ﻿@{
-	Layout = "_LayoutAdmin";
-	ViewData["Title"] = "Dashboard";
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Dashboard";
 }
 
 <h2>Dashboard</h2>
@@ -8,36 +8,44 @@
 <h6>Bem vindo ao sistema de gerência</h6>
 
 <div class="row dash">
-	<div class="col-md-3 text-center">
-		<a href="@Url.Action("List", "Volunteer")">
-			<div class="card">
-				<h1>@ViewBag.volunteersWaitingQtd</h1>
-				<h6><b>Voluntários em Aprovação</b></h6>
-			</div>
-		</a>
-	</div>
-	<div class="col-md-3 text-center">
-		<a href="@Url.Action("List", "Event", new { status = 0 })">
-			<div class="card">
-				<h1>@ViewBag.eventsWaitingQtd</h1>
-				<h6><b>Eventos Em Aprovação</b></h6>
-			</div>
-		</a>
-	</div>
-	<div class="col-md-3 text-center">
-		<a href="@Url.Action("List", "Event", new { status = 3 })">
-			<div class="card">
-				<h1>@ViewBag.eventsRealizedQtd</h1>
-				<h6><b>Eventos Realizados</b></h6>
-			</div>
-		</a>
-	</div>
-	<div class="col-md-3 text-center">
-		<a href="@Url.Action("List", "Kids")">
-			<div class="card">
-				<h1>@ViewBag.kidsQtd</h1>
-				<h6><b>Crianças Cadastradas</b></h6>
-			</div>
-		</a>
-	</div>
+    <div class="col-md-3 text-center">
+        <a href="@Url.Action("List", "Volunteer")">
+            <div class="card">
+                <h1>@ViewBag.volunteersWaitingQtd</h1>
+                <h6>
+                    <b>Voluntários em Aprovação</b>
+                </h6>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 text-center">
+        <a href="@Url.Action("List", "Event", new {status = 0})">
+            <div class="card">
+                <h1>@ViewBag.eventsWaitingQtd</h1>
+                <h6>
+                    <b>Eventos Em Aprovação</b>
+                </h6>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 text-center">
+        <a href="@Url.Action("List", "Event", new {status = 3})">
+            <div class="card">
+                <h1>@ViewBag.eventsRealizedQtd</h1>
+                <h6>
+                    <b>Eventos Realizados</b>
+                </h6>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 text-center">
+        <a href="@Url.Action("List", "Kid")">
+            <div class="card">
+                <h1>@ViewBag.kidsQtd</h1>
+                <h6>
+                    <b>Crianças Cadastradas</b>
+                </h6>
+            </div>
+        </a>
+    </div>
 </div>

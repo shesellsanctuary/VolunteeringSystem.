@@ -27,5 +27,9 @@ namespace VolunteeringSystem.Models
         public Volunteer volunteer { get; set; }
 
         public string justification { get; set; }
+
+        public int grade { get; set; }
+
+        public string comment { get; set; }
     }
 }

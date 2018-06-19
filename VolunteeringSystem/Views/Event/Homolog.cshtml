@@ -25,37 +25,50 @@
         <div class="col-md-6">
             <h4>Dados do Evento</h4>
             <p>
-                <b>Grupo:</b> @Model.ageGroup.label</p>
+                <b>Grupo:</b> @Model.ageGroup.label
+            </p>
             <p>
-                <b>Descrição:</b> @Model.description</p>
+                <b>Descrição:</b> @Model.description
+            </p>
             <p>
-                <b>Limite de Crianças:</b> @Model.kidLimit</p>
+                <b>Limite de Crianças:</b> @Model.kidLimit
+            </p>
             <p>
-                <b>Data:</b> @Model.date.ToShortDateString()</p>
+                <b>Data:</b> @Model.date.ToShortDateString()
+            </p>
             <p>
-                <b>Criado em:</b> @Model.creationDate</p>
+                <b>Criado em:</b> @Model.creationDate
+            </p>
             @if (Model.status == EventStatus.Rejected)
             {
                 <p>
-                    <b>Justificativa:</b> @Model.justification</p>
+                    <b>Justificativa:</b> @Model.justification
+                </p>
             }
         </div>
         <div class="col-md-6">
             <h4>Dados do Voluntário</h4>
             <p>
-                <b>CPF:</b> @Model.volunteer.CPF</p>
+                <b>CPF:</b> @Model.volunteer.CPF
+            </p>
             <p>
-                <b>Nome:</b> @Model.volunteer.name</p>
+                <b>Nome:</b> @Model.volunteer.name
+            </p>
             <p>
-                <b>Sexo:</b> @Model.volunteer.sex.GetString()</p>
+                <b>Sexo:</b> @Model.volunteer.sex.GetString()
+            </p>
             <p>
-                <b>Data de Nascimento:</b> @Model.volunteer.birthDate.ToShortDateString()</p>
+                <b>Data de Nascimento:</b> @Model.volunteer.birthDate.ToShortDateString()
+            </p>
             <p>
-                <b>Profissão:</b> @Model.volunteer.profession</p>
+                <b>Profissão:</b> @Model.volunteer.profession
+            </p>
             <p>
-                <b>Endereço:</b> @Model.volunteer.address</p>
+                <b>Endereço:</b> @Model.volunteer.address
+            </p>
             <p>
-                <b>Telefone:</b> @Model.volunteer.phone</p>
+                <b>Telefone:</b> @Model.volunteer.phone
+            </p>
         </div>
 
         @if (Model.status == EventStatus.Waiting)
@@ -85,7 +98,29 @@
                         </script>
                         <div id="justificationDiv" class="form-group" style="display: none">
                             <label>Justificativa:</label>
-                            <textarea id="justification" class="form-control" name="justification" ></textarea>
+                            <textarea id="justification" class="form-control" name="justification"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new {Model.status})">Voltar</a>
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+
+        @if (Model.status == EventStatus.Finished && Model.grade == null)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Avaliar voluntário no evento (0-10):</label>
+                            @Html.TextBox("evaluation", null, new {@class = "form-control", required = "true", type = "number", min = "0", max = "10"})
+                        </div>
+                        <div id="commentDiv" class="form-group">
+                            <label>Comentário:</label>
+                            <textarea id="comment" class="form-control" name="comment"></textarea>
                         </div>
                         <div class="text-right">
                             <a class="btn btn-danger" href="@Url.Action("List", "Event", new {Model.status})">Voltar</a>

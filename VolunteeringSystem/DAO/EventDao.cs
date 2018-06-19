@@ -134,19 +134,21 @@ namespace VolunteeringSystem.DAO
         /// <param name="status"> event status </param>
         /// <param name="justification"> event justification </param>
         /// <returns> true: edited | false: error </returns>
-        public bool Homolog(int id, int status, string justification)
+        public bool Homolog(int id, int status, string justification, string comentary)
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE event SET 
                                                     status = @status, 
-                                                    justification = @justification 
+                                                    justification = @justification,
+                                                    comentary = @comentary
                                             WHERE id = @id",
                     new
                     {
                         id,
                         status,
-                        justification
+                        justification,
+                        comentary
                     });
 
                 return Convert.ToBoolean(response);
@@ -159,8 +161,7 @@ namespace VolunteeringSystem.DAO
             {
                 if (status == null)
                     return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event");
-                else
-                    return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event WHERE status = " + status);
+                return sql.QueryFirstOrDefault<int>("SELECT COUNT(1) FROM event WHERE status = " + status);
             }
         }
     }
