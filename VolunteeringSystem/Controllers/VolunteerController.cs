@@ -97,6 +97,7 @@ namespace VolunteeringSystem.Controllers
         {
             if (volunteer == null)
             {
+
                 HttpContext.Session.SetString("volunteerId", "");
                 HttpContext.Session.SetString("volunteerName", "");
                 HttpContext.Session.SetString("type", "");

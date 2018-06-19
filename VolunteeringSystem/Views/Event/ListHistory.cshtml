@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Event>
+@{
+    ViewData["Title"] = "Eventos ";
+    Layout = "_LayoutVolunteer";
+}
+
+<h2>Histórico de Eventos</h2>
+
+<div class="panel panel-default">
+    <table class="table">
+        <tr>
+            <th width="10%">ID</th>
+            <th width="15%">Grupo</th>
+            <th>Descrição</th>
+            <th width="15%">Data</th>
+            <th width="15%"></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.ageGroup.label</td>
+                <td>@item.description</td>
+                <td>@item.date.ToShortDateString()</td>
+                <td>
+                    <a href="@Url.Action("Display", "Event", new {eventId = item.id})" class="btn btn-success">Detalhes</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
