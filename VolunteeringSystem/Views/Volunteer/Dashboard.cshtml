@@ -41,7 +41,7 @@
         <h4>Opções</h4>
         <div class="list-group">
             <a href="@Url.Action("Index", "Event")" class="list-group-item">Criar evento</a>
-            <a href="#" class="list-group-item">Ver histórico de eventos</a>
+            <a href="@Url.Action("ListHistory", "Event", new {id = Model.id })" class="list-group-item">Ver histórico de eventos</a>
         </div>
     </div>
 </div>

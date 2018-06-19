@@ -38,6 +38,17 @@ namespace VolunteeringSystem.DAO
             }
         }
 
+        public IEnumerable<Event> GetByVolunteer(int volunteer_id)
+        {
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
+            {
+                var list = sql.Query<Event>(
+                    "SELECT ev.status, ev.id, ev.institute, ev.age_group_id as ageGroupId, ev.kid_limit, ev.date, ev.description, ev.creation_date as creationDate, ev.volunteer_id as volunteerId, ev.justification FROM event as ev JOIN volunteer as vo ON ev.volunteer_id = vo.id WHERE vo.id = @volunteer_id ORDER BY ev.creation_date",
+                    new { volunteer_id }).AsList();
+                return list;
+            }
+        }
+
         public Event Get(int eventId)
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))

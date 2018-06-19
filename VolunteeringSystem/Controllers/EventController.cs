@@ -64,6 +64,16 @@ namespace VolunteeringSystem.Controllers
             return View();
         }
 
+        [HttpGet, CheckAccess(new string[] { "VOLUNTEER" })]
+        public IActionResult ListHistory(int id)
+        {
+            var ageGroups = _ageGroupDao.GetAll();
+            var eventList = _eventDao.GetByVolunteer(id);
+            foreach (var anEvent in eventList) anEvent.ageGroup = ageGroups.Single(a => a.id == anEvent.ageGroupId);
+            ViewBag.Status = "";
+            return View(eventList);
+        }
+
         /* ADMIN ACTIONS */
         [HttpGet, CheckAccess(new string[] { "ADMIN", "PROFESSIONAL" })]
         public IActionResult List(int status)
