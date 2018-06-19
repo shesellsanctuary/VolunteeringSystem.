@@ -12,13 +12,11 @@ const opts = {
 
 before (async () => {
   global.expect = expect;
-  global.TEST_ENV = 'http://localhost:55556/';
+  global.TEST_ENV = 'http://localhost:5000/';
   global.browser = await puppeteer.launch(opts);
 });
 
 after (() => {
-
-  //TODO: delete all used users, voluneers, events from db....
   browser.close();
 
   global.browser = globalVariables.browser;
