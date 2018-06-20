@@ -35,7 +35,7 @@ CREATE TABLE event
   creation_date TIMESTAMP DEFAULT now(),
   status        INT       DEFAULT 0,
   justification TEXT,
-  grade         INT,
+  grade         INT       DEFAULT NULL,
   comment       TEXT
 );
 
@@ -143,4 +143,4 @@ INSERT INTO event (institute, age_group_id, kid_limit, date, description, volunt
   ('Orfanato Treze de Maio', 1, 2, cast('2018-11-11' AS TIMESTAMP), 'Jogar basquete', 18, 2, NULL, NULL),
   ('Orfanato Lar Esperança', 4, 4, cast('2018-12-12' AS TIMESTAMP), 'Fazer bolo', 18, 2, NULL, NULL),
   ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Ir no cinema', 18, 3, NULL, NULL),
-  ('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Passeio no parque', 18, 4, 5, 'Interessante.');
+('Abrigo João Paulo II', 1, 3, cast('2018-01-03' AS TIMESTAMP), 'Passeio no parque', 18, 3, 5, 'Interessante.');

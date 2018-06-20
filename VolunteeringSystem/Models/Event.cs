@@ -28,7 +28,7 @@ namespace VolunteeringSystem.Models
 
         public string justification { get; set; }
 
-        public int grade { get; set; }
+        public Nullable<int> grade { get; set; }
 
         public string comment { get; set; }
     }
