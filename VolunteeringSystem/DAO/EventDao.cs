@@ -54,7 +54,7 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 return sql.QueryFirst<Event>(
-                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification FROM event WHERE id = @id",
+                    "SELECT status, id, institute, age_group_id as ageGroupId, kid_limit, date, description, creation_date as creationDate, volunteer_id as volunteerId, justification, grade, comment FROM event WHERE id = @id",
                     new {id = eventId});
             }
         }
@@ -134,21 +134,45 @@ namespace VolunteeringSystem.DAO
         /// <param name="status"> event status </param>
         /// <param name="justification"> event justification </param>
         /// <returns> true: edited | false: error </returns>
-        public bool Homolog(int id, int status, string justification, string comentary)
+        public bool Homolog(int id, int status, string justification)
         {
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"UPDATE event SET 
                                                     status = @status, 
-                                                    justification = @justification,
-                                                    comentary = @comentary
+                                                    justification = @justification
                                             WHERE id = @id",
                     new
                     {
                         id,
                         status,
-                        justification,
-                        comentary
+                        justification
+                    });
+
+                return Convert.ToBoolean(response);
+            }
+        }
+
+        /// <summary>
+        ///     Aprove or block an event
+        /// </summary>
+        /// <param name="id"> event object </param>
+        /// <param name="grade"> event grade </param>
+        /// <param name="comment"> event comment on grade </param>
+        /// <returns> true: edited | false: error </returns>
+        public bool Evaluate(int id, int grade, string comment)
+        {
+            using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
+            {
+                var response = sql.Execute(@"UPDATE event SET 
+                                                    grade = @grade,
+                                                    comment = @comment
+                                            WHERE id = @id",
+                    new
+                    {
+                        id,
+                        grade,
+                        comment
                     });
 
                 return Convert.ToBoolean(response);

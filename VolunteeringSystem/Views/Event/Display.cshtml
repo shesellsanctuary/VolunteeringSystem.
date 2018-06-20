@@ -48,6 +48,15 @@
                     <b>Justificativa:</b> @Model.justification
                 </p>
             }
+            @if (Model.status == EventStatus.Finished && Model.grade != null)
+            {
+                <p>
+                    <b>Nota:</b> @Model.grade
+                </p>
+                <p>
+                    <b>Comentário:</b> @Model.comment
+                </p>
+            }
         </div>
         <div class="col-md-6">
             <h4>Dados do Voluntário</h4>

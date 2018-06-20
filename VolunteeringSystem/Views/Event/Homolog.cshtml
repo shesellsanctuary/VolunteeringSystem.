@@ -45,6 +45,15 @@
                     <b>Justificativa:</b> @Model.justification
                 </p>
             }
+            @if (Model.status == EventStatus.Finished && Model.grade != null)
+            {
+                <p>
+                    <b>Nota:</b> @Model.grade
+                </p>
+                <p>
+                    <b>Comentário:</b> @Model.comment
+                </p>
+            }
         </div>
         <div class="col-md-6">
             <h4>Dados do Voluntário</h4>
@@ -116,14 +125,14 @@
                     <form method="post">
                         <div class="form-group">
                             <label>Avaliar voluntário no evento (0-10):</label>
-                            @Html.TextBox("evaluation", null, new {@class = "form-control", required = "true", type = "number", min = "0", max = "10"})
+                            @Html.TextBox("grade", null, new {@class = "form-control", required = "true", type = "number", min = "0", max = "10"})
                         </div>
                         <div id="commentDiv" class="form-group">
                             <label>Comentário:</label>
                             <textarea id="comment" class="form-control" name="comment"></textarea>
                         </div>
                         <div class="text-right">
-                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new {Model.status})">Voltar</a>
+                            <a class="btn btn-danger" href="@Url.Action("List", "Event", new {EventStatus.Finished})">Voltar</a>
                             <button type="submit" class="btn btn-success">Salvar</button>
                         </div>
                     </form>
