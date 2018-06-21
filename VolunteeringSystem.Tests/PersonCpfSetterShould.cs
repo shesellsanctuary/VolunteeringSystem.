@@ -65,7 +65,7 @@ namespace VolunteeringSystem.Tests
         {
             var unused = new Person();
             Assert.DoesNotThrow(() => { unused.CPF = "54676040580"; });
-            Assert.AreEqual(unused.CPF, "54676040580");
+            Assert.AreEqual(unused.CPF, "546.760.405-80");
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace VolunteeringSystem.Tests
         {
             var unused = new Person();
             Assert.DoesNotThrow(() => { unused.CPF = "546760405-80"; });
-            Assert.AreEqual(unused.CPF, "54676040580");
+            Assert.AreEqual(unused.CPF, "546.760.405-80");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace VolunteeringSystem.Tests
         {
             var person = new Person();
             Assert.DoesNotThrow(() => { person.CPF = "546.760.405-80"; });
-            Assert.AreEqual(person.CPF, "54676040580");
+            Assert.AreEqual(person.CPF, "546.760.405-80");
         }
     }
 }
