@@ -15,14 +15,14 @@ namespace VolunteeringSystem.DAO
             {
                 var response = sql.Execute(@"
                     INSERT INTO kid (name, birthdate, cpf, sex, availability)
-                    VALUES (@name, @birthdate, @cpf, @sex::SEX, availability)",
+                    VALUES (@name, @birthdate, @cpf, @sex::SEX, @availability)",
                     new
                     {
                         newKid.name,
                         birthdate = newKid.birthDate,
                         cpf = newKid.CPF,
                         sex = char.ToUpper(newKid.sex.ToString().ElementAt(0)).ToString(),
-                        availability = newKid.availability
+                        availability = (int)newKid.availability
                     });
                 return Convert.ToBoolean(response);
             }

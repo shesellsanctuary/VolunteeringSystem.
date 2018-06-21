@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Kid>
 @{
-    ViewData["Title"] = "Crianças " + ViewBag.Status;
-    Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Crianças";
+	Layout = "_LayoutAdmin";
 }
 
 <h2>Crianças</h2>
@@ -19,7 +19,7 @@
             <tr>
                 <td>@item.name</td>
                 <td>@item.sex</td>
-                <td>@item.birthDate</td>
+                <td>@item.birthDate.ToShortDateString()</td>
                 <td>@item.availability</td>
             </tr>
         }
