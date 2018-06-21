@@ -1,22 +1,83 @@
-﻿@model Kid
-
-<h2>Cadastrar Criança</h2>
-
-@using (Html.BeginForm("Add", "Kid"))
-{
-    <div class="col-sm-12 text-center">
-        <strong>
-            <span asp-validation-for="name" class="font text-danger"></span>
-        </strong>
-    </div>
-    <div class="form-group">
-        <label for="">Nome</label>
-        <input asp-for="name" class="form-control" type="text"/>
-    </div>
-    <div class="form-group">
-        <label for="exampleFormControlTextarea1">Example textarea</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
-
-    <input type="submit" value="Click me">
+﻿@using VolunteeringSystem.Domain
+@model Kid
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Criar Nova Criança";
 }
+
+<h2>Crianças</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <a class="pull-right" href="@Url.Action("List", "Admin")">Voltar</a>
+        <h4>Criar Nova</h4>
+        <form action="" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Nome</label>
+                        <input type="text" asp-for="name" class="form-control" />
+                        <span asp-validation-for="name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">CPF</label>
+                        <input type="text" asp-for="CPF" class="form-control" />
+                        <span asp-validation-for="CPF"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Sexo</label>
+                        @Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputSex" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Data de Nascimento</label>
+                        <input type="date" asp-for="birthDate" value="@Model.birthDate.ToShortDateString()" class="form-control" />
+                        <span asp-validation-for="birthDate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Tipo de Administrador</label>
+                        <select asp-for="type" class="form-control" onchange="changeType(this.value)">
+                            <option value="Médico">Médico(a)</option>
+                            <option value="Psicólogo">Psicólogo(a)</option>
+                            <option value="Pedagogo">Pedagogo(a)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" id="codeDiv">
+                        <label class="control-label" id="codeLabel">Código</label>
+                        <input type="text" asp-for="kidId" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">E-mail</label>
+                        <input type="email" asp-for="credentials.email" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Senha</label>
+                        <input type="password" asp-for="credentials.password" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-success">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
