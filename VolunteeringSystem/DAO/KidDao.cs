@@ -14,12 +14,13 @@ namespace VolunteeringSystem.DAO
             using (var sql = new NpgsqlConnection(ConnectionProvider.GetConnectionString()))
             {
                 var response = sql.Execute(@"
-                    INSERT INTO kid (name, birthdate, sex, availability)
-                    VALUES (@name, @birthdate, @sex::SEX, availability)",
+                    INSERT INTO kid (name, birthdate, cpf, sex, availability)
+                    VALUES (@name, @birthdate, @cpf, @sex::SEX, availability)",
                     new
                     {
                         newKid.name,
                         birthdate = newKid.birthDate,
+                        cpf = newKid.CPF,
                         sex = char.ToUpper(newKid.sex.ToString().ElementAt(0)).ToString(),
                         availability = newKid.availability
                     });
