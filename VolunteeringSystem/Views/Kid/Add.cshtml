@@ -32,6 +32,12 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Sexo</label>
+                        @Html.DropDownListFor(m => m.availability, Html.GetEnumSelectList<Availability>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputAvailability" })
+                    </div>
+                </div>
+                 <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Disponibilidade</label>
                         @Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputSex" })
                     </div>
                 </div>
@@ -43,38 +49,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Tipo de Administrador</label>
-                        <select asp-for="type" class="form-control" onchange="changeType(this.value)">
-                            <option value="Médico">Médico(a)</option>
-                            <option value="Psicólogo">Psicólogo(a)</option>
-                            <option value="Pedagogo">Pedagogo(a)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group" id="codeDiv">
-                        <label class="control-label" id="codeLabel">Código</label>
-                        <input type="text" asp-for="kidId" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">E-mail</label>
-                        <input type="email" asp-for="credentials.email" class="form-control" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Senha</label>
-                        <input type="password" asp-for="credentials.password" class="form-control" />
-                    </div>
-                </div>
-            </div>
+
+
             <div class="text-right">
                 <button type="submit" class="btn btn-success">Salvar</button>
             </div>
