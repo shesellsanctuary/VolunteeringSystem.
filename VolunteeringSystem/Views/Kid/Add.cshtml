@@ -32,13 +32,13 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Sexo</label>
+                        <label class="control-label">Disponibilidade</label>
                         @Html.DropDownListFor(m => m.availability, Html.GetEnumSelectList<PartOfDay>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputAvailability" })
                     </div>
                 </div>
                  <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Disponibilidade</label>
+                        <label class="control-label">Sexo</label>
                         @Html.DropDownListFor(m => m.sex, Html.GetEnumSelectList<Sex>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputSex" })
                     </div>
                 </div>
