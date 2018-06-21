@@ -15,10 +15,16 @@ namespace VolunteeringSystem.Controllers
         }
 
         [HttpPost, CheckAccess(new string[] { "ADMIN" })]
-        public IActionResult Add(Kid model)
+        public IActionResult Add(Kid Model)
         {
-            if (ModelState.IsValid) return RedirectToAction("Index", "Home");
-            return View(model);
+            if (ModelState.IsValid)
+            {
+                var _kidDao = new KidDao();
+                _kidDao.Add(Model);
+                return RedirectToAction("List");
+            }
+
+            return View(Model);
         }
 
         [HttpGet, CheckAccess(new string[] { "ADMIN" })]

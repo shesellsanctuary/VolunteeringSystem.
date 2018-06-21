@@ -121,7 +121,7 @@ INSERT INTO credential (email, password) VALUES
 INSERT INTO administrator (name, birthdate, cpf, sex, email)
 VALUES
   ('Bernardo Sulzbach', cast('1997-07-22' AS TIMESTAMP), '060.317.474-48', 'M', 'bernardo@sulzbach.com'),
-  ('Felipe Bertoldo', cast('1998-08-08' AS TIMESTAMP), '808.847.295-40', 'M', 'felipe@bertoldo.com'),
+  ('Felipe Bertoldo', cast('1994-04-30' AS TIMESTAMP), '808.847.295-40', 'M', 'felipe@bertoldo.com'),
   ('Emily Pereira', cast('1995-01-06' AS TIMESTAMP), '571.162.642-64', 'F', 'emily@pereira.com'),
   ('Guilherme Delazeri', cast('1997-09-23' AS TIMESTAMP), '304.320.843-98', 'M', 'guilherme@delazeri.com'),
   ('Otávio Jacobi', cast('1996-12-23' AS TIMESTAMP), '947.754.837-57', 'M', 'otavio@jacobi.com');
