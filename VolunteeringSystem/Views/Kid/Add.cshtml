@@ -5,7 +5,9 @@
     ViewData["Title"] = "Criar Nova Criança";
 }
 
-<h2>Crianças</h2>
+<h2>Crianças
+<a href="@Url.Action("Add", "Kid")" class="btn btn-success pull-right">Criar Nova</a>
+</h2>
 
 <div class="panel panel-default">
     <div class="panel-body">
@@ -32,7 +34,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Sexo</label>
-                        @Html.DropDownListFor(m => m.availability, Html.GetEnumSelectList<Availability>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputAvailability" })
+                        @Html.DropDownListFor(m => m.availability, Html.GetEnumSelectList<PartOfDay>(), new { @class = "form-control", required = "", autofocus = "", type = "", id = "inputAvailability" })
                     </div>
                 </div>
                  <div class="col-md-3">
