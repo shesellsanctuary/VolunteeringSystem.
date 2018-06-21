@@ -97,12 +97,10 @@ describe('Create a new volunteer',  function() {
     await loginAsAdmin(page);
     await page.goto(`${TEST_ENV}Volunteer/List?status=0`);
 
-    const pendingCPF = await page.$x(`//td[contains(text(), '${testUsers.volunteers[0].cpf}')]`);
     const pendingName = await page.$x(`//td[contains(text(), '${testUsers.volunteers[0].name}')]`);
 
     await page.waitFor(10000);
     
-    expect(pendingCPF.length).to.equals(1);
     expect(pendingName.length).to.equals(1);
   }); 
 
